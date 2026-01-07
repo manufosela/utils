@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>url-params Demo</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      background: #f5f5f5;
+    }
+    h1 { color: #333; }
+    .demo-section {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .demo-section h2 {
+      margin-top: 0;
+      color: #555;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      margin: 0.25rem;
+      border: none;
+      border-radius: 4px;
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover { background: #0056b3; }
+    button.danger { background: #dc3545; }
+    button.danger:hover { background: #c82333; }
+    input {
+      padding: 0.5rem;
+      margin: 0.25rem;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      width: 150px;
+    }
+    .output {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.875rem;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .current-url {
+      padding: 1rem;
+      background: #e7f1ff;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+      font-family: monospace;
+      word-break: break-all;
+    }
+    .row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>url-params Demo</h1>
+
+  <div class="demo-section">
+    <h2>Current URL</h2>
+    <div class="current-url" id="current-url"></div>
+    <button id="refresh-url">Refresh Display</button>
+  </div>
+
+  <div class="demo-section">
+    <h2>Get Parameters</h2>
+    <div class="row">
+      <input type="text" id="get-key" placeholder="Key" value="page">
+      <button id="get-param">Get Param</button>
+      <button id="get-all">Get All Params</button>
+    </div>
+    <div class="output" id="get-output">Click a button to get params...</div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Set Parameters</h2>
+    <div class="row">
+      <input type="text" id="set-key" placeholder="Key" value="page">
+      <input type="text" id="set-value" placeholder="Value" value="1">
+      <button id="set-param">Set Param</button>
+    </div>
+    <div class="row">
+      <button id="set-example">Set Example: page=2&sort=name&filter=active</button>
+    </div>
+    <div class="output" id="set-output">Set a parameter to update the URL...</div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Remove Parameters</h2>
+    <div class="row">
+      <input type="text" id="remove-key" placeholder="Key" value="page">
+      <button id="remove-param">Remove Param</button>
+      <button id="clear-all" class="danger">Clear All</button>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Parse/Build Query Strings</h2>
+    <div class="row">
+      <input type="text" id="parse-input" placeholder="Query string" value="?a=1&b=2&tags=x&tags=y" style="width: 300px;">
+      <button id="parse">Parse</button>
+    </div>
+    <div class="row">
+      <button id="build">Build from Object</button>
+    </div>
+    <div class="output" id="parse-output">Parse or build query strings...</div>
+  </div>
+
+  <script type="module">
+    import {
+      UrlParams,
+      getParam,
+      getParams,
+      setParam,
+      setParams,
+      removeParam,
+      toQueryString,
+      parseQueryString
+    } from '../src/index.js';
+
+    const currentUrlEl = document.getElementById('current-url');
+    const getOutput = document.getElementById('get-output');
+    const setOutput = document.getElementById('set-output');
+    const parseOutput = document.getElementById('parse-output');
+
+    function updateCurrentUrl() {
+      currentUrlEl.textContent = window.location.href;
+    }
+    updateCurrentUrl();
+
+    document.getElementById('refresh-url').addEventListener('click', updateCurrentUrl);
+
+    // Get operations
+    document.getElementById('get-param').addEventListener('click', () => {
+      const key = document.getElementById('get-key').value;
+      const value = getParam(key);
+      getOutput.textContent = `getParam("${key}") = ${JSON.stringify(value)}`;
+    });
+
+    document.getElementById('get-all').addEventListener('click', () => {
+      const params = getParams();
+      getOutput.textContent = `getParams() = ${JSON.stringify(params, null, 2)}`;
+    });
+
+    // Set operations
+    document.getElementById('set-param').addEventListener('click', () => {
+      const key = document.getElementById('set-key').value;
+      const value = document.getElementById('set-value').value;
+      setParam(key, value);
+      updateCurrentUrl();
+      setOutput.textContent = `Set "${key}" = "${value}"`;
+    });
+
+    document.getElementById('set-example').addEventListener('click', () => {
+      setParams({ page: 2, sort: 'name', filter: 'active' });
+      updateCurrentUrl();
+      setOutput.textContent = 'Set multiple params: page=2, sort=name, filter=active';
+    });
+
+    // Remove operations
+    document.getElementById('remove-param').addEventListener('click', () => {
+      const key = document.getElementById('remove-key').value;
+      removeParam(key);
+      updateCurrentUrl();
+    });
+
+    document.getElementById('clear-all').addEventListener('click', () => {
+      new UrlParams(undefined, { autoUpdate: true }).clear();
+      updateCurrentUrl();
+    });
+
+    // Parse/build operations
+    document.getElementById('parse').addEventListener('click', () => {
+      const input = document.getElementById('parse-input').value;
+      const result = parseQueryString(input);
+      parseOutput.textContent = `parseQueryString("${input}"):\n${JSON.stringify(result, null, 2)}`;
+    });
+
+    document.getElementById('build').addEventListener('click', () => {
+      const obj = { page: 1, limit: 10, tags: ['js', 'ts', 'css'] };
+      const qs = toQueryString(obj);
+      parseOutput.textContent = `toQueryString(${JSON.stringify(obj)}):\n${qs}`;
+    });
+  </script>
+</body>
+</html>

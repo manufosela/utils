@@ -1,0 +1,48 @@
+{
+  "name": "@manufosela/convert2webp",
+  "version": "1.0.0",
+  "description": "Image to WebP conversion utility using Canvas API",
+  "type": "module",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "types": "src/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "types": "./src/index.d.ts"
+    }
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src/",
+    "dev": "vite demo"
+  },
+  "keywords": [
+    "webp",
+    "image",
+    "conversion",
+    "canvas",
+    "compress"
+  ],
+  "author": "manufosela",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manufosela/utils.git",
+    "directory": "packages/convert2webp"
+  },
+  "devDependencies": {
+    "vitest": "^1.2.0",
+    "jsdom": "^24.0.0",
+    "vite": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>event-emitter Demo</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      background: #f5f5f5;
+    }
+    h1 { color: #333; }
+    .demo-section {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .demo-section h2 {
+      margin-top: 0;
+      color: #555;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      margin: 0.25rem;
+      border: none;
+      border-radius: 4px;
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover { background: #0056b3; }
+    .output {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.875rem;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .log-entry {
+      padding: 0.25rem 0;
+      border-bottom: 1px solid #e9ecef;
+    }
+    .log-entry:last-child { border-bottom: none; }
+  </style>
+</head>
+<body>
+  <h1>event-emitter Demo</h1>
+
+  <div class="demo-section">
+    <h2>Basic Events</h2>
+    <button id="emit-message">Emit Message</button>
+    <button id="emit-user-login">Emit user:login</button>
+    <button id="emit-user-logout">Emit user:logout</button>
+    <div class="output" id="output"></div>
+  </div>
+
+  <div class="demo-section">
+    <h2>One-time Listener</h2>
+    <button id="emit-once">Emit 'init' (once listener)</button>
+    <p>Click multiple times - listener fires only once</p>
+    <div class="output" id="once-output"></div>
+  </div>
+
+  <div class="demo-section">
+    <h2>Listener Info</h2>
+    <button id="show-info">Show Listener Info</button>
+    <div class="output" id="info-output"></div>
+  </div>
+
+  <script type="module">
+    import { EventEmitter } from '../src/index.js';
+
+    const emitter = new EventEmitter({ wildcard: true });
+    const output = document.getElementById('output');
+    const onceOutput = document.getElementById('once-output');
+    const infoOutput = document.getElementById('info-output');
+
+    function log(container, message) {
+      const entry = document.createElement('div');
+      entry.className = 'log-entry';
+      entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+      container.insertBefore(entry, container.firstChild);
+    }
+
+    // Set up listeners
+    emitter.on('message', (data) => {
+      log(output, `message: ${JSON.stringify(data)}`);
+    });
+
+    emitter.on('user:login', (user) => {
+      log(output, `user:login: ${user.name} logged in`);
+    });
+
+    emitter.on('user:logout', (user) => {
+      log(output, `user:logout: ${user.name} logged out`);
+    });
+
+    // Wildcard listener
+    emitter.on('user:*', (data) => {
+      log(output, `[wildcard user:*] detected`);
+    });
+
+    // Button handlers
+    document.getElementById('emit-message').addEventListener('click', () => {
+      emitter.emit('message', { text: 'Hello World!', timestamp: Date.now() });
+    });
+
+    document.getElementById('emit-user-login').addEventListener('click', () => {
+      emitter.emit('user:login', { id: 1, name: 'John Doe' });
+    });
+
+    document.getElementById('emit-user-logout').addEventListener('click', () => {
+      emitter.emit('user:logout', { id: 1, name: 'John Doe' });
+    });
+
+    // Once listener
+    emitter.once('init', () => {
+      log(onceOutput, 'Init event received (only fires once)');
+    });
+
+    document.getElementById('emit-once').addEventListener('click', () => {
+      emitter.emit('init');
+      log(onceOutput, 'Emitted init event');
+    });
+
+    // Info
+    document.getElementById('show-info').addEventListener('click', () => {
+      const events = emitter.eventNames();
+      const info = events.map(e => `${e}: ${emitter.listenerCount(e)} listeners`).join('\n');
+      infoOutput.textContent = `Registered events:\n${info}`;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+{
+  "name": "@manufosela/rich-markdown-to-html",
+  "version": "1.0.0",
+  "description": "Markdown to HTML converter with support for tables, code blocks, and task lists",
+  "type": "module",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "types": "src/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "types": "./src/index.d.ts"
+    }
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src/",
+    "dev": "vite demo"
+  },
+  "keywords": [
+    "markdown",
+    "html",
+    "parser",
+    "converter",
+    "tables",
+    "code-highlighting"
+  ],
+  "author": "manufosela",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manufosela/utils.git",
+    "directory": "packages/rich-markdown-to-html"
+  },
+  "devDependencies": {
+    "vitest": "^1.2.0",
+    "vite": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
