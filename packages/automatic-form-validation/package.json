@@ -1,0 +1,59 @@
+{
+  "name": "@manufosela/automatic-form-validation",
+  "version": "1.6.0",
+  "description": "Automatic HTML form validation using data-* attributes, dependency-free and browser-focused.",
+  "type": "module",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "exports": {
+    ".": {
+      "import": "./src/index.js"
+    }
+  },
+  "files": [
+    "src",
+    "demo",
+    "README.md"
+  ],
+  "scripts": {
+    "dev": "pnpm -C demo dev",
+    "build": "pnpm -C demo build",
+    "preview": "pnpm -C demo preview",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "lint": "eslint src/"
+  },
+  "keywords": [
+    "forms",
+    "validate",
+    "validation",
+    "html",
+    "browser"
+  ],
+  "author": "manufosela",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manufosela/utils.git",
+    "directory": "packages/automatic-form-validation"
+  },
+  "bugs": {
+    "url": "https://github.com/manufosela/utils/issues"
+  },
+  "homepage": "https://github.com/manufosela/utils/tree/main/packages/automatic-form-validation",
+  "devDependencies": {
+    "@playwright/test": "^1.43.1",
+    "eslint": "^8.56.0",
+    "jsdom": "^24.0.0",
+    "vite": "^5.2.0",
+    "vitepress": "^1.0.0-rc.44",
+    "vitest": "^1.6.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

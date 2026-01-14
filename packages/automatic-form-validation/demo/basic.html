@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Basic Demo - Automatic Form Validation</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        margin: 40px;
+        color: #1c1c1c;
+      }
+      .form-group {
+        margin: 16px 0;
+      }
+      label {
+        display: block;
+        margin-bottom: 6px;
+      }
+      input[type="text"],
+      input[type="email"] {
+        width: 320px;
+        max-width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #c7c7c7;
+        border-radius: 6px;
+      }
+      button {
+        padding: 8px 14px;
+        border-radius: 6px;
+        border: 1px solid #1c1c1c;
+        background: #1c1c1c;
+        color: #fff;
+      }
+      .note {
+        color: #5a5a5a;
+        margin-top: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Basic form validation</h1>
+    <p>Required fields and built-in validators with real-time checks.</p>
+
+    <form id="basicForm" data-validate="true" data-checkrealtime="true">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          placeholder="Jane Doe"
+          data-required="true"
+          data-tovalidate="alpha"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          name="email"
+          type="text"
+          placeholder="jane@example.com"
+          data-required="true"
+          data-tovalidate="email"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>
+          <input id="accept" name="accept" type="checkbox" data-required="true" />
+          Accept terms
+        </label>
+      </div>
+
+      <button id="submitBtn" type="submit" data-checkform="true">Submit</button>
+    </form>
+
+    <p class="note">Try leaving fields empty or entering an invalid email.</p>
+
+    <script type="module">
+      import { ValidateForm } from "../src/ValidateForm.js";
+      new ValidateForm();
+    </script>
+  </body>
+</html>
