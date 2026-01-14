@@ -6,3 +6,5 @@ dist/
 .env.local
 coverage/
 .turbo/
+packages/**/docs/.vitepress/cache/
+packages/**/test-results/
