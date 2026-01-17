@@ -17,8 +17,8 @@
     "README.md"
   ],
   "scripts": {
-    "test": "web-test-runner test/*.test.js --node-resolve",
-    "test:watch": "web-test-runner test/*.test.js --node-resolve --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "eslint src/"
   },
   "keywords": [
@@ -37,8 +37,7 @@
     "directory": "packages/event-emitter"
   },
   "devDependencies": {
-    "@open-wc/testing": "^4.0.0",
-    "@web/test-runner": "^0.18.0"
+    "vitest": "^1.6.0"
   },
   "engines": {
     "node": ">=18.0.0"

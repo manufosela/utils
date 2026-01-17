@@ -1,10 +1,10 @@
-import { expect } from '@open-wc/testing';
+import { describe, expect, it, vi } from 'vitest';
 import { EventEmitter } from '../src/index.js';
 
 describe('EventEmitter', () => {
   it('creates instance with default options', () => {
     const emitter = new EventEmitter();
-    expect(emitter).to.be.instanceOf(EventEmitter);
+    expect(emitter).toBeInstanceOf(EventEmitter);
   });
 
   it('registers and calls listeners', () => {
@@ -14,7 +14,7 @@ describe('EventEmitter', () => {
     emitter.on('test', () => { called = true; });
     emitter.emit('test');
 
-    expect(called).to.be.true;
+    expect(called).toBe(true);
   });
 
   it('passes data to listeners', () => {
@@ -24,7 +24,7 @@ describe('EventEmitter', () => {
     emitter.on('test', (data) => { receivedData = data; });
     emitter.emit('test', { value: 42 });
 
-    expect(receivedData).to.deep.equal({ value: 42 });
+    expect(receivedData).toEqual({ value: 42 });
   });
 
   it('returns unsubscribe function from on()', () => {
@@ -34,11 +34,11 @@ describe('EventEmitter', () => {
     const unsubscribe = emitter.on('test', () => { count++; });
 
     emitter.emit('test');
-    expect(count).to.equal(1);
+    expect(count).toBe(1);
 
     unsubscribe();
     emitter.emit('test');
-    expect(count).to.equal(1);
+    expect(count).toBe(1);
   });
 
   it('removes listener with off()', () => {
@@ -48,11 +48,11 @@ describe('EventEmitter', () => {
 
     emitter.on('test', callback);
     emitter.emit('test');
-    expect(count).to.equal(1);
+    expect(count).toBe(1);
 
     emitter.off('test', callback);
     emitter.emit('test');
-    expect(count).to.equal(1);
+    expect(count).toBe(1);
   });
 
   it('once() fires only once', () => {
@@ -65,7 +65,7 @@ describe('EventEmitter', () => {
     emitter.emit('test');
     emitter.emit('test');
 
-    expect(count).to.equal(1);
+    expect(count).toBe(1);
   });
 
   it('supports multiple listeners per event', () => {
@@ -77,7 +77,7 @@ describe('EventEmitter', () => {
     emitter.on('test', () => { count++; });
 
     emitter.emit('test');
-    expect(count).to.equal(3);
+    expect(count).toBe(3);
   });
 
   it('removeAllListeners() removes all for specific event', () => {
@@ -92,7 +92,7 @@ describe('EventEmitter', () => {
     emitter.emit('test1');
     emitter.emit('test2');
 
-    expect(count).to.equal(1);
+    expect(count).toBe(1);
   });
 
   it('removeAllListeners() removes all events when no arg', () => {
@@ -107,19 +107,19 @@ describe('EventEmitter', () => {
     emitter.emit('test1');
     emitter.emit('test2');
 
-    expect(count).to.equal(0);
+    expect(count).toBe(0);
   });
 
   it('listenerCount() returns correct count', () => {
     const emitter = new EventEmitter();
 
-    expect(emitter.listenerCount('test')).to.equal(0);
+    expect(emitter.listenerCount('test')).toBe(0);
 
     emitter.on('test', () => {});
-    expect(emitter.listenerCount('test')).to.equal(1);
+    expect(emitter.listenerCount('test')).toBe(1);
 
     emitter.on('test', () => {});
-    expect(emitter.listenerCount('test')).to.equal(2);
+    expect(emitter.listenerCount('test')).toBe(2);
   });
 
   it('eventNames() returns all event names', () => {
@@ -130,35 +130,39 @@ describe('EventEmitter', () => {
     emitter.on('event3', () => {});
 
     const names = emitter.eventNames();
-    expect(names).to.include('event1');
-    expect(names).to.include('event2');
-    expect(names).to.include('event3');
+    expect(names).toContain('event1');
+    expect(names).toContain('event2');
+    expect(names).toContain('event3');
   });
 
   it('hasListeners() returns correct boolean', () => {
     const emitter = new EventEmitter();
 
-    expect(emitter.hasListeners('test')).to.be.false;
+    expect(emitter.hasListeners('test')).toBe(false);
 
     emitter.on('test', () => {});
-    expect(emitter.hasListeners('test')).to.be.true;
+    expect(emitter.hasListeners('test')).toBe(true);
   });
 
   it('throws for non-function callback', () => {
     const emitter = new EventEmitter();
 
-    expect(() => emitter.on('test', 'not a function')).to.throw(TypeError);
+    expect(() => emitter.on('test', 'not a function')).toThrow(TypeError);
   });
 
   it('handles errors in listeners gracefully', () => {
     const emitter = new EventEmitter();
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => {});
     let secondCalled = false;
 
     emitter.on('test', () => { throw new Error('Test error'); });
     emitter.on('test', () => { secondCalled = true; });
 
-    // Should not throw, and second listener should still be called
     emitter.emit('test');
-    expect(secondCalled).to.be.true;
+
+    expect(secondCalled).toBe(true);
+    expect(spy).toHaveBeenCalled();
+
+    spy.mockRestore();
   });
 });

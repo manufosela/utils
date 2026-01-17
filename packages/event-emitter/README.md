@@ -5,7 +5,7 @@ A lightweight pub/sub event emitter with namespaced events support.
 ## Installation
 
 ```bash
-npm install @manufosela/event-emitter
+pnpm add @manufosela/event-emitter
 ```
 
 ## Usage
@@ -71,6 +71,10 @@ emitter.on('**', (data) => {
 emitter.emit('user:login', { name: 'John' }); // Both listeners fire
 emitter.emit('system:ready', {}); // Only ** listener fires
 ```
+
+## Demo
+
+See the demos at `https://manufosela.github.io/utils/packages/event-emitter/demo/`.
 
 ## API
 

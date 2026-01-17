@@ -3,140 +3,138 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>event-emitter Demo</title>
+  <title>event-emitter Demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
   <style>
+    :root {
+      --bg: #0f1117;
+      --bg-2: #151a26;
+      --card: #1c2233;
+      --accent: #ffb000;
+      --accent-2: #00d0ff;
+      --text: #f3f6ff;
+      --muted: #b8c0d9;
+      --line: #2b3247;
+    }
+
+    * { box-sizing: border-box; }
+
     body {
-      font-family: system-ui, -apple-system, sans-serif;
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-      background: #f5f5f5;
+      margin: 0;
+      color: var(--text);
+      background: radial-gradient(circle at 10% 10%, #1a2136, transparent 50%),
+        radial-gradient(circle at 80% 0%, #1d1b34, transparent 45%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+      font-family: "Space Grotesk", "Trebuchet MS", Arial, sans-serif;
     }
-    h1 { color: #333; }
-    .demo-section {
-      background: white;
-      padding: 2rem;
-      border-radius: 8px;
-      margin-bottom: 2rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+    header {
+      padding: 32px 24px 16px;
+      border-bottom: 1px solid var(--line);
     }
-    .demo-section h2 {
-      margin-top: 0;
-      color: #555;
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
     }
-    button {
-      padding: 0.5rem 1rem;
-      margin: 0.25rem;
-      border: none;
-      border-radius: 4px;
-      background: #007bff;
-      color: white;
-      cursor: pointer;
+
+    .top-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
     }
-    button:hover { background: #0056b3; }
-    .output {
-      margin-top: 1rem;
-      padding: 1rem;
-      background: #f8f9fa;
-      border-radius: 4px;
-      font-family: monospace;
-      font-size: 0.875rem;
-      max-height: 200px;
-      overflow-y: auto;
+
+    .top-links a {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 12px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: border-color 0.2s ease, color 0.2s ease;
     }
-    .log-entry {
-      padding: 0.25rem 0;
-      border-bottom: 1px solid #e9ecef;
+
+    .top-links a:hover {
+      color: var(--text);
+      border-color: var(--accent-2);
     }
-    .log-entry:last-child { border-bottom: none; }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 44px);
+    }
+
+    p {
+      color: var(--muted);
+      margin: 8px 0 0;
+    }
+
+    main {
+      padding: 24px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .card h3 { margin: 0; }
+
+    .card p { margin: 0; font-size: 0.9rem; }
+
+    .badge {
+      display: inline-flex;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
   </style>
 </head>
 <body>
-  <h1>event-emitter Demo</h1>
+  <header>
+    <div class="container">
+      <div class="top-links">
+        <a href="https://manufosela.github.io/utils/">Utils catalog</a>
+        <a href="https://manufosela.github.io/">Main catalog</a>
+      </div>
+      <h1>event-emitter demos</h1>
+      <p>Interactive demos for pub/sub, namespaces, and wildcard patterns.</p>
+    </div>
+  </header>
 
-  <div class="demo-section">
-    <h2>Basic Events</h2>
-    <button id="emit-message">Emit Message</button>
-    <button id="emit-user-login">Emit user:login</button>
-    <button id="emit-user-logout">Emit user:logout</button>
-    <div class="output" id="output"></div>
-  </div>
-
-  <div class="demo-section">
-    <h2>One-time Listener</h2>
-    <button id="emit-once">Emit 'init' (once listener)</button>
-    <p>Click multiple times - listener fires only once</p>
-    <div class="output" id="once-output"></div>
-  </div>
-
-  <div class="demo-section">
-    <h2>Listener Info</h2>
-    <button id="show-info">Show Listener Info</button>
-    <div class="output" id="info-output"></div>
-  </div>
-
-  <script type="module">
-    import { EventEmitter } from '../src/index.js';
-
-    const emitter = new EventEmitter({ wildcard: true });
-    const output = document.getElementById('output');
-    const onceOutput = document.getElementById('once-output');
-    const infoOutput = document.getElementById('info-output');
-
-    function log(container, message) {
-      const entry = document.createElement('div');
-      entry.className = 'log-entry';
-      entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
-      container.insertBefore(entry, container.firstChild);
-    }
-
-    // Set up listeners
-    emitter.on('message', (data) => {
-      log(output, `message: ${JSON.stringify(data)}`);
-    });
-
-    emitter.on('user:login', (user) => {
-      log(output, `user:login: ${user.name} logged in`);
-    });
-
-    emitter.on('user:logout', (user) => {
-      log(output, `user:logout: ${user.name} logged out`);
-    });
-
-    // Wildcard listener
-    emitter.on('user:*', (data) => {
-      log(output, `[wildcard user:*] detected`);
-    });
-
-    // Button handlers
-    document.getElementById('emit-message').addEventListener('click', () => {
-      emitter.emit('message', { text: 'Hello World!', timestamp: Date.now() });
-    });
-
-    document.getElementById('emit-user-login').addEventListener('click', () => {
-      emitter.emit('user:login', { id: 1, name: 'John Doe' });
-    });
-
-    document.getElementById('emit-user-logout').addEventListener('click', () => {
-      emitter.emit('user:logout', { id: 1, name: 'John Doe' });
-    });
-
-    // Once listener
-    emitter.once('init', () => {
-      log(onceOutput, 'Init event received (only fires once)');
-    });
-
-    document.getElementById('emit-once').addEventListener('click', () => {
-      emitter.emit('init');
-      log(onceOutput, 'Emitted init event');
-    });
-
-    // Info
-    document.getElementById('show-info').addEventListener('click', () => {
-      const events = emitter.eventNames();
-      const info = events.map(e => `${e}: ${emitter.listenerCount(e)} listeners`).join('\n');
-      infoOutput.textContent = `Registered events:\n${info}`;
-    });
-  </script>
+  <main>
+    <div class="container grid">
+      <div class="card">
+        <span class="badge">Basics</span>
+        <h3>Basic usage</h3>
+        <p>Simple emit/on/once flows with logging output.</p>
+        <a href="./basic.html">Open demo →</a>
+      </div>
+      <div class="card">
+        <span class="badge">Wildcards</span>
+        <h3>Namespaces and wildcards</h3>
+        <p>See how * and ** match segments and namespaces.</p>
+        <a href="./wildcards.html">Open demo →</a>
+      </div>
+    </div>
+  </main>
 </body>
 </html>
