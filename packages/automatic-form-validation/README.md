@@ -24,9 +24,16 @@ pnpm add @manufosela/automatic-form-validation
 
 ## Demo
 
-Open `demo/index.html` to choose a demo:
+Catalog: `demo/index.html`
+
+Key demos:
 
 - `demo/basic.html` for a minimal example
+- `demo/realtime.html` for blur-based validation
+- `demo/custom-validator.html` for custom rules
+- `demo/conditional.html` for hidden sections
+- `demo/checkbox-group.html` for min/max groups
 - `demo/advanced.html` for complex scenarios
+- `demo/playground.html` to edit HTML/JS live
 
 You can also run `pnpm -C demo dev` to launch the demo with Vite.
