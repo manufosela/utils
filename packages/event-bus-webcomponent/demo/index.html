@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Event Bus WebComponent Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --bg: #0f1117;
+      --bg-2: #151a26;
+      --card: #1c2233;
+      --accent: #ffb000;
+      --accent-2: #00d0ff;
+      --text: #f3f6ff;
+      --muted: #b8c0d9;
+      --line: #2b3247;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background: radial-gradient(circle at 10% 10%, #1a2136, transparent 50%),
+        radial-gradient(circle at 80% 0%, #1d1b34, transparent 45%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+      font-family: "Space Grotesk", "Trebuchet MS", Arial, sans-serif;
+    }
+    header {
+      padding: 32px 24px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+    .container { max-width: 1000px; margin: 0 auto; }
+    .top-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .top-links a {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 12px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      text-decoration: none;
+    }
+    h1 { margin: 0; font-size: clamp(28px, 4vw, 44px); }
+    p { margin: 8px 0 0; color: var(--muted); }
+    main { padding: 24px; }
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      display: grid;
+      gap: 10px;
+    }
+    button {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(120deg, var(--accent), #ff6a00);
+      color: #111;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .log {
+      background: #0b0f1a;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.85rem;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="top-links">
+        <a href="https://manufosela.github.io/utils/">Utils catalog</a>
+        <a href="https://manufosela.github.io/">Main catalog</a>
+      </div>
+      <h1>Event Bus WebComponent</h1>
+      <p>DOM CustomEvent bus with source/target envelopes.</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="container grid">
+      <div class="card">
+        <h3>Component A (id: card-a)</h3>
+        <button id="sendToB">Send event to B</button>
+        <div class="log" id="logA"></div>
+      </div>
+      <div class="card">
+        <h3>Component B (id: card-b)</h3>
+        <button id="broadcast">Broadcast to ALL</button>
+        <div class="log" id="logB"></div>
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { WebComponentEventBus, ALL, ALL_TYPES } from '../src/index.js';
+
+    const bus = new WebComponentEventBus();
+
+    const componentA = { id: 'card-a', type: 'demo-card' };
+    const componentB = { id: 'card-b', type: 'demo-card' };
+
+    const logA = document.getElementById('logA');
+    const logB = document.getElementById('logB');
+
+    const log = (container, message) => {
+      const entry = document.createElement('div');
+      entry.textContent = message;
+      container.prepend(entry);
+    };
+
+    bus.on(componentA, (envelope) => {
+      log(logA, `Received ${envelope.name} from ${envelope.source.id}`);
+    });
+
+    bus.on(componentB, (envelope) => {
+      log(logB, `Received ${envelope.name} from ${envelope.source.id}`);
+    });
+
+    document.getElementById('sendToB').addEventListener('click', () => {
+      bus.emit({
+        name: 'ping',
+        detail: { ok: true },
+        source: componentA,
+        target: componentB,
+      });
+    });
+
+    document.getElementById('broadcast').addEventListener('click', () => {
+      bus.emit({
+        name: 'broadcast',
+        detail: { message: 'Hello all' },
+        source: componentB,
+        target: { id: ALL, type: ALL_TYPES },
+      });
+    });
+  </script>
+</body>
+</html>

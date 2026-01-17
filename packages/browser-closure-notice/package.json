@@ -1,0 +1,52 @@
+{
+  "name": "@manufosela/browser-closure-notice",
+  "version": "2.0.0",
+  "description": "Detects mouse movement toward browser close controls and triggers callbacks.",
+  "type": "module",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "exports": {
+    ".": {
+      "import": "./src/index.js"
+    }
+  },
+  "files": [
+    "src",
+    "demo",
+    "README.md",
+    "LICENSE.md"
+  ],
+  "scripts": {
+    "dev": "vite demo",
+    "test": "vitest run --environment jsdom",
+    "test:watch": "vitest --environment jsdom",
+    "lint": "eslint src/"
+  },
+  "keywords": [
+    "browser",
+    "close",
+    "detection",
+    "mouse",
+    "exit",
+    "esm"
+  ],
+  "author": "manufosela",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manufosela/utils.git",
+    "directory": "packages/browser-closure-notice"
+  },
+  "bugs": {
+    "url": "https://github.com/manufosela/utils/issues"
+  },
+  "homepage": "https://github.com/manufosela/utils/tree/main/packages/browser-closure-notice",
+  "devDependencies": {
+    "jsdom": "^24.0.0",
+    "vite": "^5.2.0",
+    "vitest": "^1.6.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

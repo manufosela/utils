@@ -13,9 +13,11 @@ Visit the [catalog](https://manufosela.github.io/utils/) to browse all utilities
 | Package | Version | Description |
 | ------- | ------- | ----------- |
 | [@manufosela/automatic-form-validation](./packages/automatic-form-validation) | ![npm](https://img.shields.io/npm/v/@manufosela/automatic-form-validation) | Form validation with data attributes |
+| [@manufosela/browser-closure-notice](./packages/browser-closure-notice) | ![npm](https://img.shields.io/npm/v/@manufosela/browser-closure-notice) | Detects mouse movement toward browser close |
 | [@manufosela/convert2webp](./packages/convert2webp) | ![npm](https://img.shields.io/npm/v/@manufosela/convert2webp) | Canvas-based image conversion to WebP |
 | [@manufosela/debounce-throttle](./packages/debounce-throttle) | ![npm](https://img.shields.io/npm/v/@manufosela/debounce-throttle) | Debounce and throttle helpers |
 | [@manufosela/event-emitter](./packages/event-emitter) | ![npm](https://img.shields.io/npm/v/@manufosela/event-emitter) | Lightweight pub/sub event emitter |
+| [@manufosela/event-bus-webcomponent](./packages/event-bus-webcomponent) | ![npm](https://img.shields.io/npm/v/@manufosela/event-bus-webcomponent) | CustomEvent bus for web components |
 | [@manufosela/local-storage-helper](./packages/local-storage-helper) | ![npm](https://img.shields.io/npm/v/@manufosela/local-storage-helper) | localStorage wrapper with TTL support |
 | [@manufosela/rich-markdown-to-html](./packages/rich-markdown-to-html) | ![npm](https://img.shields.io/npm/v/@manufosela/rich-markdown-to-html) | Markdown to HTML converter |
 | [@manufosela/system-capabilities](./packages/system-capabilities) | ![npm](https://img.shields.io/npm/v/@manufosela/system-capabilities) | Browser/system feature detection |
@@ -68,8 +70,10 @@ pnpm lint      # lint all packages
 utils/
 ├── packages/                  # Individual utility packages
 │   ├── automatic-form-validation/
+│   ├── browser-closure-notice/
 │   ├── convert2webp/
 │   ├── debounce-throttle/
+│   ├── event-bus-webcomponent/
 │   ├── event-emitter/
 │   ├── local-storage-helper/
 │   ├── rich-markdown-to-html/

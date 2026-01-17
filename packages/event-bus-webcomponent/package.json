@@ -1,0 +1,50 @@
+{
+  "name": "@manufosela/event-bus-webcomponent",
+  "version": "0.1.0",
+  "description": "DOM CustomEvent bus for web components with source/target envelopes.",
+  "type": "module",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "exports": {
+    ".": {
+      "import": "./src/index.js"
+    }
+  },
+  "files": [
+    "src",
+    "demo",
+    "README.md"
+  ],
+  "scripts": {
+    "dev": "vite demo",
+    "test": "vitest run --environment jsdom",
+    "test:watch": "vitest --environment jsdom",
+    "lint": "eslint src/"
+  },
+  "keywords": [
+    "event-bus",
+    "web-components",
+    "custom-event",
+    "dom",
+    "pubsub"
+  ],
+  "author": "manufosela",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manufosela/utils.git",
+    "directory": "packages/event-bus-webcomponent"
+  },
+  "bugs": {
+    "url": "https://github.com/manufosela/utils/issues"
+  },
+  "homepage": "https://github.com/manufosela/utils/tree/main/packages/event-bus-webcomponent",
+  "devDependencies": {
+    "jsdom": "^24.0.0",
+    "vite": "^5.2.0",
+    "vitest": "^1.6.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
