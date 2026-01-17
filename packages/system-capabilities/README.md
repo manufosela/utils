@@ -5,7 +5,7 @@ Browser and system feature detection utility. Detect browser capabilities, hardw
 ## Installation
 
 ```bash
-npm install @manufosela/system-capabilities
+pnpm add @manufosela/system-capabilities
 ```
 
 ## Usage
@@ -97,6 +97,10 @@ if (isStandalone()) {
   // Running as PWA
 }
 ```
+
+## Demo
+
+`https://manufosela.github.io/utils/packages/system-capabilities/demo/`
 
 ## API Reference
 

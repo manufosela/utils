@@ -10,7 +10,7 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: "Space Grotesk", "Trebuchet MS", Arial, sans-serif;
       max-width: 1000px;
       margin: 0 auto;
       padding: 2rem;
@@ -162,11 +162,36 @@
       padding-top: 0;
       border-top: none;
     }
+
+    .top-links {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .top-links a {
+      font-size: 0.8rem;
+      color: #555;
+      text-decoration: none;
+      border: 1px solid #ddd;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+    }
   </style>
 </head>
 <body>
+  <div class="top-links">
+    <a href="https://manufosela.github.io/utils/">Utils catalog</a>
+    <a href="https://manufosela.github.io/">Main catalog</a>
+  </div>
   <h1>system-capabilities</h1>
   <p class="subtitle">Browser and system feature detection utility</p>
+
+  <div class="section">
+    <h2>Quick usage</h2>
+    <pre class="capability"><code>import { supports, getCapabilitiesSync } from '@manufosela/system-capabilities';\n\nif (supports('webgl')) {\n  // init WebGL\n}\n\nconst caps = getCapabilitiesSync();\n</code></pre>
+  </div>
 
   <div class="section">
     <h2>Browser Information</h2>
