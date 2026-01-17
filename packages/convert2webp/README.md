@@ -5,7 +5,7 @@ Image to WebP conversion utility using Canvas API. Convert images to WebP format
 ## Installation
 
 ```bash
-npm install @manufosela/convert2webp
+pnpm add @manufosela/convert2webp
 ```
 
 ## Usage
@@ -100,6 +100,10 @@ a.click();
 // Remember to clean up
 URL.revokeObjectURL(url);
 ```
+
+## Demo
+
+`https://manufosela.github.io/utils/packages/convert2webp/demo/`
 
 ## API Reference
 

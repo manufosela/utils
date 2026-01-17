@@ -10,7 +10,7 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-family: "Space Grotesk", "Trebuchet MS", Arial, sans-serif;
       max-width: 800px;
       margin: 0 auto;
       padding: 2rem;
@@ -118,6 +118,22 @@
       color: #666;
     }
 
+    .top-links {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .top-links a {
+      font-size: 0.8rem;
+      color: #555;
+      text-decoration: none;
+      border: 1px solid #ddd;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+    }
+
     .stats {
       display: flex;
       gap: 2rem;
@@ -169,8 +185,19 @@
   </style>
 </head>
 <body>
+  <div class="top-links">
+    <a href="https://manufosela.github.io/utils/">Utils catalog</a>
+    <a href="https://manufosela.github.io/">Main catalog</a>
+  </div>
   <h1>convert2webp</h1>
   <p class="subtitle">Image to WebP conversion utility using Canvas API</p>
+
+  <div class="options" style="margin-top: 0;">
+    <div class="option-group">
+      <label>Quick usage</label>
+      <pre class="result-card"><code>import { convertToWebP } from '@manufosela/convert2webp';\n\nconst result = await convertToWebP(file, 0.8);\n</code></pre>
+    </div>
+  </div>
 
   <div class="upload-area" id="uploadArea">
     <p>Drop images here or click to select</p>
