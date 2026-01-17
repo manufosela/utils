@@ -117,6 +117,11 @@ setParam('page', Number(page) + 1);
     <h2>Current URL</h2>
     <div class="current-url" id="current-url"></div>
     <button id="refresh-url">Refresh Display</button>
+    <pre class="code-block"><code>const url = new URL(window.location.href);
+url.searchParams.set('page', '1');
+url.searchParams.set('sort', 'name');
+history.replaceState({}, '', url);
+</code></pre>
   </div>
 
   <div class="demo-section">
@@ -127,6 +132,11 @@ setParam('page', Number(page) + 1);
       <button id="get-all">Get All Params</button>
     </div>
     <div class="output" id="get-output">Click a button to get params...</div>
+    <pre class="code-block"><code>import { getParam, getParams } from '@manufosela/url-params';
+
+getParam('page');
+getParams();
+</code></pre>
   </div>
 
   <div class="demo-section">
@@ -140,6 +150,11 @@ setParam('page', Number(page) + 1);
       <button id="set-example">Set Example: page=2&sort=name&filter=active</button>
     </div>
     <div class="output" id="set-output">Set a parameter to update the URL...</div>
+    <pre class="code-block"><code>import { setParam, setParams } from '@manufosela/url-params';
+
+setParam('page', 2);
+setParams({ sort: 'name', filter: 'active' });
+</code></pre>
   </div>
 
   <div class="demo-section">
@@ -149,6 +164,10 @@ setParam('page', Number(page) + 1);
       <button id="remove-param">Remove Param</button>
       <button id="clear-all" class="danger">Clear All</button>
     </div>
+    <pre class="code-block"><code>import { removeParam } from '@manufosela/url-params';
+
+removeParam('page');
+</code></pre>
   </div>
 
   <div class="demo-section">
@@ -161,6 +180,11 @@ setParam('page', Number(page) + 1);
       <button id="build">Build from Object</button>
     </div>
     <div class="output" id="parse-output">Parse or build query strings...</div>
+    <pre class="code-block"><code>import { parseQueryString, toQueryString } from '@manufosela/url-params';
+
+parseQueryString('?tags=a&tags=b');
+toQueryString({ tags: ['a', 'b'] });
+</code></pre>
   </div>
 
   <script type="module">
@@ -180,9 +204,23 @@ setParam('page', Number(page) + 1);
     const setOutput = document.getElementById('set-output');
     const parseOutput = document.getElementById('parse-output');
 
+    function ensureDemoParams() {
+      const url = new URL(window.location.href);
+      if (!url.searchParams.has('demo')) {
+        url.searchParams.set('demo', 'true');
+        url.searchParams.set('page', '1');
+        url.searchParams.set('sort', 'name');
+        url.searchParams.set('filter', 'active');
+        url.searchParams.set('tags', 'js');
+        url.searchParams.append('tags', 'css');
+        history.replaceState({}, '', url);
+      }
+    }
+
     function updateCurrentUrl() {
       currentUrlEl.textContent = window.location.href;
     }
+    ensureDemoParams();
     updateCurrentUrl();
 
     document.getElementById('refresh-url').addEventListener('click', updateCurrentUrl);

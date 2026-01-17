@@ -251,6 +251,16 @@ const throttled = throttle(onScroll, 200);
         <div class="stat-label">Calls Saved</div>
       </div>
     </div>
+    <pre class="code-block"><code>import { debounce } from '@manufosela/debounce-throttle';
+
+const debouncedSearch = debounce((value) => {
+  fetch(`/api/search?q=${value}`);
+}, 300);
+
+input.addEventListener('input', (e) => {
+  debouncedSearch(e.target.value);
+});
+</code></pre>
   </div>
 
   <!-- Throttle Demo -->
@@ -283,6 +293,14 @@ const throttled = throttle(onScroll, 200);
         <div class="stat-label">Calls Saved</div>
       </div>
     </div>
+    <pre class="code-block"><code>import { throttle } from '@manufosela/debounce-throttle';
+
+const onScroll = throttle(() => {
+  console.log('scroll tick');
+}, 100);
+
+scrollArea.addEventListener('scroll', onScroll);
+</code></pre>
   </div>
 
   <!-- Once Demo -->
@@ -296,6 +314,14 @@ const throttled = throttle(onScroll, 200);
       <button id="onceReset">Reset</button>
     </div>
     <div class="event-log" id="onceLog" style="height: 100px; margin-top: 1rem;"></div>
+    <pre class="code-block"><code>import { once } from '@manufosela/debounce-throttle';
+
+const initOnce = once(() => {
+  initWidget();
+});
+
+button.addEventListener('click', initOnce);
+</code></pre>
   </div>
 
   <!-- Rate Limit Demo -->
@@ -322,6 +348,14 @@ const throttled = throttle(onScroll, 200);
         <div class="stat-label">Blocked</div>
       </div>
     </div>
+    <pre class="code-block"><code>import { rateLimit } from '@manufosela/debounce-throttle';
+
+const limitedCall = rateLimit(() => {
+  callApi();
+}, 5, 3000);
+
+button.addEventListener('click', limitedCall);
+</code></pre>
   </div>
 
   <script type="module">
