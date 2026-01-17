@@ -65,7 +65,6 @@ export function debounce(func, delay = 0, options = {}) {
   } = options;
 
   let timerId = null;
-  let maxTimerId = null;
   let lastArgs = null;
   let lastThis = null;
   let lastCallTime = null;
@@ -205,15 +204,11 @@ export function debounce(func, delay = 0, options = {}) {
     if (timerId !== null) {
       clearTimeout(timerId);
     }
-    if (maxTimerId !== null) {
-      clearTimeout(maxTimerId);
-    }
     lastInvokeTime = 0;
     lastArgs = null;
     lastCallTime = null;
     lastThis = null;
     timerId = null;
-    maxTimerId = null;
   };
 
   /**
