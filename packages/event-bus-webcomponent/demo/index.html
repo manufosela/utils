@@ -170,6 +170,16 @@
           </label>
         </div>
         <div class="control-row">
+          <label>
+            Event name
+            <input type="text" id="eventNameInput" value="ping" />
+          </label>
+          <label style="flex: 1 1 320px;">
+            Payload (JSON)
+            <input type="text" id="payloadInput" value='{"note":"Hello"}' />
+          </label>
+        </div>
+        <div class="control-row">
           <button data-target="card-a">Send to A</button>
           <button data-target="card-b">Send to B</button>
           <button data-target="card-c">Send to C</button>
@@ -249,13 +259,27 @@ bus.emit({
 
     const senderSelect = document.getElementById('senderSelect');
     const excludeSelf = document.getElementById('excludeSelf');
+    const eventNameInput = document.getElementById('eventNameInput');
+    const payloadInput = document.getElementById('payloadInput');
+
+    const readPayload = () => {
+      const raw = payloadInput.value.trim();
+      if (!raw) {
+        return {};
+      }
+      try {
+        return JSON.parse(raw);
+      } catch (error) {
+        return { raw };
+      }
+    };
 
     const emitTo = (targetId) => {
       const sender = components[senderSelect.value];
       const target = components[targetId];
       bus.emit({
-        name: 'direct',
-        detail: { to: targetId },
+        name: eventNameInput.value.trim() || 'direct',
+        detail: { to: targetId, ...readPayload() },
         source: sender,
         target,
       });
@@ -265,8 +289,8 @@ bus.emit({
       const sender = components[senderSelect.value];
       targets.forEach((id) => {
         bus.emit({
-          name: 'group',
-          detail: { to: id },
+          name: eventNameInput.value.trim() || 'group',
+          detail: { to: id, ...readPayload() },
           source: sender,
           target: components[id],
         });
@@ -276,8 +300,8 @@ bus.emit({
     const emitAll = () => {
       const sender = components[senderSelect.value];
       bus.emit({
-        name: 'broadcast',
-        detail: { note: 'Hello all' },
+        name: eventNameInput.value.trim() || 'broadcast',
+        detail: { note: 'Hello all', ...readPayload() },
         source: sender,
         target: {
           id: ALL,
