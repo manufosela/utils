@@ -20,6 +20,7 @@
       --text: #f3f6ff;
       --muted: #b8c0d9;
       --line: #2b3247;
+      --surface: #0b0f1a;
     }
     * { box-sizing: border-box; }
     body {
@@ -34,7 +35,7 @@
       padding: 32px 24px 16px;
       border-bottom: 1px solid var(--line);
     }
-    .container { max-width: 1000px; margin: 0 auto; }
+    .container { max-width: 1100px; margin: 0 auto; }
     .top-links {
       display: flex;
       gap: 10px;
@@ -65,6 +66,38 @@
       display: grid;
       gap: 10px;
     }
+    .control-card {
+      grid-column: 1 / -1;
+      display: grid;
+      gap: 16px;
+    }
+    .control-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .pill {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+    label {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    select, input[type="checkbox"] {
+      accent-color: var(--accent);
+    }
+    select {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--line);
+      padding: 6px 10px;
+      border-radius: 8px;
+    }
     button {
       padding: 8px 14px;
       border-radius: 999px;
@@ -74,15 +107,35 @@
       cursor: pointer;
       font-weight: 600;
     }
+    button.secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
     .log {
-      background: #0b0f1a;
+      background: var(--surface);
       border: 1px solid var(--line);
       border-radius: 12px;
       padding: 12px;
       font-size: 0.85rem;
-      max-height: 200px;
+      height: 160px;
       overflow-y: auto;
     }
+    .code-block {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.85rem;
+      color: #d6d9e6;
+      white-space: pre-wrap;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem 0 3rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
   </style>
 </head>
 <body>
@@ -94,35 +147,91 @@
         <a href="https://github.com/manufosela/utils/tree/main/packages/event-bus-webcomponent">Source</a>
       </div>
       <h1>Event Bus WebComponent</h1>
-      <p>DOM CustomEvent bus with source/target envelopes.</p>
+      <p>DOM CustomEvent bus with source/target envelopes and ALL broadcasts.</p>
     </div>
   </header>
 
   <main>
     <div class="container grid">
-      <div class="card">
-        <h3>Component A (id: card-a)</h3>
-        <button id="sendToB">Send event to B</button>
+      <section class="card control-card">
+        <h2>Send events</h2>
+        <div class="control-row">
+          <span class="pill">Sender</span>
+          <select id="senderSelect">
+            <option value="card-a">Component A</option>
+            <option value="card-b">Component B</option>
+            <option value="card-c">Component C</option>
+            <option value="card-d">Component D</option>
+          </select>
+          <label>
+            <input type="checkbox" id="excludeSelf" checked /> Broadcast: exclude sender
+          </label>
+        </div>
+        <div class="control-row">
+          <button data-target="card-a">Send to A</button>
+          <button data-target="card-b">Send to B</button>
+          <button data-target="card-c">Send to C</button>
+          <button data-target="card-d">Send to D</button>
+          <button class="secondary" data-group="bcd">Send to B+C+D</button>
+          <button class="secondary" data-group="all">Broadcast ALL</button>
+        </div>
+        <div class="code-block">import { WebComponentEventBus, ALL, ALL_TYPES } from '@manufosela/event-bus-webcomponent';
+
+const bus = new WebComponentEventBus();
+
+bus.on({ id: 'card-b', type: 'demo-card' }, (envelope) => {
+  console.log(envelope.name, envelope.detail);
+});
+
+bus.emit({
+  name: 'ping',
+  detail: { ok: true },
+  source: { id: 'card-a', type: 'demo-card' },
+  target: { id: ALL, type: ALL_TYPES, excludeSource: true }
+});</div>
+      </section>
+
+      <section class="card">
+        <h3>Component A (card-a)</h3>
         <div class="log" id="logA"></div>
-      </div>
-      <div class="card">
-        <h3>Component B (id: card-b)</h3>
-        <button id="broadcast">Broadcast to ALL</button>
+      </section>
+      <section class="card">
+        <h3>Component B (card-b)</h3>
         <div class="log" id="logB"></div>
-      </div>
+      </section>
+      <section class="card">
+        <h3>Component C (card-c)</h3>
+        <div class="log" id="logC"></div>
+      </section>
+      <section class="card">
+        <h3>Component D (card-d)</h3>
+        <div class="log" id="logD"></div>
+      </section>
     </div>
   </main>
+
+  <footer>
+    <p>Event bus demo · <a href="https://github.com/manufosela/utils">@manufosela</a></p>
+  </footer>
 
   <script type="module">
     import { WebComponentEventBus, ALL, ALL_TYPES } from '../src/index.js';
 
     const bus = new WebComponentEventBus();
 
-    const componentA = { id: 'card-a', type: 'demo-card' };
-    const componentB = { id: 'card-b', type: 'demo-card' };
+    const components = {
+      'card-a': { id: 'card-a', type: 'demo-card' },
+      'card-b': { id: 'card-b', type: 'demo-card' },
+      'card-c': { id: 'card-c', type: 'demo-card' },
+      'card-d': { id: 'card-d', type: 'demo-card' },
+    };
 
-    const logA = document.getElementById('logA');
-    const logB = document.getElementById('logB');
+    const logs = {
+      'card-a': document.getElementById('logA'),
+      'card-b': document.getElementById('logB'),
+      'card-c': document.getElementById('logC'),
+      'card-d': document.getElementById('logD'),
+    };
 
     const log = (container, message) => {
       const entry = document.createElement('div');
@@ -130,29 +239,64 @@
       container.prepend(entry);
     };
 
-    bus.on(componentA, (envelope) => {
-      log(logA, `Received ${envelope.name} from ${envelope.source.id}`);
-    });
-
-    bus.on(componentB, (envelope) => {
-      log(logB, `Received ${envelope.name} from ${envelope.source.id}`);
-    });
-
-    document.getElementById('sendToB').addEventListener('click', () => {
-      bus.emit({
-        name: 'ping',
-        detail: { ok: true },
-        source: componentA,
-        target: componentB,
+    Object.values(components).forEach((component) => {
+      bus.on(component, (envelope) => {
+        log(logs[component.id], `Received ${envelope.name} from ${envelope.source.id}`);
       });
     });
 
-    document.getElementById('broadcast').addEventListener('click', () => {
+    const senderSelect = document.getElementById('senderSelect');
+    const excludeSelf = document.getElementById('excludeSelf');
+
+    const emitTo = (targetId) => {
+      const sender = components[senderSelect.value];
+      const target = components[targetId];
+      bus.emit({
+        name: 'direct',
+        detail: { to: targetId },
+        source: sender,
+        target,
+      });
+    };
+
+    const emitGroup = (targets) => {
+      const sender = components[senderSelect.value];
+      targets.forEach((id) => {
+        bus.emit({
+          name: 'group',
+          detail: { to: id },
+          source: sender,
+          target: components[id],
+        });
+      });
+    };
+
+    const emitAll = () => {
+      const sender = components[senderSelect.value];
       bus.emit({
         name: 'broadcast',
-        detail: { message: 'Hello all' },
-        source: componentB,
-        target: { id: ALL, type: ALL_TYPES },
+        detail: { note: 'Hello all' },
+        source: sender,
+        target: {
+          id: ALL,
+          type: ALL_TYPES,
+          excludeSource: excludeSelf.checked,
+        },
+      });
+    };
+
+    document.querySelectorAll('button[data-target]').forEach((button) => {
+      button.addEventListener('click', () => emitTo(button.dataset.target));
+    });
+
+    document.querySelectorAll('button[data-group]').forEach((button) => {
+      button.addEventListener('click', () => {
+        if (button.dataset.group === 'bcd') {
+          emitGroup(['card-b', 'card-c', 'card-d']);
+        }
+        if (button.dataset.group === 'all') {
+          emitAll();
+        }
       });
     });
   </script>

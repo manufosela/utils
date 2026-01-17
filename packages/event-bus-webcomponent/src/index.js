@@ -27,6 +27,7 @@ export function normalizeTarget(target = {}) {
   return {
     id: target.id || ALL,
     type: target.type || ALL_TYPES,
+    excludeSource: Boolean(target.excludeSource),
   };
 }
 
@@ -56,6 +57,14 @@ export function matchesTarget(target, component) {
   const typeMatch = target.type === ALL_TYPES || target.type === component.type;
 
   return idMatch && typeMatch;
+}
+
+export function shouldExcludeSource(target, source, component) {
+  if (!target || !target.excludeSource || !source || !component) {
+    return false;
+  }
+
+  return source.id === component.id && source.type === component.type;
 }
 
 export class WebComponentEventBus {
@@ -92,6 +101,9 @@ export class WebComponentEventBus {
         return;
       }
       if (name && envelope.name !== name) {
+        return;
+      }
+      if (shouldExcludeSource(envelope.target, envelope.source, componentRef)) {
         return;
       }
       if (!matchesTarget(envelope.target, componentRef)) {

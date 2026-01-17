@@ -15,13 +15,14 @@ pnpm add @manufosela/event-bus-webcomponent
   name: 'user:updated',
   detail: { id: 42 },
   source: { id: 'profile-card', type: 'user-card' },
-  target: { id: 'ALL', type: 'ALL-TYPES' }
+  target: { id: 'ALL', type: 'ALL-TYPES', excludeSource: false }
 }
 ```
 
 - `source.id` and `source.type` are required.
 - `target.id` can be a specific id or `ALL`.
 - `target.type` can be a specific type or `ALL-TYPES`.
+- `target.excludeSource` skips delivering the event to the emitting component.
 
 ## Usage
 
@@ -48,7 +49,7 @@ bus.emit({
   name: 'theme:changed',
   detail: { theme: 'dark' },
   source: { id: 'theme-toggle', type: 'theme-toggle' },
-  target: { id: ALL, type: ALL_TYPES },
+  target: { id: ALL, type: ALL_TYPES, excludeSource: true },
 });
 ```
 

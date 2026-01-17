@@ -5,6 +5,7 @@ import {
   ALL_TYPES,
   createEnvelope,
   matchesTarget,
+  shouldExcludeSource,
 } from '../src/index.js';
 
 describe('event-bus-webcomponent', () => {
@@ -64,5 +65,13 @@ describe('event-bus-webcomponent', () => {
     });
 
     expect(handler).toHaveBeenCalledTimes(1);
+  });
+
+  it('excludes source when requested', () => {
+    const target = { id: ALL, type: ALL_TYPES, excludeSource: true };
+    const source = { id: 'widget-1', type: 'demo-widget' };
+    const component = { id: 'widget-1', type: 'demo-widget' };
+
+    expect(shouldExcludeSource(target, source, component)).toBe(true);
   });
 });
