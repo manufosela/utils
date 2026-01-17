@@ -5,7 +5,7 @@ A localStorage wrapper with TTL support, JSON serialization, and automatic expir
 ## Installation
 
 ```bash
-npm install @manufosela/local-storage-helper
+pnpm add @manufosela/local-storage-helper
 ```
 
 ## Usage
@@ -76,6 +76,14 @@ const storage = new LocalStorageHelper({
 });
 ```
 
+### Custom Storage
+
+```javascript
+const storage = new LocalStorageHelper({
+  storage: myStorageAdapter,
+});
+```
+
 ## API
 
 ### Constructor
@@ -89,6 +97,11 @@ new LocalStorageHelper(options?)
 | `prefix`     | `String`  | `''`    | Prefix for all keys                |
 | `defaultTTL` | `Number`  | `0`     | Default TTL in ms (0 = no expiry)  |
 | `useSession` | `Boolean` | `false` | Use sessionStorage instead         |
+| `storage`    | `Storage` | -       | Custom storage implementation      |
+
+## Demo
+
+`https://manufosela.github.io/utils/packages/local-storage-helper/demo/`
 
 ### Methods
 

@@ -18,11 +18,15 @@ export class LocalStorageHelper {
    * @param {string} [options.prefix=''] - Prefix for all keys
    * @param {number} [options.defaultTTL=0] - Default TTL in ms (0 = no expiration)
    * @param {boolean} [options.useSession=false] - Use sessionStorage instead
+   * @param {Storage} [options.storage] - Custom storage implementation
    */
   constructor(options = {}) {
     this._prefix = options.prefix || '';
     this._defaultTTL = options.defaultTTL || 0;
-    this._storage = options.useSession ? sessionStorage : localStorage;
+    this._storage = options.storage || (options.useSession ? sessionStorage : localStorage);
+    if (!this._storage || typeof this._storage.getItem !== 'function') {
+      throw new Error('Storage is not available');
+    }
   }
 
   /**
