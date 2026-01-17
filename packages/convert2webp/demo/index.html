@@ -195,6 +195,7 @@
       word-break: break-word;
     }
   </style>
+  <link rel="stylesheet" href="../../demo-theme.css" />
 </head>
 <body>
   <div class="top-links">
@@ -202,6 +203,7 @@
     <a href="https://manufosela.github.io/">Main catalog</a>
     <a href="https://github.com/manufosela/utils/tree/main/packages/convert2webp">Source</a>
   </div>
+        <demo-theme-toggle></demo-theme-toggle>
   <h1>convert2webp</h1>
   <p class="subtitle">Image to WebP conversion utility using Canvas API</p>
 
@@ -368,5 +370,6 @@ const result = await convertToWebP(file, 0.8);
       a.click();
     };
   </script>
+  <script type="module" src="../../demo-theme-toggle.js"></script>
 </body>
 </html>

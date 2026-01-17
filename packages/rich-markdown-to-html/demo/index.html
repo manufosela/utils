@@ -243,9 +243,11 @@
       color: #333;
     }
   </style>
+  <link rel="stylesheet" href="../../demo-theme.css" />
 </head>
 <body>
   <div class="topbar">
+    <demo-theme-toggle></demo-theme-toggle>
     <div class="topbar-links">
       <a href="https://manufosela.github.io/utils/">Utils catalog</a>
       <a href="https://manufosela.github.io/">Main catalog</a>
@@ -389,5 +391,6 @@ Edit this text and see the live preview update instantly.
     [optionBreaks, optionLinkify, optionTaskLists, optionTables, optionTypographer, optionShowToc]
       .forEach(el => el.addEventListener('change', updatePreview));
   </script>
+  <script type="module" src="../../demo-theme-toggle.js"></script>
 </body>
 </html>

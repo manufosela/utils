@@ -137,6 +137,7 @@
     }
     footer a { color: var(--accent); text-decoration: none; }
   </style>
+  <link rel="stylesheet" href="../../demo-theme.css" />
 </head>
 <body>
   <header>
@@ -146,6 +147,7 @@
         <a href="https://manufosela.github.io/">Main catalog</a>
         <a href="https://github.com/manufosela/utils/tree/main/packages/event-bus-webcomponent">Source</a>
       </div>
+        <demo-theme-toggle></demo-theme-toggle>
       <h1>Event Bus WebComponent</h1>
       <p>DOM CustomEvent bus with source/target envelopes and ALL broadcasts.</p>
     </div>
@@ -300,5 +302,6 @@ bus.emit({
       });
     });
   </script>
+  <script type="module" src="../../demo-theme-toggle.js"></script>
 </body>
 </html>

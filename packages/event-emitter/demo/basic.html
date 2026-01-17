@@ -96,6 +96,7 @@
       white-space: pre-wrap;
     }
   </style>
+  <link rel="stylesheet" href="../../demo-theme.css" />
 </head>
 <body>
   <header>
@@ -105,6 +106,7 @@
         <a href="./wildcards.html">Wildcards</a>
         <a href="https://github.com/manufosela/utils/tree/main/packages/event-emitter">Source</a>
       </div>
+        <demo-theme-toggle></demo-theme-toggle>
       <h1>Basic usage</h1>
       <p>Emit events, subscribe, and use once handlers.</p>
     </div>
@@ -164,5 +166,6 @@
 
     document.getElementById('codeBlock').textContent = `import { EventEmitter } from '@manufosela/event-emitter';\n\nconst emitter = new EventEmitter();\n\nemitter.on('message', (payload) => {\n  console.log('message', payload.text);\n});\n\nemitter.on('user:login', (user) => {\n  console.log('user logged in', user.name);\n});\n\nemitter.once('init', () => {\n  console.log('init only once');\n});\n\nemitter.emit('message', { text: 'Hello World' });\nemitter.emit('user:login', { id: 1, name: 'John' });\nemitter.emit('init');`;
   </script>
+  <script type="module" src="../../demo-theme-toggle.js"></script>
 </body>
 </html>

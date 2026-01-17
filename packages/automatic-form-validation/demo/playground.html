@@ -20,6 +20,7 @@
           <a href="./basic.html">Basic demo</a>
           <a href="https://github.com/manufosela/utils/tree/main/packages/automatic-form-validation">Source</a>
         </div>
+        <demo-theme-toggle></demo-theme-toggle>
         <h1>Playground</h1>
         <p>Edit HTML and JavaScript, run the form, and test validation behavior.</p>
       </div>
@@ -80,13 +81,15 @@ new ValidateForm();</textarea>
       label { display: block; margin-bottom: 6px; }
       input { margin-bottom: 12px; padding: 6px; }
     </style>
+  <link rel="stylesheet" href="../../demo-theme.css" />
   </head>
   <body>
     ${html}
     <script type="module">
       ${js}
     </script>
-  </body>
+    <script type="module" src="../../demo-theme-toggle.js"></script>
+</body>
 </html>
         `;
         preview.srcdoc = doc;
@@ -103,5 +106,6 @@ new ValidateForm();</textarea>
 
       reset();
     </script>
-  </body>
+    <script type="module" src="../../demo-theme-toggle.js"></script>
+</body>
 </html>

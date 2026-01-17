@@ -84,6 +84,7 @@
       word-break: break-word;
     }
   </style>
+  <link rel="stylesheet" href="../../demo-theme.css" />
 </head>
 <body>
   <div class="top-links">
@@ -91,6 +92,7 @@
     <a href="https://manufosela.github.io/">Main catalog</a>
     <a href="https://github.com/manufosela/utils/tree/main/packages/local-storage-helper">Source</a>
   </div>
+        <demo-theme-toggle></demo-theme-toggle>
   <h1>local-storage-helper Demo</h1>
 
   <div class="demo-section">
@@ -112,6 +114,13 @@ storage.set('user', { name: 'Ada' });
       <button id="remove" class="danger">Remove</button>
     </div>
     <div class="output" id="output">Results will appear here...</div>
+    <pre class="code-block"><code>import { LocalStorageHelper } from '@manufosela/local-storage-helper';
+
+const storage = new LocalStorageHelper({ prefix: 'demo_' });
+storage.set('myKey', 'Hello World');
+storage.get('myKey');
+storage.remove('myKey');
+</code></pre>
   </div>
 
   <div class="demo-section">
@@ -123,6 +132,8 @@ storage.set('user', { name: 'Ada' });
       <button id="check-ttl">Check TTL</button>
     </div>
     <div class="output" id="ttl-output">Set a value with TTL to see expiration...</div>
+    <pre class="code-block"><code>storage.set('tempData', 'expiring', 10_000);
+storage.getTTL('tempData');</code></pre>
   </div>
 
   <div class="demo-section">
@@ -131,6 +142,9 @@ storage.set('user', { name: 'Ada' });
     <button id="show-size">Show Size</button>
     <button id="clear-all" class="danger">Clear All</button>
     <div class="output" id="info-output">Click a button to see storage info...</div>
+    <pre class="code-block"><code>storage.keys();
+storage.getSize();
+storage.clear();</code></pre>
   </div>
 
   <script type="module">
@@ -209,5 +223,6 @@ Available: ${(available / 1024).toFixed(2)} KB`;
       infoOutput.textContent = 'All demo_ prefixed items cleared';
     });
   </script>
+  <script type="module" src="../../demo-theme-toggle.js"></script>
 </body>
 </html>

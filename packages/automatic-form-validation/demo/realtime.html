@@ -11,7 +11,8 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
-  </head>
+    <link rel="stylesheet" href="../../demo-theme.css" />
+</head>
   <body>
     <header>
       <div class="container hero">
@@ -20,6 +21,7 @@
           <a href="./playground.html">Playground</a>
           <a href="https://github.com/manufosela/utils/tree/main/packages/automatic-form-validation">Source</a>
         </div>
+        <demo-theme-toggle></demo-theme-toggle>
         <h1>Realtime validation</h1>
         <p>Fields validate on blur, ideal for quick feedback.</p>
       </div>
@@ -78,5 +80,6 @@
       const template = document.getElementById("codeTemplate");
       document.getElementById("codeBlock").textContent = template.innerHTML.trim();
     </script>
-  </body>
+    <script type="module" src="../../demo-theme-toggle.js"></script>
+</body>
 </html>

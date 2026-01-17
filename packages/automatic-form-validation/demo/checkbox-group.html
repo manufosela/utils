@@ -11,7 +11,8 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./styles.css" />
-  </head>
+    <link rel="stylesheet" href="../../demo-theme.css" />
+</head>
   <body>
     <header>
       <div class="container hero">
@@ -20,6 +21,7 @@
           <a href="./playground.html">Playground</a>
           <a href="https://github.com/manufosela/utils/tree/main/packages/automatic-form-validation">Source</a>
         </div>
+        <demo-theme-toggle></demo-theme-toggle>
         <h1>Checkbox group validation</h1>
         <p>Validate min and max selections for a group.</p>
       </div>
@@ -62,5 +64,6 @@
       document.getElementById("codeBlock").textContent =
         document.getElementById("codeTemplate").innerHTML.trim();
     </script>
-  </body>
+    <script type="module" src="../../demo-theme-toggle.js"></script>
+</body>
 </html>

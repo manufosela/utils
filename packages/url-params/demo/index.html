@@ -95,6 +95,7 @@
       word-break: break-word;
     }
   </style>
+  <link rel="stylesheet" href="../../demo-theme.css" />
 </head>
 <body>
   <div class="top-links">
@@ -102,6 +103,7 @@
     <a href="https://manufosela.github.io/">Main catalog</a>
     <a href="https://github.com/manufosela/utils/tree/main/packages/url-params">Source</a>
   </div>
+        <demo-theme-toggle></demo-theme-toggle>
   <h1>url-params Demo</h1>
 
   <div class="demo-section">
@@ -277,5 +279,6 @@ toQueryString({ tags: ['a', 'b'] });
       parseOutput.textContent = `toQueryString(${JSON.stringify(obj)}):\n${qs}`;
     });
   </script>
+  <script type="module" src="../../demo-theme-toggle.js"></script>
 </body>
 </html>

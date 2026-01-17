@@ -131,6 +131,7 @@
     }
     .status strong { color: var(--text); }
   </style>
+  <link rel="stylesheet" href="../../demo-theme.css" />
 </head>
 <body>
   <header>
@@ -141,6 +142,7 @@
         <a href="#playground">Playground</a>
         <a href="https://github.com/manufosela/utils/tree/main/packages/browser-closure-notice">Source</a>
       </div>
+        <demo-theme-toggle></demo-theme-toggle>
       <h1>Browser Closure Notice</h1>
       <p>Move your mouse toward the browser close area to trigger the callback.</p>
     </div>
@@ -300,5 +302,6 @@
     renderCode();
     setup();
   </script>
+  <script type="module" src="../../demo-theme-toggle.js"></script>
 </body>
 </html>

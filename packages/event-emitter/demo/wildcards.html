@@ -96,6 +96,7 @@
       white-space: pre-wrap;
     }
   </style>
+  <link rel="stylesheet" href="../../demo-theme.css" />
 </head>
 <body>
   <header>
@@ -105,6 +106,7 @@
         <a href="./basic.html">Basic demo</a>
         <a href="https://github.com/manufosela/utils/tree/main/packages/event-emitter">Source</a>
       </div>
+        <demo-theme-toggle></demo-theme-toggle>
       <h1>Namespaces and wildcards</h1>
       <p>Watch how user:* and ** patterns react to events.</p>
     </div>
@@ -161,5 +163,6 @@
 
     document.getElementById('codeBlock').textContent = `import { EventEmitter } from '@manufosela/event-emitter';\n\nconst emitter = new EventEmitter({ wildcard: true });\n\n// * matches a single segment (user:login, user:logout)\nemitter.on('user:*', (payload) => {\n  console.log('user:*', payload);\n});\n\n// ** matches multiple segments (user:admin:login)\nemitter.on('user:**', (payload) => {\n  console.log('user:**', payload);\n});\n\n// ** can match any event\nemitter.on('**', (payload) => {\n  console.log('any event', payload);\n});\n\nemitter.emit('user:login', { id: 1 });\nemitter.emit('user:admin:login', { id: 2 });\nemitter.emit('system:ready', { ok: true });`;
   </script>
+  <script type="module" src="../../demo-theme-toggle.js"></script>
 </body>
 </html>
