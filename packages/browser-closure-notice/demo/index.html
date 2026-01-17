@@ -1,66 +1,303 @@
-<!DOCTYPE HTML>
-<html>
-  <head>
-    <title>Demo BrowserClosureNotice</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <style>
-      body {
-        font-family: "Space Grotesk", "Trebuchet MS", Arial, sans-serif;
-        max-width: 600px;
-        margin: 50px auto;
-        padding: 20px;
-      }
-      h1 {
-        color: #333;
-      }
-      .info {
-        background: #f0f0f0;
-        padding: 15px;
-        border-radius: 8px;
-        margin: 20px 0;
-      }
-      .top-links {
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-        margin-bottom: 1rem;
-      }
-      .top-links a {
-        font-size: 0.8rem;
-        color: #555;
-        text-decoration: none;
-        border: 1px solid #ddd;
-        padding: 0.35rem 0.75rem;
-        border-radius: 999px;
-      }
-    </style>
-    <script type="module">
-      import { BrowserClosureNotice } from '../src/browser-closure-notice.js';
-
-      // Using default dialog with custom message
-      const pcb = new BrowserClosureNotice({
-        dialogMessage: "¿Seguro que quieres irte? ¡Tenemos contenido interesante para ti!",
-        maxTimes: 0,
-        stepsTakenToClose: 20,
-        distanceNearClose: 250
-      });
-
-      pcb.detect();
-    </script>
-  </head>
-
-  <body>
-    <div class="top-links">
-      <a href="https://manufosela.github.io/utils/">Utils catalog</a>
-      <a href="https://manufosela.github.io/">Main catalog</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Browser Closure Notice Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --bg: #0f1117;
+      --bg-2: #151a26;
+      --card: #1c2233;
+      --accent: #ffb000;
+      --accent-2: #00d0ff;
+      --text: #f3f6ff;
+      --muted: #b8c0d9;
+      --line: #2b3247;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background: radial-gradient(circle at 10% 10%, #1a2136, transparent 50%),
+        radial-gradient(circle at 80% 0%, #1d1b34, transparent 45%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+      font-family: "Space Grotesk", "Trebuchet MS", Arial, sans-serif;
+    }
+    header {
+      padding: 32px 24px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .top-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .top-links a {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 12px;
+      color: var(--muted);
+      font-size: 0.85rem;
+      text-decoration: none;
+    }
+    h1 { margin: 0; font-size: clamp(28px, 4vw, 44px); }
+    p { margin: 8px 0 0; color: var(--muted); }
+    main { padding: 24px; }
+    .grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      align-items: start;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+    }
+    .card h2 { margin: 0; font-size: 1.2rem; }
+    .hint { color: var(--muted); font-size: 0.9rem; }
+    .code {
+      background: #0b0f1a;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .log {
+      background: #0b0f1a;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.85rem;
+      min-height: 120px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    label { display: grid; gap: 6px; font-size: 0.9rem; }
+    input, textarea {
+      background: #101624;
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 0.9rem;
+    }
+    textarea { min-height: 70px; resize: vertical; }
+    .row {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    button {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(120deg, var(--accent), #ff6a00);
+      color: #111;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button.secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+    .status {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .status strong { color: var(--text); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="top-links">
+        <a href="https://manufosela.github.io/utils/">Utils catalog</a>
+        <a href="https://manufosela.github.io/">Main catalog</a>
+        <a href="#playground">Playground</a>
+      </div>
+      <h1>Browser Closure Notice</h1>
+      <p>Move your mouse toward the browser close area to trigger the callback.</p>
     </div>
-    <h1>🖱️ DEMO BrowserClosureNotice</h1>
-    <div class="info">
-      <p><strong>ES:</strong> Dirige el ratón hacia el botón de cierre del navegador</p>
-      <p><strong>EN:</strong> Direct the mouse to the browser close button</p>
-      <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
-        Using modern &lt;dialog&gt; element instead of alert()
-      </p>
+  </header>
+
+  <main>
+    <div class="container grid">
+      <section class="card">
+        <h2>Live demo</h2>
+        <p class="hint">Try moving the cursor to the top-right corner. If you are on macOS, aim at the top-left.</p>
+        <div class="status">
+          <div>State: <strong id="stateLabel">idle</strong></div>
+          <div>Triggers: <strong id="triggerCount">0</strong></div>
+        </div>
+        <div class="actions">
+          <button id="startBtn">Start detection</button>
+          <button class="secondary" id="stopBtn">Stop detection</button>
+          <button class="secondary" id="clearBtn">Clear log</button>
+        </div>
+        <div class="log" id="logPanel">No events yet.</div>
+      </section>
+
+      <section class="card" id="playground">
+        <h2>Playground</h2>
+        <p class="hint">Customize behavior and re-apply the configuration.</p>
+        <form id="playgroundForm">
+          <div class="row">
+            <label>
+              Steps to close
+              <input type="number" id="stepsInput" min="1" value="20" />
+            </label>
+            <label>
+              Distance near close (px)
+              <input type="number" id="distanceInput" min="20" value="250" />
+            </label>
+            <label>
+              Max times (0 = unlimited)
+              <input type="number" id="maxTimesInput" min="0" value="0" />
+            </label>
+          </div>
+          <label>
+            Dialog message
+            <textarea id="messageInput">Are you sure you want to leave?</textarea>
+          </label>
+          <label>
+            <input type="checkbox" id="defaultDialog" checked /> Use default dialog
+          </label>
+          <div class="actions">
+            <button type="button" id="applyBtn">Apply &amp; start</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Code example</h2>
+        <p class="hint">This snippet updates based on the playground settings.</p>
+        <pre class="code" id="codeBlock"></pre>
+      </section>
     </div>
-  </body>
+  </main>
+
+  <script type="module">
+    import { BrowserClosureNotice } from '../src/browser-closure-notice.js';
+
+    const logPanel = document.getElementById('logPanel');
+    const triggerCount = document.getElementById('triggerCount');
+    const stateLabel = document.getElementById('stateLabel');
+    const codeBlock = document.getElementById('codeBlock');
+
+    const stepsInput = document.getElementById('stepsInput');
+    const distanceInput = document.getElementById('distanceInput');
+    const maxTimesInput = document.getElementById('maxTimesInput');
+    const messageInput = document.getElementById('messageInput');
+    const defaultDialog = document.getElementById('defaultDialog');
+
+    let instance;
+    let count = 0;
+
+    const appendLog = (message) => {
+      const item = document.createElement('div');
+      item.textContent = message;
+      logPanel.prepend(item);
+    };
+
+    const updateStatus = (state) => {
+      stateLabel.textContent = state;
+      triggerCount.textContent = String(count);
+    };
+
+    const buildConfig = () => ({
+      stepsTakenToClose: Number(stepsInput.value),
+      distanceNearClose: Number(distanceInput.value),
+      maxTimes: Number(maxTimesInput.value),
+      dialogMessage: messageInput.value.trim(),
+    });
+
+    const renderCode = () => {
+      const config = buildConfig();
+      const callbackBlock = defaultDialog.checked
+        ? ''
+        : "  callback: () => {\n    console.log('Triggered');\n  },\n";
+
+      codeBlock.textContent = `import { BrowserClosureNotice } from '@manufosela/browser-closure-notice';\n\nconst notice = new BrowserClosureNotice({\n${callbackBlock}  dialogMessage: '${config.dialogMessage.replace(/'/g, "\\'")}',\n  maxTimes: ${config.maxTimes},\n  stepsTakenToClose: ${config.stepsTakenToClose},\n  distanceNearClose: ${config.distanceNearClose}\n});\n\nnotice.detect();`;
+    };
+
+    const setup = () => {
+      if (instance) {
+        instance.unDetect();
+      }
+
+      count = 0;
+      updateStatus('listening');
+
+      const config = buildConfig();
+
+      if (!defaultDialog.checked) {
+        config.callback = () => {
+          count += 1;
+          updateStatus('listening');
+          appendLog(`Triggered at ${new Date().toLocaleTimeString()}`);
+        };
+      }
+
+      instance = new BrowserClosureNotice(config);
+      instance.detect();
+
+      if (count === 0 && logPanel.textContent === 'No events yet.') {
+        appendLog('Listening for mouse movement...');
+      }
+
+      renderCode();
+    };
+
+    document.getElementById('applyBtn').addEventListener('click', setup);
+    document.getElementById('startBtn').addEventListener('click', () => {
+      if (instance) {
+        instance.detect();
+      } else {
+        setup();
+      }
+      updateStatus('listening');
+    });
+    document.getElementById('stopBtn').addEventListener('click', () => {
+      if (instance) {
+        instance.unDetect();
+        updateStatus('stopped');
+      }
+    });
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      logPanel.textContent = 'No events yet.';
+      count = 0;
+      updateStatus(stateLabel.textContent);
+    });
+
+    document.getElementById('playgroundForm').addEventListener('input', renderCode);
+
+    renderCode();
+    setup();
+  </script>
+</body>
 </html>
