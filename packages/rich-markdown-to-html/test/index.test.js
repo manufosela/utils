@@ -23,6 +23,11 @@ describe('rich-markdown-to-html', () => {
       expect(parse('')).toBe('');
     });
 
+    it('removes script tags when sanitize is enabled', () => {
+      const result = parse('<script>alert(1)</script>', { sanitize: true });
+      expect(result).not.toContain('<script>');
+    });
+
     describe('headers', () => {
       it('should parse h1 headers', () => {
         const result = parse('# Hello World');
@@ -126,6 +131,11 @@ describe('rich-markdown-to-html', () => {
       it('should not auto-link URLs when linkify is false', () => {
         const result = parse('Visit https://example.com today', { linkify: false });
         expect(result).not.toContain('<a href="https://example.com">https://example.com</a>');
+      });
+
+      it('sanitizes javascript: URLs when sanitize is enabled', () => {
+        const result = parse('[Bad](javascript:alert(1))', { sanitize: true });
+        expect(result).toContain('href="#"');
       });
     });
 

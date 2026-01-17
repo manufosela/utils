@@ -5,7 +5,7 @@ Markdown to HTML converter with rich features including tables, code blocks with
 ## Installation
 
 ```bash
-npm install @manufosela/rich-markdown-to-html
+pnpm add @manufosela/rich-markdown-to-html
 ```
 
 ## Usage
@@ -30,7 +30,8 @@ const html = parse(markdown, {
   linkify: true,      // Auto-link URLs
   taskLists: true,    // Enable task lists
   tables: true,       // Enable tables
-  typographer: true   // Smart quotes and dashes
+  typographer: true,  // Smart quotes and dashes
+  sanitize: true      // Strip scripts and inline handlers
 });
 ```
 
@@ -68,6 +69,10 @@ import { escape } from '@manufosela/rich-markdown-to-html';
 const safe = escape('<script>alert("xss")</script>');
 // &lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;
 ```
+
+## Demo
+
+`https://manufosela.github.io/utils/packages/rich-markdown-to-html/demo/`
 
 ## Supported Syntax
 

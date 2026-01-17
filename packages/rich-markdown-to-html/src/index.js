@@ -420,6 +420,21 @@ function applyTypographer(text) {
 }
 
 /**
+ * Sanitizes HTML output (basic removal of scripts and inline handlers)
+ * @private
+ * @param {string} html - HTML string to sanitize
+ * @returns {string} Sanitized HTML
+ */
+function sanitizeOutput(html) {
+  let result = html;
+  result = result.replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '');
+  result = result.replace(/\son\w+="[^"]*"/gi, '');
+  result = result.replace(/\son\w+='[^']*'/gi, '');
+  result = result.replace(/(href|src)=["']javascript:[^"']*["']/gi, '$1="#"');
+  return result;
+}
+
+/**
  * Parses markdown text to HTML
  * @param {string} markdown - Markdown text to parse
  * @param {ParseOptions} [options={}] - Parse options
@@ -464,6 +479,10 @@ export function parse(markdown, options = {}) {
 
   text = parseParagraphs(text, opts);
 
+  if (opts.sanitize) {
+    text = sanitizeOutput(text);
+  }
+
   return text.trim();
 }
 
@@ -494,7 +513,7 @@ export function parseInline(text, options = {}) {
     result = applyTypographer(result);
   }
 
-  return result;
+  return opts.sanitize ? sanitizeOutput(result) : result;
 }
 
 /**
