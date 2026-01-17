@@ -17,9 +17,9 @@
     "README.md"
   ],
   "scripts": {
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
+    "test": "vitest run --environment jsdom",
+    "test:watch": "vitest --environment jsdom",
+    "test:coverage": "vitest run --environment jsdom --coverage",
     "lint": "eslint src/",
     "dev": "vite demo"
   },
