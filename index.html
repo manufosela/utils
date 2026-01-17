@@ -4,21 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>@manufosela/utils</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
   <style>
     :root {
-      --primary: #8b5cf6;
-      --primary-dark: #7c3aed;
-      --bg: #0f172a;
-      --bg-card: #1e293b;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --border: #334155;
-      --accent: #a78bfa;
+      --bg: #0f1117;
+      --bg-2: #151a26;
+      --bg-card: #1c2233;
+      --text: #f3f6ff;
+      --text-muted: #b8c0d9;
+      --border: #2b3247;
+      --accent: #ffb000;
+      --accent-2: #00d0ff;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg);
+      font-family: "Space Grotesk", "Trebuchet MS", Arial, sans-serif;
+      background: radial-gradient(circle at 10% 10%, #1a2136, transparent 50%),
+        radial-gradient(circle at 80% 0%, #1d1b34, transparent 45%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
       color: var(--text);
       min-height: 100vh;
       padding: 2rem;
@@ -32,7 +40,7 @@
     }
     h1 {
       font-size: 2.5rem;
-      background: linear-gradient(135deg, var(--accent), #ec4899);
+      background: linear-gradient(135deg, var(--accent), #ff6a00);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 1rem;
@@ -47,7 +55,8 @@
     .stat {
       text-align: center;
       padding: 1rem 2rem;
-      background: var(--bg-card);
+      background: rgba(28, 34, 51, 0.6);
+      border: 1px solid var(--border);
       border-radius: 0.5rem;
     }
     .stat-value { font-size: 2rem; font-weight: bold; color: var(--accent); }
@@ -66,7 +75,7 @@
     }
     .card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      box-shadow: 0 20px 40px rgba(6, 10, 24, 0.55);
     }
     .card-header {
       display: flex;
@@ -77,12 +86,13 @@
     .card-icon {
       width: 48px;
       height: 48px;
-      background: linear-gradient(135deg, var(--accent), #ec4899);
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
       border-radius: 0.75rem;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.5rem;
+      color: #111;
     }
     .card-title { font-size: 1.25rem; font-weight: 600; }
     .card-desc { color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem; }
@@ -103,15 +113,15 @@
       transition: background 0.2s;
     }
     .btn-primary {
-      background: var(--primary);
-      color: white;
+      background: linear-gradient(120deg, var(--accent), #ff6a00);
+      color: #111;
     }
-    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-primary:hover { background: linear-gradient(120deg, #ffc533, #ff7a1a); }
     .btn-outline {
       border: 1px solid var(--border);
       color: var(--text);
     }
-    .btn-outline:hover { background: var(--bg); }
+    .btn-outline:hover { background: rgba(15, 17, 23, 0.6); }
     footer {
       text-align: center;
       padding: 3rem 0;
@@ -144,6 +154,18 @@
     </header>
 
     <div class="grid">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">✓</div>
+          <h2 class="card-title">automatic-form-validation</h2>
+        </div>
+        <p class="card-desc">Dependency-free form validation using data attributes with accessible error messages.</p>
+        <div class="card-links">
+          <a href="packages/automatic-form-validation/demo/" class="btn btn-primary">Demo</a>
+          <a href="https://github.com/manufosela/utils/tree/main/packages/automatic-form-validation" class="btn btn-outline">Source</a>
+        </div>
+      </div>
+
       <div class="card">
         <div class="card-header">
           <div class="card-icon">🖼️</div>
