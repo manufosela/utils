@@ -112,14 +112,15 @@
 
   <main>
     <div class="container">
-      <div class="panel">
-        <h2>Live demo</h2>
-        <button id="emit-message">Emit message</button>
-        <button id="emit-login">Emit user:login</button>
-        <button id="emit-logout">Emit user:logout</button>
-        <button id="emit-once">Emit init (once)</button>
-        <div class="output" id="output"></div>
-      </div>
+    <div class="panel">
+      <h2>Live demo</h2>
+      <p>Suscribe handlers, emite eventos y observa el log. El handler de <strong>init</strong> solo dispara una vez.</p>
+      <button id="emit-message">Emit message</button>
+      <button id="emit-login">Emit user:login</button>
+      <button id="emit-logout">Emit user:logout</button>
+      <button id="emit-once">Emit init (once)</button>
+      <div class="output" id="output"></div>
+    </div>
 
       <div class="panel">
         <h2>Implementation</h2>
@@ -161,7 +162,7 @@
       log('init emitted');
     });
 
-    document.getElementById('codeBlock').textContent = `const emitter = new EventEmitter();\n\nemitter.on('message', (data) => {});\n\nemitter.once('init', () => {});\n\nemitter.emit('message', { text: 'Hello' });`;
+    document.getElementById('codeBlock').textContent = `import { EventEmitter } from '@manufosela/event-emitter';\n\nconst emitter = new EventEmitter();\n\nemitter.on('message', (payload) => {\n  console.log('message', payload.text);\n});\n\nemitter.on('user:login', (user) => {\n  console.log('user logged in', user.name);\n});\n\nemitter.once('init', () => {\n  console.log('init only once');\n});\n\nemitter.emit('message', { text: 'Hello World' });\nemitter.emit('user:login', { id: 1, name: 'John' });\nemitter.emit('init');`;
   </script>
 </body>
 </html>

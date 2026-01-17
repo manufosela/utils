@@ -112,14 +112,15 @@
 
   <main>
     <div class="container">
-      <div class="panel">
-        <h2>Live demo</h2>
-        <button id="emit-login">Emit user:login</button>
-        <button id="emit-logout">Emit user:logout</button>
-        <button id="emit-admin">Emit user:admin:login</button>
-        <button id="emit-system">Emit system:ready</button>
-        <div class="output" id="output"></div>
-      </div>
+    <div class="panel">
+      <h2>Live demo</h2>
+      <p><strong>*</strong> coincide con un segmento; <strong>**</strong> coincide con varios segmentos.</p>
+      <button id="emit-login">Emit user:login</button>
+      <button id="emit-logout">Emit user:logout</button>
+      <button id="emit-admin">Emit user:admin:login</button>
+      <button id="emit-system">Emit system:ready</button>
+      <div class="output" id="output"></div>
+    </div>
 
       <div class="panel">
         <h2>Implementation</h2>
@@ -158,7 +159,7 @@
       emitter.emit('system:ready', { ok: true });
     });
 
-    document.getElementById('codeBlock').textContent = `const emitter = new EventEmitter({ wildcard: true });\n\n// * matches a single segment\nemitter.on('user:*', () => {});\n\n// ** matches multiple segments\nemitter.on('user:**', () => {});\n\n// ** can match any event\nemitter.on('**', () => {});`;
+    document.getElementById('codeBlock').textContent = `import { EventEmitter } from '@manufosela/event-emitter';\n\nconst emitter = new EventEmitter({ wildcard: true });\n\n// * matches a single segment (user:login, user:logout)\nemitter.on('user:*', (payload) => {\n  console.log('user:*', payload);\n});\n\n// ** matches multiple segments (user:admin:login)\nemitter.on('user:**', (payload) => {\n  console.log('user:**', payload);\n});\n\n// ** can match any event\nemitter.on('**', (payload) => {\n  console.log('any event', payload);\n});\n\nemitter.emit('user:login', { id: 1 });\nemitter.emit('user:admin:login', { id: 2 });\nemitter.emit('system:ready', { ok: true });`;
   </script>
 </body>
 </html>
