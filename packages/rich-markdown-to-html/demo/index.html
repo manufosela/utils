@@ -17,12 +17,18 @@
     }
 
     .topbar {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
+      display: grid;
+      gap: 0.75rem;
       padding: 0.75rem 1rem;
       background: #111827;
       color: #f3f4f6;
+      align-items: center;
+    }
+
+    .topbar-links {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
       align-items: center;
     }
 
@@ -38,7 +44,19 @@
     .container {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      height: calc(100vh - 52px);
+      height: calc(100vh - 110px);
+    }
+
+    .code-block {
+      background: #0b0f1a;
+      border: 1px solid #2b3247;
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: #d6d9e6;
+      font-family: "JetBrains Mono", "Courier New", monospace;
+      font-size: 0.8rem;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
 
     .panel {
@@ -228,10 +246,16 @@
 </head>
 <body>
   <div class="topbar">
-    <a href="https://manufosela.github.io/utils/">Utils catalog</a>
-    <a href="https://manufosela.github.io/">Main catalog</a>
-    <a href="https://github.com/manufosela/utils/tree/main/packages/rich-markdown-to-html">Source</a>
-    <span style="margin-left: auto; font-size: 0.85rem; color: #9ca3af;">Live markdown playground</span>
+    <div class="topbar-links">
+      <a href="https://manufosela.github.io/utils/">Utils catalog</a>
+      <a href="https://manufosela.github.io/">Main catalog</a>
+      <a href="https://github.com/manufosela/utils/tree/main/packages/rich-markdown-to-html">Source</a>
+      <span style="margin-left: auto; font-size: 0.85rem; color: #9ca3af;">Live markdown playground</span>
+    </div>
+    <div class="code-block">import { parse } from '@manufosela/rich-markdown-to-html';
+
+const html = parse(markdown, { linkify: true, taskLists: true });
+</div>
   </div>
   <div class="container">
     <div class="panel">
