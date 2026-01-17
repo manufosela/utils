@@ -6,7 +6,7 @@
   <title>url-params Demo</title>
   <style>
     body {
-      font-family: system-ui, -apple-system, sans-serif;
+      font-family: "Space Grotesk", "Trebuchet MS", Arial, sans-serif;
       max-width: 800px;
       margin: 2rem auto;
       padding: 0 1rem;
@@ -68,10 +68,33 @@
       align-items: center;
       flex-wrap: wrap;
     }
+    .top-links {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .top-links a {
+      font-size: 0.8rem;
+      color: #555;
+      text-decoration: none;
+      border: 1px solid #ddd;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+    }
   </style>
 </head>
 <body>
+  <div class="top-links">
+    <a href="https://manufosela.github.io/utils/">Utils catalog</a>
+    <a href="https://manufosela.github.io/">Main catalog</a>
+  </div>
   <h1>url-params Demo</h1>
+
+  <div class="demo-section">
+    <h2>Quick usage</h2>
+    <pre class="output"><code>import { getParam, setParam } from '@manufosela/url-params';\n\nconst page = getParam('page', '1');\nsetParam('page', Number(page) + 1);\n</code></pre>
+  </div>
 
   <div class="demo-section">
     <h2>Current URL</h2>

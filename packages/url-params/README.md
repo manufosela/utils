@@ -5,7 +5,7 @@ URL parameter management utility for getting, setting, and manipulating URL quer
 ## Installation
 
 ```bash
-npm install @manufosela/url-params
+pnpm add @manufosela/url-params
 ```
 
 ## Usage
@@ -85,7 +85,14 @@ toQueryString({ ids: [1, 2, 3] }, { arrayFormat: 'bracket' });
 
 toQueryString({ ids: [1, 2, 3] }, { arrayFormat: 'comma' });
 // ?ids=1,2,3
+
+parseQueryString('ids=1,2,3', { arrayFormat: 'comma' });
+// { ids: ['1', '2', '3'] }
 ```
+
+## Demo
+
+`https://manufosela.github.io/utils/packages/url-params/demo/`
 
 ## API
 

@@ -73,7 +73,13 @@ export class UrlParams {
     const obj = {};
     for (const key of this._params.keys()) {
       const values = this._params.getAll(key);
-      obj[key] = values.length > 1 ? values : values[0];
+      const cleanKey = key.replace(/\[\d*\]$/, '').replace(/\[\]$/, '');
+      if (cleanKey !== key) {
+        obj[cleanKey] = obj[cleanKey] || [];
+        obj[cleanKey].push(...values);
+      } else {
+        obj[key] = values.length > 1 ? values : values[0];
+      }
     }
     return obj;
   }
@@ -89,7 +95,20 @@ export class UrlParams {
       this._params.delete(key);
     } else if (Array.isArray(value)) {
       this._params.delete(key);
-      value.forEach(v => this._params.append(key, String(v)));
+      switch (this._options.arrayFormat) {
+        case 'bracket':
+          value.forEach(v => this._params.append(`${key}[]`, String(v)));
+          break;
+        case 'index':
+          value.forEach((v, i) => this._params.append(`${key}[${i}]`, String(v)));
+          break;
+        case 'comma':
+          this._params.set(key, value.join(','));
+          break;
+        case 'repeat':
+        default:
+          value.forEach(v => this._params.append(key, String(v)));
+      }
     } else {
       this._params.set(key, String(value));
     }
@@ -302,7 +321,8 @@ export function toQueryString(params, options = {}) {
  * @param {string} queryString
  * @returns {Object}
  */
-export function parseQueryString(queryString) {
+export function parseQueryString(queryString, options = {}) {
+  const { arrayFormat = 'repeat' } = options;
   const clean = queryString.startsWith('?') ? queryString.slice(1) : queryString;
   const params = new URLSearchParams(clean);
   const obj = {};
@@ -315,6 +335,8 @@ export function parseQueryString(queryString) {
     if (cleanKey !== key) {
       obj[cleanKey] = obj[cleanKey] || [];
       obj[cleanKey].push(...values);
+    } else if (arrayFormat === 'comma' && values.length === 1 && values[0].includes(',')) {
+      obj[key] = values[0].split(',');
     } else {
       obj[key] = values.length > 1 ? values : values[0];
     }
