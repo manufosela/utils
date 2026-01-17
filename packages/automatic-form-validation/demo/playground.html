@@ -31,11 +31,17 @@
           <div class="playground">
             <div>
               <h3>HTML</h3>
-              <textarea id="htmlInput"></textarea>
+              <textarea id="htmlInput"><form data-validate="true" data-checkrealtime="true">
+  <label for="email">Email</label>
+  <input id="email" data-required="true" data-tovalidate="email" />
+  <button type="submit" data-checkform="true">Submit</button>
+</form></textarea>
             </div>
             <div>
               <h3>JavaScript</h3>
-              <textarea id="jsInput"></textarea>
+              <textarea id="jsInput">import { ValidateForm } from "../src/ValidateForm.js";
+
+new ValidateForm();</textarea>
             </div>
             <div>
               <h3>Preview</h3>
@@ -55,27 +61,19 @@
       const jsInput = document.getElementById('jsInput');
       const preview = document.getElementById('preview');
 
-      const baseHtml = `
-<form data-validate="true" data-checkrealtime="true">
-  <label for="email">Email</label>
-  <input id="email" data-required="true" data-tovalidate="email" />
-  <button type="submit" data-checkform="true">Submit</button>
-</form>
-      `.trim();
-
-      const baseJs = `
-import { ValidateForm } from "../src/ValidateForm.js";
-new ValidateForm();
-      `.trim();
+      const baseHtml = htmlInput.value.trim();
+      const baseJs = jsInput.value.trim();
+      const baseHref = new URL('./', window.location.href).href;
 
       const render = () => {
-        const html = htmlInput.value.trim();
-        const js = jsInput.value.trim();
+        const html = htmlInput.value.trim() || baseHtml;
+        const js = jsInput.value.trim() || baseJs;
         const doc = `
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
+    <base href="${baseHref}" />
     <style>
       body { font-family: Arial, sans-serif; padding: 16px; }
       label { display: block; margin-bottom: 6px; }

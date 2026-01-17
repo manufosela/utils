@@ -191,6 +191,18 @@
       justify-content: center;
       color: #666;
     }
+
+    .code-block {
+      background: #0b0f1a;
+      border: 1px solid #2b3247;
+      border-radius: 8px;
+      padding: 12px;
+      color: #d6d9e6;
+      font-family: "JetBrains Mono", "Courier New", monospace;
+      font-size: 0.85rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
   </style>
 </head>
 <body>
@@ -203,7 +215,11 @@
 
   <div class="section">
     <h2>Quick usage</h2>
-    <pre class="event-log"><code>import { debounce, throttle } from '@manufosela/debounce-throttle';\n\nconst debounced = debounce(onInput, 300);\nconst throttled = throttle(onScroll, 200);\n</code></pre>
+    <pre class="code-block"><code>import { debounce, throttle } from '@manufosela/debounce-throttle';
+
+const debounced = debounce(onInput, 300);
+const throttled = throttle(onScroll, 200);
+</code></pre>
   </div>
 
   <!-- Debounce Demo -->

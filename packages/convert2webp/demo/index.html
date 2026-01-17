@@ -182,6 +182,18 @@
     .download-btn:hover {
       background: #1e7e34;
     }
+
+    .code-block {
+      background: #0b0f1a;
+      border: 1px solid #2b3247;
+      border-radius: 8px;
+      padding: 12px;
+      color: #d6d9e6;
+      font-family: "JetBrains Mono", "Courier New", monospace;
+      font-size: 0.85rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
   </style>
 </head>
 <body>
@@ -195,7 +207,10 @@
   <div class="options" style="margin-top: 0;">
     <div class="option-group">
       <label>Quick usage</label>
-      <pre class="result-card"><code>import { convertToWebP } from '@manufosela/convert2webp';\n\nconst result = await convertToWebP(file, 0.8);\n</code></pre>
+      <pre class="code-block"><code>import { convertToWebP } from '@manufosela/convert2webp';
+
+const result = await convertToWebP(file, 0.8);
+</code></pre>
     </div>
   </div>
 
