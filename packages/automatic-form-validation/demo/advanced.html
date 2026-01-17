@@ -1,143 +1,111 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Advanced Demo - Automatic Form Validation</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Autoform - Advanced Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
       rel="stylesheet"
-      type="text/css"
-      href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"
     />
+    <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <div id="top-nav" class="navbar navbar-inverse navbar-static-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <h1 style="color: #f93">Automatic Form Validation - Advanced Demo</h1>
+    <header>
+      <div class="container hero">
+        <div class="top-links">
+          <a href="./index.html">All demos</a>
+          <a href="./playground.html">Playground</a>
         </div>
+        <h1>Advanced form</h1>
+        <p>Complex interactions with radio groups, conditional fields, and custom rules.</p>
       </div>
-    </div>
-    <div class="container-fluid">
-      <form id="myForm" data-validate="true" data-checkrealtime="true">
-        <div id="field1">
-          <div class="form-group">
-            <label for="name">Your name</label>
-            <input
-              class="form-control"
-              id="name"
-              name="name"
-              type="text"
-              placeholder="type your name"
-              data-required="true"
-              data-tovalidate="alfa"
-            />
-          </div>
+    </header>
 
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input
-              class="form-control"
-              id="email"
-              name="email"
-              type="text"
-              placeholder="type your email"
-              data-required="true"
-              data-tovalidate="email"
-            />
-          </div>
-
-          <div class="form-group">
-            <label id="label_englishlevel" data-name="englishlevel"
-              >What is your english level?</label
-            >
-            <label for="levelA1">
+    <main>
+      <div class="container demo-shell">
+        <div class="demo-card">
+          <h2>Live demo</h2>
+          <form id="myForm" class="demo-form" data-validate="true" data-checkrealtime="true">
+            <div>
+              <label for="name">Your name</label>
               <input
-                id="levelA1"
-                name="englishlevel"
-                type="radio"
+                id="name"
+                name="name"
+                type="text"
+                placeholder="type your name"
                 data-required="true"
-                value="A1"
-              />A1
-            </label>
-            <label for="levelA2">
-              <input
-                id="levelA2"
-                name="englishlevel"
-                type="radio"
-                data-required="true"
-                value="A2"
-              />A2
-            </label>
-            <label for="levelB1">
-              <input
-                id="levelB1"
-                name="englishlevel"
-                type="radio"
-                data-required="true"
-                value="B1"
-              />B1
-            </label>
-            <label for="levelB2">
-              <input
-                id="levelB2"
-                name="englishlevel"
-                type="radio"
-                data-required="true"
-                value="B2"
-              />B2
-            </label>
-            <label for="levelC1">
-              <input
-                id="levelC1"
-                name="englishlevel"
-                type="radio"
-                data-required="true"
-                value="C1"
-              />C1
-            </label>
-            <label for="levelC2">
-              <input
-                id="levelC2"
-                name="englishlevel"
-                type="radio"
-                data-required="true"
-                value="C2"
-              />C2
-            </label>
-            <label for="levelNative">
-              <input
-                id="levelNative"
-                name="englishlevel"
-                type="radio"
-                data-required="true"
-                value="Native"
-              />Native
-            </label>
-          </div>
-
-          <div class="form-group">
-            <label id="label_hasphone" data-name="hasphone"
-              >Do you have a phone number?</label
-            >
-            <label for="hasphoneNO">
-              <input
-                id="hasphoneNO"
-                name="hasphone"
-                type="radio"
-                data-required="true"
-                value="nophone"
+                data-tovalidate="alfa"
               />
-              No
-            </label>
-            <label for="hasphoneYES">
+            </div>
+
+            <div>
+              <label for="mobile">Mobile number</label>
               <input
-                id="hasphoneYES"
-                name="hasphone"
-                type="radio"
+                id="mobile"
+                name="mobile"
+                maxlength="9"
+                type="text"
+                placeholder="type your mobile number"
                 data-required="true"
-                value="yesphone"
+                data-tovalidate="movil"
               />
-              Yes
-            </label>
+            </div>
+
+            <div>
+              <label for="email">Email</label>
+              <input
+                id="email"
+                name="email"
+                type="text"
+                placeholder="type your email"
+                data-required="true"
+                data-tovalidate="email"
+              />
+            </div>
+
+            <div>
+              <input id="accept" name="accept" type="checkbox" data-required="true" />
+              <span>Accept conditions</span>
+            </div>
+
+            <div>
+              <label for="oddvalues">Type an odd value:</label>
+              <input
+                id="oddvalues"
+                name="oddvalues"
+                type="text"
+                data-required="true"
+                data-tovalidate="fn:checkOdd"
+              />
+            </div>
+
+            <div>
+              <label id="label_hasphone" data-name="hasphone">Do you have a phone number?</label>
+              <label>
+                <input
+                  id="hasphoneNO"
+                  name="hasphone"
+                  type="radio"
+                  data-required="true"
+                  value="nophone"
+                />
+                No
+              </label>
+              <label>
+                <input
+                  id="hasphoneYES"
+                  name="hasphone"
+                  type="radio"
+                  data-required="true"
+                  value="yesphone"
+                />
+                Yes
+              </label>
+            </div>
+
             <fieldset data-activate="hasphoneYES" data-deactivate="hasphoneNO">
               <label for="phone">Phone number</label>
               <input
@@ -150,148 +118,43 @@
                 placeholder="Your telephone number"
               />
             </fieldset>
-            <fieldset data-activate="hasphoneYES" data-deactivate="hasphoneNO">
-              <label for="allowcall">
-                <input
-                  id="allowcall"
-                  name="allowcall"
-                  data-type="hiddenON"
-                  type="checkbox"
-                  value="ok"
-                />
-                Let me call by phone
-              </label>
-            </fieldset>
-          </div>
 
-          <div class="form-group">
-            <label
-              id="movies"
-              data-name="movies"
-              data-type="checkbox-group"
-              data-max="4"
-              data-min="2"
-              data-required="true"
-              data-error-msg="Selecciona entre 2 y 4 peliculas favoritas"
-            >
-              Select between 2 and 4 movies:
-            </label>
-            <label for="movie_1"
-              >Movie 1<input id="movie_1" name="movies" type="checkbox"
-            /></label>
-            <label for="movie_2"
-              >Movie 2<input id="movie_2" name="movies" type="checkbox"
-            /></label>
-            <label for="movie_3"
-              >Movie 3<input id="movie_3" name="movies" type="checkbox"
-            /></label>
-            <label for="movie_4"
-              >Movie 4<input id="movie_4" name="movies" type="checkbox"
-            /></label>
-            <label for="movie_5"
-              >Movie 5<input id="movie_5" name="movies" type="checkbox"
-            /></label>
-            <label for="movie_6"
-              >Movie 6<input id="movie_6" name="movies" type="checkbox"
-            /></label>
-            <label for="movie_7"
-              >Movie 7<input id="movie_7" name="movies" type="checkbox"
-            /></label>
-            <label for="movie_8"
-              >Movie 8<input id="movie_8" name="movies" type="checkbox"
-            /></label>
-          </div>
-
-          <div class="form-group">
-            <label for="oddvalues">
-              Introduce un valor par mayor que 1 y menos que 9:
-              <input
-                id="oddvalues"
-                name="oddvalues"
-                type="number"
-                data-required="true"
-                data-tovalidate="fn:checkOdd"
-                max="9"
-                min="1"
-              />
-            </label>
-          </div>
-
-          <div class="form-group">
-            <input
-              id="accept"
-              name="accept"
-              type="checkbox"
-              data-required="true"
-            />
-            <span>Accept conditions</span>
-          </div>
-
-          <div class="form-group">
-            <label for="photoFile"
-              >Sube una foto:
-              <input
-                id="photoFile"
-                type="file"
-                name="file"
-                data-required="true"
-                data-tovalidate="file:png,pdf"
-                data-info="Extensions Allowed: png and pdf"
-              />
-            </label>
-          </div>
-
-          <div class="button-group">
-            <button
-              id="submitBtn"
-              type="submit"
-              class="btn btn-info"
-              data-checkform="true"
-            >
-              Submit
-            </button>
-          </div>
+            <button id="submitBtn" type="submit" data-checkform="true">Submit</button>
+          </form>
         </div>
-      </form>
-    </div>
 
-    <script>
-      function checkOdd(value) {
-        return value % 2 == 0;
-      }
-    </script>
+        <div class="demo-card">
+          <h2>Implementation</h2>
+          <div class="code-block"><pre><code id="codeBlock"></code></pre></div>
+        </div>
+      </div>
+    </main>
+
+    <template id="codeTemplate">
+<form data-validate="true">
+  <input data-required="true" data-tovalidate="email" />
+  <input data-tovalidate="fn:checkOdd" />
+</form>
+
+<script>
+  function checkOdd(value) {
+    return value % 2 === 0;
+  }
+</script>
+    </template>
 
     <script type="module">
       import { ValidateForm } from "../src/ValidateForm.js";
 
-      function submitFunction() {
-        alert("CALLBACK TO SEND FORM...");
-        return false;
+      function checkOdd(value) {
+        return value % 2 === 0;
       }
+      window.checkOdd = checkOdd;
 
-      window.onload = function () {
-        /** THIS LINE VALIDATE ALL THE FORMS **/
-        const validateForm = new ValidateForm(submitFunction);
+      new ValidateForm();
 
-        const addNewField = () => {
-          const label = document.createElement("label");
-          label.innerHTML = "This is a Alpha field added after 1 second: ";
-          label.setAttribute("for", "tardio");
-          const input = document.createElement("input");
-          input.setAttribute("type", "text");
-          input.setAttribute("name", "tardio");
-          input.setAttribute("id", "tardio");
-          input.setAttribute("data-required", "true");
-          input.setAttribute("data-tovalidate", "alpha");
-          input.classList.add("form-control");
-          const div = document.createElement("div");
-          div.setAttribute("class", "form-group");
-          div.appendChild(label);
-          div.appendChild(input);
-          document.getElementById("myForm").appendChild(div);
-          validateForm.checkFieldsToValidate();
-        };
-      };
+      document.getElementById("codeBlock").textContent =
+        document.getElementById("codeTemplate").innerHTML.trim();
     </script>
   </body>
 </html>

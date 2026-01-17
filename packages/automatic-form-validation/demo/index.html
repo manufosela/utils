@@ -3,42 +3,79 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Automatic Form Validation Demos</title>
-    <style>
-      body {
-        font-family: system-ui, -apple-system, sans-serif;
-        margin: 40px;
-        color: #1c1c1c;
-      }
-      .card {
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        padding: 16px;
-        margin: 16px 0;
-      }
-      a {
-        color: #0b5fff;
-        text-decoration: none;
-      }
-      a:hover {
-        text-decoration: underline;
-      }
-    </style>
+    <title>Automatic Form Validation - Demos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <h1>Automatic Form Validation demos</h1>
-    <p>Choose a demo to explore the library from basic to advanced use cases.</p>
+    <header>
+      <div class="container hero">
+        <div class="top-links">
+          <a href="https://manufosela.github.io/utils/">Utils catalog</a>
+          <a href="https://manufosela.github.io/">Main catalog</a>
+        </div>
+        <h1>Automatic Form Validation demos</h1>
+        <p>Explore common patterns, from basic forms to advanced interactions.</p>
+      </div>
+    </header>
 
-    <div class="card">
-      <h2>Basic form</h2>
-      <p>Minimal setup with required fields and built-in validators.</p>
-      <a href="./basic.html">Open basic demo</a>
-    </div>
+    <main>
+      <div class="container">
+        <h2 class="section-title">Core demos</h2>
+        <div class="grid">
+          <div class="card">
+            <span class="badge">Basics</span>
+            <h3>Basic form</h3>
+            <p>Required fields, email validation, and submit checks.</p>
+            <a href="./basic.html">Open demo →</a>
+          </div>
+          <div class="card">
+            <span class="badge">Realtime</span>
+            <h3>Realtime validation</h3>
+            <p>Field validation on blur with clear messaging.</p>
+            <a href="./realtime.html">Open demo →</a>
+          </div>
+          <div class="card">
+            <span class="badge">Custom</span>
+            <h3>Custom validators</h3>
+            <p>Use fn: callbacks and runtime validators via API.</p>
+            <a href="./custom-validator.html">Open demo →</a>
+          </div>
+          <div class="card">
+            <span class="badge">Logic</span>
+            <h3>Conditional fields</h3>
+            <p>Show and validate fields based on selections.</p>
+            <a href="./conditional.html">Open demo →</a>
+          </div>
+          <div class="card">
+            <span class="badge">Groups</span>
+            <h3>Checkbox groups</h3>
+            <p>Min/max selection validation for grouped checkboxes.</p>
+            <a href="./checkbox-group.html">Open demo →</a>
+          </div>
+        </div>
 
-    <div class="card">
-      <h2>Advanced form</h2>
-      <p>Complex example with radio groups, conditional fields, and custom logic.</p>
-      <a href="./advanced.html">Open advanced demo</a>
-    </div>
+        <h2 class="section-title">Advanced</h2>
+        <div class="grid">
+          <div class="card">
+            <span class="badge">Full form</span>
+            <h3>Advanced form</h3>
+            <p>Complex form with radios, hidden sections, and custom flows.</p>
+            <a href="./advanced.html">Open demo →</a>
+          </div>
+          <div class="card">
+            <span class="badge">Sandbox</span>
+            <h3>Playground</h3>
+            <p>Edit HTML/JS, run instantly, and test validators.</p>
+            <a href="./playground.html">Open playground →</a>
+          </div>
+        </div>
+      </div>
+    </main>
   </body>
 </html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Autoform - Checkbox Group</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container hero">
+        <div class="top-links">
+          <a href="./index.html">All demos</a>
+          <a href="./playground.html">Playground</a>
+        </div>
+        <h1>Checkbox group validation</h1>
+        <p>Validate min and max selections for a group.</p>
+      </div>
+    </header>
+
+    <main>
+      <div class="container demo-shell">
+        <div class="demo-card">
+          <h2>Live demo</h2>
+          <form id="groupForm" class="demo-form" data-validate="true">
+            <label data-type="checkbox-group" data-min="2" data-max="3" data-error-msg="Pick 2 or 3 options">
+              Select 2 or 3 options
+            </label>
+            <label><input type="checkbox" name="opt" value="a" /> Option A</label>
+            <label><input type="checkbox" name="opt" value="b" /> Option B</label>
+            <label><input type="checkbox" name="opt" value="c" /> Option C</label>
+            <label><input type="checkbox" name="opt" value="d" /> Option D</label>
+            <button id="submitGroup" type="submit" data-checkform="true">Submit</button>
+          </form>
+          <p class="note">Choose 2 or 3 options to pass validation.</p>
+        </div>
+
+        <div class="demo-card">
+          <h2>Implementation</h2>
+          <div class="code-block"><pre><code id="codeBlock"></code></pre></div>
+        </div>
+      </div>
+    </main>
+
+    <template id="codeTemplate">
+<label data-type="checkbox-group" data-min="2" data-max="3">
+  Select 2 or 3 options
+</label>
+    </template>
+
+    <script type="module">
+      import { ValidateForm } from "../src/ValidateForm.js";
+      new ValidateForm();
+
+      document.getElementById("codeBlock").textContent =
+        document.getElementById("codeTemplate").innerHTML.trim();
+    </script>
+  </body>
+</html>

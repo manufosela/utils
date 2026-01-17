@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Autoform - Playground</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container hero">
+        <div class="top-links">
+          <a href="./index.html">All demos</a>
+          <a href="./basic.html">Basic demo</a>
+        </div>
+        <h1>Playground</h1>
+        <p>Edit HTML and JavaScript, run the form, and test validation behavior.</p>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <div class="demo-card">
+          <h2>Editor</h2>
+          <div class="playground">
+            <div>
+              <h3>HTML</h3>
+              <textarea id="htmlInput"></textarea>
+            </div>
+            <div>
+              <h3>JavaScript</h3>
+              <textarea id="jsInput"></textarea>
+            </div>
+            <div>
+              <h3>Preview</h3>
+              <iframe id="preview"></iframe>
+            </div>
+          </div>
+          <div class="playground-actions" style="margin-top: 12px;">
+            <button class="primary" id="runBtn">Run</button>
+            <button id="resetBtn">Reset</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script type="module">
+      const htmlInput = document.getElementById('htmlInput');
+      const jsInput = document.getElementById('jsInput');
+      const preview = document.getElementById('preview');
+
+      const baseHtml = `
+<form data-validate="true" data-checkrealtime="true">
+  <label for="email">Email</label>
+  <input id="email" data-required="true" data-tovalidate="email" />
+  <button type="submit" data-checkform="true">Submit</button>
+</form>
+      `.trim();
+
+      const baseJs = `
+import { ValidateForm } from "../src/ValidateForm.js";
+new ValidateForm();
+      `.trim();
+
+      const render = () => {
+        const html = htmlInput.value.trim();
+        const js = jsInput.value.trim();
+        const doc = `
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body { font-family: Arial, sans-serif; padding: 16px; }
+      label { display: block; margin-bottom: 6px; }
+      input { margin-bottom: 12px; padding: 6px; }
+    </style>
+  </head>
+  <body>
+    ${html}
+    <script type="module">
+      ${js}
+    </script>
+  </body>
+</html>
+        `;
+        preview.srcdoc = doc;
+      };
+
+      const reset = () => {
+        htmlInput.value = baseHtml;
+        jsInput.value = baseJs;
+        render();
+      };
+
+      document.getElementById('runBtn').addEventListener('click', render);
+      document.getElementById('resetBtn').addEventListener('click', reset);
+
+      reset();
+    </script>
+  </body>
+</html>

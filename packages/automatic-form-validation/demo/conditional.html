@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Autoform - Conditional Fields</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="container hero">
+        <div class="top-links">
+          <a href="./index.html">All demos</a>
+          <a href="./playground.html">Playground</a>
+        </div>
+        <h1>Conditional fields</h1>
+        <p>Show and validate sections based on selections.</p>
+      </div>
+    </header>
+
+    <main>
+      <div class="container demo-shell">
+        <div class="demo-card">
+          <h2>Live demo</h2>
+          <form id="conditionalForm" class="demo-form" data-validate="true">
+            <div>
+              <label id="label_hasphone" data-name="hasphone">Do you have a phone?</label>
+              <label>
+                <input
+                  id="hasphoneNO"
+                  name="hasphone"
+                  type="radio"
+                  data-required="true"
+                  value="no"
+                />
+                No
+              </label>
+              <label>
+                <input
+                  id="hasphoneYES"
+                  name="hasphone"
+                  type="radio"
+                  data-required="true"
+                  value="yes"
+                />
+                Yes
+              </label>
+            </div>
+
+            <fieldset data-activate="hasphoneYES" data-deactivate="hasphoneNO">
+              <label for="phone">Phone number</label>
+              <input
+                id="phone"
+                name="phone"
+                data-type="hiddenON"
+                type="text"
+                data-required="true"
+                data-tovalidate="telephone"
+                placeholder="Your phone"
+              />
+            </fieldset>
+
+            <button id="submitConditional" type="submit" data-checkform="true">Submit</button>
+          </form>
+          <p class="note">Select Yes to reveal the phone field.</p>
+        </div>
+
+        <div class="demo-card">
+          <h2>Implementation</h2>
+          <div class="code-block"><pre><code id="codeBlock"></code></pre></div>
+        </div>
+      </div>
+    </main>
+
+    <template id="codeTemplate">
+<label data-name="hasphone">Do you have a phone?</label>
+<input id="hasphoneYES" name="hasphone" type="radio" />
+
+<fieldset data-activate="hasphoneYES" data-deactivate="hasphoneNO">
+  <input data-type="hiddenON" data-required="true" data-tovalidate="telephone" />
+</fieldset>
+    </template>
+
+    <script type="module">
+      import { ValidateForm } from "../src/ValidateForm.js";
+      new ValidateForm();
+
+      document.getElementById("codeBlock").textContent =
+        document.getElementById("codeTemplate").innerHTML.trim();
+    </script>
+  </body>
+</html>

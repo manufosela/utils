@@ -38,6 +38,26 @@
       border-bottom: 1px solid var(--border);
       margin-bottom: 3rem;
     }
+    .top-links {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .top-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 999px;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+    .top-links a:hover {
+      color: var(--text);
+      border-color: var(--accent-2);
+    }
     h1 {
       font-size: 2.5rem;
       background: linear-gradient(135deg, var(--accent), #ff6a00);
@@ -156,6 +176,9 @@
 <body>
   <div class="container">
     <header>
+      <div class="top-links">
+        <a href="https://manufosela.github.io/">Main catalog</a>
+      </div>
       <h1>@manufosela/utils</h1>
       <p class="subtitle">Focused JavaScript utilities with clear demos and practical use cases.</p>
       <div class="stats">
