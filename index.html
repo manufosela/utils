@@ -61,6 +61,27 @@
     }
     .stat-value { font-size: 2rem; font-weight: bold; color: var(--accent); }
     .stat-label { color: var(--text-muted); font-size: 0.875rem; }
+    .search {
+      margin-top: 2rem;
+      display: grid;
+      gap: 0.75rem;
+      justify-items: center;
+    }
+    .search input {
+      width: min(520px, 100%);
+      padding: 0.75rem 1rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text);
+      font-size: 0.95rem;
+      outline: none;
+    }
+    .search input:focus {
+      border-color: var(--accent-2);
+      box-shadow: 0 0 0 2px rgba(0, 208, 255, 0.2);
+    }
+    .search-meta { color: var(--text-muted); font-size: 0.85rem; }
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -139,17 +160,21 @@
       <p class="subtitle">Focused JavaScript utilities with clear demos and practical use cases.</p>
       <div class="stats">
         <div class="stat">
-          <div class="stat-value">7</div>
+          <div class="stat-value">8</div>
           <div class="stat-label">Libraries</div>
         </div>
         <div class="stat">
-          <div class="stat-value">ES6+</div>
-          <div class="stat-label">Modules</div>
+          <div class="stat-value">8</div>
+          <div class="stat-label">Demos</div>
         </div>
         <div class="stat">
-          <div class="stat-value">MIT</div>
-          <div class="stat-label">License</div>
+          <div class="stat-value">10</div>
+          <div class="stat-label">Test files</div>
         </div>
+      </div>
+      <div class="search">
+        <input id="searchInput" type="search" placeholder="Search utilities..." />
+        <div id="searchMeta" class="search-meta"></div>
       </div>
     </header>
 
@@ -256,5 +281,33 @@
       <p style="margin-top: 0.5rem;">Built with ES6+ | pnpm workspaces | Changesets</p>
     </footer>
   </div>
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const searchMeta = document.getElementById('searchMeta');
+    const cards = Array.from(document.querySelectorAll('.card'));
+
+    const updateMeta = (visibleCount) => {
+      searchMeta.textContent = `Showing ${visibleCount} of ${cards.length} utilities`;
+    };
+
+    const filterCards = () => {
+      const query = searchInput.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      cards.forEach((card) => {
+        const text = card.textContent.toLowerCase();
+        const match = text.includes(query);
+        card.style.display = match ? 'block' : 'none';
+        if (match) {
+          visibleCount += 1;
+        }
+      });
+
+      updateMeta(visibleCount);
+    };
+
+    searchInput.addEventListener('input', filterCards);
+    updateMeta(cards.length);
+  </script>
 </body>
 </html>
