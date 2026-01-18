@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>convert2webp Demo</title>
   <style>
+
+
+
+
     * {
       box-sizing: border-box;
     }
@@ -14,32 +18,34 @@
       max-width: 800px;
       margin: 0 auto;
       padding: 2rem;
-      background: #f5f5f5;
+      background: var(--bg);
+    
+      color: var(--text);
     }
 
     h1 {
-      color: #333;
+      color: var(--accent);
       margin-bottom: 0.5rem;
     }
 
     .subtitle {
-      color: #666;
+      color: var(--text-muted);
       margin-bottom: 2rem;
     }
 
     .upload-area {
-      border: 2px dashed #ccc;
+      border: 2px dashed var(--border);
       border-radius: 8px;
       padding: 2rem;
       text-align: center;
-      background: white;
+      background: var(--bg-elevated);
       transition: border-color 0.2s, background-color 0.2s;
       cursor: pointer;
     }
 
     .upload-area:hover,
     .upload-area.dragover {
-      border-color: #007bff;
+      border-color: var(--accent);
       background: #f8f9ff;
     }
 
@@ -53,7 +59,7 @@
       gap: 1rem;
       margin: 1.5rem 0;
       padding: 1rem;
-      background: white;
+      background: var(--bg-elevated);
       border-radius: 8px;
     }
 
@@ -65,12 +71,12 @@
 
     .option-group label {
       font-weight: 500;
-      color: #555;
+      color: var(--text-muted);
     }
 
     .option-group input {
       padding: 0.5rem;
-      border: 1px solid #ddd;
+      border: 1px solid var(--border);
       border-radius: 4px;
     }
 
@@ -79,7 +85,7 @@
     }
 
     .result-card {
-      background: white;
+      background: var(--bg-elevated);
       border-radius: 8px;
       padding: 1rem;
       margin-bottom: 1rem;
@@ -92,7 +98,7 @@
       align-items: center;
       margin-bottom: 1rem;
       padding-bottom: 0.5rem;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid var(--border);
     }
 
     .result-images {
@@ -109,13 +115,13 @@
       max-width: 100%;
       max-height: 200px;
       border-radius: 4px;
-      border: 1px solid #eee;
+      border: 1px solid var(--border);
     }
 
     .image-container p {
       margin: 0.5rem 0 0;
       font-size: 0.875rem;
-      color: #666;
+      color: var(--text-muted);
     }
 
     .top-links {
@@ -127,9 +133,9 @@
 
     .top-links a {
       font-size: 0.8rem;
-      color: #555;
+      color: var(--text-muted);
       text-decoration: none;
-      border: 1px solid #ddd;
+      border: 1px solid var(--border);
       padding: 0.35rem 0.75rem;
       border-radius: 999px;
     }
@@ -139,7 +145,7 @@
       gap: 2rem;
       margin-top: 1rem;
       padding-top: 1rem;
-      border-top: 1px solid #eee;
+      border-top: 1px solid var(--border);
     }
 
     .stat {
@@ -149,12 +155,12 @@
     .stat-value {
       font-size: 1.5rem;
       font-weight: bold;
-      color: #333;
+      color: var(--text);
     }
 
     .stat-label {
       font-size: 0.875rem;
-      color: #666;
+      color: var(--text-muted);
     }
 
     .savings {
@@ -163,7 +169,7 @@
 
     button {
       padding: 0.5rem 1rem;
-      background: #007bff;
+      background: var(--accent);
       color: white;
       border: none;
       border-radius: 4px;
@@ -172,7 +178,7 @@
     }
 
     button:hover {
-      background: #0056b3;
+      background: var(--accent-strong);
     }
 
     .download-btn {
@@ -194,7 +200,11 @@
       white-space: pre-wrap;
       word-break: break-word;
     }
-  </style>
+  
+
+
+
+</style>
   <link rel="stylesheet" href="../../demo-theme.css" />
 </head>
 <body>

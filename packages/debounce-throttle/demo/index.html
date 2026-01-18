@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>debounce-throttle Demo</title>
   <style>
+
+
+
+
     * {
       box-sizing: border-box;
     }
@@ -14,16 +18,18 @@
       max-width: 900px;
       margin: 0 auto;
       padding: 2rem;
-      background: #f5f5f5;
+      background: var(--bg);
+    
+      color: var(--text);
     }
 
     h1 {
-      color: #333;
+      color: var(--accent);
       margin-bottom: 0.5rem;
     }
 
     .subtitle {
-      color: #666;
+      color: var(--text-muted);
       margin-bottom: 2rem;
     }
 
@@ -36,15 +42,15 @@
 
     .top-links a {
       font-size: 0.8rem;
-      color: #555;
+      color: var(--text-muted);
       text-decoration: none;
-      border: 1px solid #ddd;
+      border: 1px solid var(--border);
       padding: 0.35rem 0.75rem;
       border-radius: 999px;
     }
 
     .section {
-      background: white;
+      background: var(--bg-elevated);
       border-radius: 8px;
       padding: 1.5rem;
       margin-bottom: 1.5rem;
@@ -53,7 +59,7 @@
 
     .section h2 {
       margin: 0 0 1rem;
-      color: #333;
+      color: var(--text);
       font-size: 1.25rem;
     }
 
@@ -73,7 +79,7 @@
 
     .demo-controls label {
       font-size: 0.875rem;
-      color: #666;
+      color: var(--text-muted);
     }
 
     .demo-controls input[type="range"] {
@@ -82,14 +88,14 @@
 
     .demo-controls input[type="text"] {
       padding: 0.5rem;
-      border: 1px solid #ddd;
+      border: 1px solid var(--border);
       border-radius: 4px;
       width: 100%;
     }
 
     .event-log {
-      background: #1e1e1e;
-      color: #d4d4d4;
+      background: var(--bg-panel);
+      color: var(--text);
       border-radius: 4px;
       padding: 1rem;
       font-family: monospace;
@@ -107,7 +113,7 @@
     }
 
     .event-log .time {
-      color: #888;
+      color: var(--text-dim);
     }
 
     .stats {
@@ -115,7 +121,7 @@
       gap: 2rem;
       margin-top: 1rem;
       padding-top: 1rem;
-      border-top: 1px solid #eee;
+      border-top: 1px solid var(--border);
     }
 
     .stat {
@@ -125,12 +131,12 @@
     .stat-value {
       font-size: 2rem;
       font-weight: bold;
-      color: #333;
+      color: var(--text);
     }
 
     .stat-label {
       font-size: 0.75rem;
-      color: #666;
+      color: var(--text-muted);
       text-transform: uppercase;
     }
 
@@ -144,7 +150,7 @@
 
     button {
       padding: 0.5rem 1rem;
-      background: #007bff;
+      background: var(--accent);
       color: white;
       border: none;
       border-radius: 4px;
@@ -153,7 +159,7 @@
     }
 
     button:hover {
-      background: #0056b3;
+      background: var(--accent-strong);
     }
 
     .button-group {
@@ -166,14 +172,14 @@
       height: 100px;
       overflow-y: auto;
       background: #f8f8f8;
-      border: 1px solid #ddd;
+      border: 1px solid var(--border);
       border-radius: 4px;
       padding: 1rem;
     }
 
     .scroll-content {
       height: 500px;
-      background: linear-gradient(to bottom, #e3f2fd, #bbdefb, #90caf9, #64b5f6, #42a5f5);
+      background: linear-gradient(to bottom, var(--bg-panel), #bbdefb, #90caf9, #64b5f6, #42a5f5);
     }
 
     .resize-area {
@@ -183,13 +189,13 @@
       min-height: 80px;
       max-width: 100%;
       background: #f8f8f8;
-      border: 1px solid #ddd;
+      border: 1px solid var(--border);
       border-radius: 4px;
       padding: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #666;
+      color: var(--text-muted);
     }
 
     .code-block {
@@ -203,7 +209,11 @@
       white-space: pre-wrap;
       word-break: break-word;
     }
-  </style>
+  
+
+
+
+</style>
   <link rel="stylesheet" href="../../demo-theme.css" />
 </head>
 <body>
@@ -228,7 +238,7 @@ const throttled = throttle(onScroll, 200);
   <!-- Debounce Demo -->
   <div class="section">
     <h2>Debounce - Search Input</h2>
-    <p style="color: #666; font-size: 0.875rem; margin-bottom: 1rem;">
+    <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1rem;">
       Type in the input and see how debounce delays the API call until you stop typing.
     </p>
     <div class="demo-row">
@@ -268,7 +278,7 @@ input.addEventListener('input', (e) => {
   <!-- Throttle Demo -->
   <div class="section">
     <h2>Throttle - Scroll Handler</h2>
-    <p style="color: #666; font-size: 0.875rem; margin-bottom: 1rem;">
+    <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1rem;">
       Scroll inside the box and see how throttle limits the handler calls.
     </p>
     <div class="demo-row">
@@ -308,7 +318,7 @@ scrollArea.addEventListener('scroll', onScroll);
   <!-- Once Demo -->
   <div class="section">
     <h2>Once - Single Initialization</h2>
-    <p style="color: #666; font-size: 0.875rem; margin-bottom: 1rem;">
+    <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1rem;">
       Click the button multiple times - the function only executes once.
     </p>
     <div class="button-group">
@@ -329,7 +339,7 @@ button.addEventListener('click', initOnce);
   <!-- Rate Limit Demo -->
   <div class="section">
     <h2>Rate Limit - API Calls</h2>
-    <p style="color: #666; font-size: 0.875rem; margin-bottom: 1rem;">
+    <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1rem;">
       Limited to 5 calls per 3 seconds. Click rapidly to see rate limiting in action.
     </p>
     <div class="button-group">

@@ -11,31 +11,22 @@
     rel="stylesheet"
   />
   <style>
-    :root {
-      --bg: #0f1117;
-      --bg-2: #151a26;
-      --card: #1c2233;
-      --accent: #ffb000;
-      --accent-2: #00d0ff;
-      --text: #f3f6ff;
-      --muted: #b8c0d9;
-      --line: #2b3247;
-    }
 
-    * { box-sizing: border-box; }
+
+* { box-sizing: border-box; }
 
     body {
       margin: 0;
       color: var(--text);
       background: radial-gradient(circle at 10% 10%, #1a2136, transparent 50%),
         radial-gradient(circle at 80% 0%, #1d1b34, transparent 45%),
-        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-panel) 100%);
       font-family: "Space Grotesk", "Trebuchet MS", Arial, sans-serif;
     }
 
     header {
       padding: 32px 24px 16px;
-      border-bottom: 1px solid var(--line);
+      border-bottom: 1px solid var(--border);
     }
 
     .container {
@@ -51,10 +42,10 @@
     }
 
     .top-links a {
-      border: 1px solid var(--line);
+      border: 1px solid var(--border);
       border-radius: 999px;
       padding: 6px 12px;
-      color: var(--muted);
+      color: var(--text-muted);
       font-size: 0.85rem;
       text-decoration: none;
       transition: border-color 0.2s ease, color 0.2s ease;
@@ -62,16 +53,18 @@
 
     .top-links a:hover {
       color: var(--text);
-      border-color: var(--accent-2);
+      border-color: var(--accent-strong);
     }
 
     h1 {
       margin: 0;
       font-size: clamp(28px, 4vw, 44px);
+    
+      color: var(--accent);
     }
 
     p {
-      color: var(--muted);
+      color: var(--text-muted);
       margin: 8px 0 0;
     }
 
@@ -86,8 +79,8 @@
     }
 
     .card {
-      background: var(--card);
-      border: 1px solid var(--line);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
       border-radius: 16px;
       padding: 18px;
       display: grid;
@@ -102,11 +95,17 @@
       display: inline-flex;
       padding: 4px 10px;
       border-radius: 999px;
-      border: 1px solid var(--line);
-      color: var(--muted);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
       font-size: 0.75rem;
     }
-  </style>
+  
+
+
+
+
+
+</style>
   <link rel="stylesheet" href="../../demo-theme.css" />
 </head>
 <body>
