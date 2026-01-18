@@ -94,6 +94,104 @@ parseQueryString('ids=1,2,3', { arrayFormat: 'comma' });
 
 `https://manufosela.github.io/utils/packages/url-params/demo/`
 
+## CodePen-ready example (HTML/CSS/JS)
+
+<details>
+<summary>View full snippet</summary>
+
+```html
+<div class="panel">
+  <div class="row">
+    <input id="key" placeholder="param" value="page" />
+    <input id="value" placeholder="value" value="1" />
+  </div>
+  <div class="row">
+    <button id="setBtn">Set param</button>
+    <button id="getBtn">Get param</button>
+    <button id="removeBtn">Remove param</button>
+  </div>
+  <pre id="log"></pre>
+</div>
+```
+
+```css
+body {
+  font-family: system-ui, sans-serif;
+  padding: 24px;
+  background: #0c0f14;
+  color: #f4f6fb;
+}
+.panel {
+  background: #141923;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #262f3f;
+}
+.row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+input,
+button {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #2b3445;
+  background: #101521;
+  color: #f4f6fb;
+}
+button {
+  background: #ff8a3d;
+  color: #0c0f14;
+  cursor: pointer;
+}
+pre {
+  margin-top: 8px;
+  background: #0f1420;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #262f3f;
+  min-height: 120px;
+}
+```
+
+```js
+import { getParam, setParam, removeParam, getParams } from "https://esm.sh/@manufosela/url-params";
+
+const logEl = document.getElementById("log");
+const log = (msg) => {
+  logEl.textContent = `${new Date().toLocaleTimeString()} ${msg}\\n` + logEl.textContent;
+};
+
+const getValues = () => ({
+  key: document.getElementById("key").value,
+  value: document.getElementById("value").value,
+});
+
+if (!getParam("page")) {
+  setParam("page", 1);
+}
+
+document.getElementById("setBtn").addEventListener("click", () => {
+  const { key, value } = getValues();
+  setParam(key, value);
+  log(`set ${key}=${value}`);
+});
+
+document.getElementById("getBtn").addEventListener("click", () => {
+  const { key } = getValues();
+  log(`get ${key} -> ${getParam(key)}`);
+  log(`all -> ${JSON.stringify(getParams())}`);
+});
+
+document.getElementById("removeBtn").addEventListener("click", () => {
+  const { key } = getValues();
+  removeParam(key);
+  log(`remove ${key}`);
+});
+```
+</details>
+
 ## API
 
 ### UrlParams Class

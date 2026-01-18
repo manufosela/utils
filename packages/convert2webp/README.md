@@ -105,6 +105,101 @@ URL.revokeObjectURL(url);
 
 `https://manufosela.github.io/utils/packages/convert2webp/demo/`
 
+## CodePen-ready example (HTML/CSS/JS)
+
+<details>
+<summary>View full snippet</summary>
+
+```html
+<div class="panel">
+  <input id="file" type="file" accept="image/*" />
+  <label>
+    Quality
+    <input id="quality" type="range" min="0.1" max="1" step="0.05" value="0.8" />
+    <span id="qualityValue">0.8</span>
+  </label>
+  <div class="row">
+    <img id="preview" alt="Preview" />
+    <img id="previewWebp" alt="WebP Preview" />
+  </div>
+  <pre id="log"></pre>
+</div>
+```
+
+```css
+body {
+  font-family: system-ui, sans-serif;
+  padding: 24px;
+  background: #0c0f14;
+  color: #f4f6fb;
+}
+.panel {
+  background: #141923;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #262f3f;
+}
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+input[type="file"],
+input[type="range"] {
+  margin-top: 8px;
+}
+img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: contain;
+  background: #0f1420;
+  border-radius: 10px;
+  border: 1px solid #262f3f;
+}
+pre {
+  margin-top: 12px;
+  background: #0f1420;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #262f3f;
+  min-height: 120px;
+}
+```
+
+```js
+import { convertToWebP } from "https://esm.sh/@manufosela/convert2webp";
+
+const fileInput = document.getElementById("file");
+const qualityInput = document.getElementById("quality");
+const qualityValue = document.getElementById("qualityValue");
+const preview = document.getElementById("preview");
+const previewWebp = document.getElementById("previewWebp");
+const logEl = document.getElementById("log");
+
+const log = (msg) => {
+  logEl.textContent = `${new Date().toLocaleTimeString()} ${msg}\\n` + logEl.textContent;
+};
+
+const updateQuality = () => {
+  qualityValue.textContent = qualityInput.value;
+};
+
+qualityInput.addEventListener("input", updateQuality);
+updateQuality();
+
+fileInput.addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  preview.src = URL.createObjectURL(file);
+
+  const result = await convertToWebP(file, Number(qualityInput.value));
+  previewWebp.src = URL.createObjectURL(result.blob);
+  log(`Converted ${file.name} -> ${result.size} bytes`);
+});
+```
+</details>
+
 ## API Reference
 
 ### convertToWebP(file, qualityOrOptions?)

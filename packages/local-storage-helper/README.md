@@ -84,6 +84,103 @@ const storage = new LocalStorageHelper({
 });
 ```
 
+## CodePen-ready example (HTML/CSS/JS)
+
+<details>
+<summary>View full snippet</summary>
+
+```html
+<div class="panel">
+  <div class="row">
+    <input id="key" placeholder="key" value="demo" />
+    <input id="value" placeholder="value" value="hello" />
+    <input id="ttl" type="number" placeholder="ttl ms" value="3000" />
+  </div>
+  <div class="row">
+    <button id="setBtn">Set</button>
+    <button id="getBtn">Get</button>
+    <button id="removeBtn">Remove</button>
+  </div>
+  <pre id="log"></pre>
+</div>
+```
+
+```css
+body {
+  font-family: system-ui, sans-serif;
+  padding: 24px;
+  background: #0c0f14;
+  color: #f4f6fb;
+}
+.panel {
+  background: #141923;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #262f3f;
+}
+.row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+input,
+button {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #2b3445;
+  background: #101521;
+  color: #f4f6fb;
+}
+button {
+  background: #ff8a3d;
+  color: #0c0f14;
+  cursor: pointer;
+}
+pre {
+  margin-top: 8px;
+  background: #0f1420;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #262f3f;
+  min-height: 120px;
+}
+```
+
+```js
+import { LocalStorageHelper } from "https://esm.sh/@manufosela/local-storage-helper";
+
+const storage = new LocalStorageHelper({ prefix: "demo_" });
+const logEl = document.getElementById("log");
+const log = (msg) => {
+  logEl.textContent = `${new Date().toLocaleTimeString()} ${msg}\\n` + logEl.textContent;
+};
+
+const getValue = () => ({
+  key: document.getElementById("key").value,
+  value: document.getElementById("value").value,
+  ttl: Number(document.getElementById("ttl").value || 0),
+});
+
+document.getElementById("setBtn").addEventListener("click", () => {
+  const { key, value, ttl } = getValue();
+  storage.set(key, value, ttl);
+  log(`set ${key} (${ttl}ms)`);
+});
+
+document.getElementById("getBtn").addEventListener("click", () => {
+  const { key } = getValue();
+  const value = storage.get(key);
+  log(`get ${key} -> ${value}`);
+});
+
+document.getElementById("removeBtn").addEventListener("click", () => {
+  const { key } = getValue();
+  storage.remove(key);
+  log(`remove ${key}`);
+});
+```
+</details>
+
 ## API
 
 ### Constructor

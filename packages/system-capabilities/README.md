@@ -102,6 +102,72 @@ if (isStandalone()) {
 
 `https://manufosela.github.io/utils/packages/system-capabilities/demo/`
 
+## CodePen-ready example (HTML/CSS/JS)
+
+<details>
+<summary>View full snippet</summary>
+
+```html
+<div class="panel">
+  <button id="scan">Scan capabilities</button>
+  <pre id="output"></pre>
+</div>
+```
+
+```css
+body {
+  font-family: system-ui, sans-serif;
+  padding: 24px;
+  background: #0c0f14;
+  color: #f4f6fb;
+}
+.panel {
+  background: #141923;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #262f3f;
+}
+button {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #2b3445;
+  background: #ff8a3d;
+  color: #0c0f14;
+  cursor: pointer;
+}
+pre {
+  margin-top: 16px;
+  background: #0f1420;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #262f3f;
+  min-height: 160px;
+}
+```
+
+```js
+import { getBrowserInfo, getCapabilities, prefersDarkMode } from "https://esm.sh/@manufosela/system-capabilities";
+
+const output = document.getElementById("output");
+const scan = async () => {
+  const info = getBrowserInfo();
+  const caps = await getCapabilities();
+  const data = {
+    browser: `${info.name} ${info.version}`,
+    os: `${info.os} ${info.osVersion || ""}`.trim(),
+    prefersDark: prefersDarkMode(),
+    webgl: caps.webgl,
+    webp: caps.webp,
+    serviceWorker: caps.serviceWorker,
+  };
+  output.textContent = JSON.stringify(data, null, 2);
+};
+
+document.getElementById("scan").addEventListener("click", scan);
+scan();
+```
+</details>
+
 ## API Reference
 
 ### getBrowserInfo()

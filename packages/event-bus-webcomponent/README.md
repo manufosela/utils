@@ -53,6 +53,79 @@ bus.emit({
 });
 ```
 
+## CodePen-ready example (HTML/CSS/JS)
+
+<details>
+<summary>View full snippet</summary>
+
+```html
+<div class="row">
+  <button id="sendA">Send to A</button>
+  <button id="sendAll">Broadcast</button>
+</div>
+<pre id="log"></pre>
+```
+
+```css
+body {
+  font-family: system-ui, sans-serif;
+  padding: 24px;
+  background: #0c0f14;
+  color: #f4f6fb;
+}
+button {
+  margin-right: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #262f3f;
+  background: #ff8a3d;
+  color: #0c0f14;
+  cursor: pointer;
+}
+pre {
+  margin-top: 16px;
+  background: #141923;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #262f3f;
+}
+```
+
+```js
+import { WebComponentEventBus, ALL, ALL_TYPES } from "https://esm.sh/@manufosela/event-bus-webcomponent";
+
+const log = (msg) => {
+  const el = document.getElementById("log");
+  el.textContent = `${new Date().toLocaleTimeString()} ${msg}\\n` + el.textContent;
+};
+
+const bus = new WebComponentEventBus();
+const componentA = { id: "a", type: "demo-card" };
+const componentB = { id: "b", type: "demo-card" };
+
+bus.on(componentA, (envelope) => log(`A received: ${envelope.name}`));
+bus.on(componentB, (envelope) => log(`B received: ${envelope.name}`));
+
+document.getElementById("sendA").addEventListener("click", () => {
+  bus.emit({
+    name: "ping",
+    detail: { ts: Date.now() },
+    source: { id: "sender", type: "controls" },
+    target: { id: "a", type: "demo-card" },
+  });
+});
+
+document.getElementById("sendAll").addEventListener("click", () => {
+  bus.emit({
+    name: "broadcast",
+    detail: { ts: Date.now() },
+    source: { id: "sender", type: "controls" },
+    target: { id: ALL, type: ALL_TYPES, excludeSource: true },
+  });
+});
+```
+</details>
+
 ## DOM CustomEvent integration
 
 Events are dispatched as `CustomEvent` on the root (default: `document`).

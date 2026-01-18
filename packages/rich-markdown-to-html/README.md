@@ -74,6 +74,77 @@ const safe = escape('<script>alert("xss")</script>');
 
 `https://manufosela.github.io/utils/packages/rich-markdown-to-html/demo/`
 
+## CodePen-ready example (HTML/CSS/JS)
+
+<details>
+<summary>View full snippet</summary>
+
+```html
+<div class="panel">
+  <textarea id="input"># Hello\\n\\n- [x] Task\\n- **Bold** text</textarea>
+  <div id="output" class="preview"></div>
+</div>
+```
+
+```css
+body {
+  font-family: system-ui, sans-serif;
+  padding: 24px;
+  background: #0c0f14;
+  color: #f4f6fb;
+}
+.panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+textarea {
+  width: 100%;
+  min-height: 240px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #2b3445;
+  background: #101521;
+  color: #f4f6fb;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+.preview {
+  background: #141923;
+  border-radius: 10px;
+  border: 1px solid #262f3f;
+  padding: 16px;
+}
+.preview h1,
+.preview h2,
+.preview h3 {
+  color: #ff8a3d;
+}
+.preview code {
+  background: #0f1420;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+```
+
+```js
+import { parse } from "https://esm.sh/@manufosela/rich-markdown-to-html";
+
+const input = document.getElementById("input");
+const output = document.getElementById("output");
+
+const render = () => {
+  output.innerHTML = parse(input.value, {
+    tables: true,
+    taskLists: true,
+    sanitize: true,
+  });
+};
+
+input.addEventListener("input", render);
+render();
+```
+</details>
+
 ## Supported Syntax
 
 ### Headers

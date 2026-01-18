@@ -72,6 +72,84 @@ emitter.emit('user:login', { name: 'John' }); // Both listeners fire
 emitter.emit('system:ready', {}); // Only ** listener fires
 ```
 
+## CodePen-ready example (HTML/CSS/JS)
+
+<details>
+<summary>View full snippet</summary>
+
+```html
+<div class="panel">
+  <div class="row">
+    <button id="emitA">Emit user:login</button>
+    <button id="emitB">Emit user:logout</button>
+    <button id="emitAny">Emit system:ready</button>
+  </div>
+  <pre id="log"></pre>
+</div>
+```
+
+```css
+body {
+  font-family: system-ui, sans-serif;
+  padding: 24px;
+  background: #0c0f14;
+  color: #f4f6fb;
+}
+.panel {
+  background: #141923;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #262f3f;
+}
+.row {
+  display: flex;
+  gap: 12px;
+}
+button {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #2b3445;
+  background: #ff8a3d;
+  color: #0c0f14;
+  cursor: pointer;
+}
+pre {
+  margin-top: 16px;
+  background: #0f1420;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #262f3f;
+  min-height: 140px;
+}
+```
+
+```js
+import { EventEmitter } from "https://esm.sh/@manufosela/event-emitter";
+
+const logEl = document.getElementById("log");
+const log = (msg) => {
+  logEl.textContent = `${new Date().toLocaleTimeString()} ${msg}\\n` + logEl.textContent;
+};
+
+const emitter = new EventEmitter({ wildcard: true });
+
+emitter.on("user:*", (payload) => log(`user:* ${payload.action}`));
+emitter.on("**", (payload) => log(`** ${payload.action}`));
+
+document.getElementById("emitA").addEventListener("click", () => {
+  emitter.emit("user:login", { action: "login" });
+});
+
+document.getElementById("emitB").addEventListener("click", () => {
+  emitter.emit("user:logout", { action: "logout" });
+});
+
+document.getElementById("emitAny").addEventListener("click", () => {
+  emitter.emit("system:ready", { action: "ready" });
+});
+```
+</details>
+
 ## Demo
 
 See the demos at `https://manufosela.github.io/utils/packages/event-emitter/demo/`.

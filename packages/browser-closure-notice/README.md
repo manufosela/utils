@@ -77,6 +77,54 @@ Si no proporcionas un `callback`, se mostrará automáticamente un `<dialog>` mo
 </script>
 ```
 
+**Ejemplo listo para CodePen (HTML/CSS/JS):**
+
+<details>
+<summary>Ver snippet completo</summary>
+
+```html
+<div class="panel">
+  <h2>Browser Closure Notice</h2>
+  <p>Simula la deteccion moviendo el raton hacia el borde superior.</p>
+  <div id="status">Esperando movimiento...</div>
+</div>
+```
+
+```css
+body {
+  font-family: system-ui, sans-serif;
+  padding: 24px;
+  background: #0c0f14;
+  color: #f4f6fb;
+}
+.panel {
+  background: #141923;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #262f3f;
+}
+#status {
+  margin-top: 12px;
+  color: #ff8a3d;
+}
+```
+
+```js
+import { BrowserClosureNotice } from "https://esm.sh/@manufosela/browser-closure-notice";
+
+const status = document.getElementById("status");
+const notice = new BrowserClosureNotice({
+  dialogMessage: "Hey! Te vas?",
+  callback: () => {
+    status.textContent = "Detectado intento de cierre";
+  },
+  maxTimes: 1,
+});
+
+notice.detect();
+```
+</details>
+
 ### 🎯 Métodos
 
 La clase tiene 2 métodos:
@@ -186,6 +234,54 @@ If you don't provide a `callback`, a modern styled `<dialog>` modal will be auto
   bcn.detect();
 </script>
 ```
+
+**CodePen-ready example (HTML/CSS/JS):**
+
+<details>
+<summary>View full snippet</summary>
+
+```html
+<div class="panel">
+  <h2>Browser Closure Notice</h2>
+  <p>Move your mouse toward the top edge to simulate detection.</p>
+  <div id="status">Waiting for movement...</div>
+</div>
+```
+
+```css
+body {
+  font-family: system-ui, sans-serif;
+  padding: 24px;
+  background: #0c0f14;
+  color: #f4f6fb;
+}
+.panel {
+  background: #141923;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #262f3f;
+}
+#status {
+  margin-top: 12px;
+  color: #ff8a3d;
+}
+```
+
+```js
+import { BrowserClosureNotice } from "https://esm.sh/@manufosela/browser-closure-notice";
+
+const status = document.getElementById("status");
+const notice = new BrowserClosureNotice({
+  dialogMessage: "Wait! Leaving already?",
+  callback: () => {
+    status.textContent = "Close intent detected";
+  },
+  maxTimes: 1,
+});
+
+notice.detect();
+```
+</details>
 
 ### 🎯 Methods
 
