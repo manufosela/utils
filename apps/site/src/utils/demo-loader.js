@@ -41,6 +41,26 @@ const extractHref = (tag) => {
 
 const isExternal = (href) => /^(?:[a-z]+:)?\/\//i.test(href);
 
+const loadPackageName = (slug) => {
+  const pkgPath = path.join(packagesDir, slug, "package.json");
+  if (!fs.existsSync(pkgPath)) return null;
+  try {
+    const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8"));
+    return pkg.name || null;
+  } catch (error) {
+    return null;
+  }
+};
+
+const rewriteDemoImports = (scripts, packageName) => {
+  if (!scripts || !packageName) return scripts;
+  return scripts
+    .replace(/from\s+["']\.\.\/src\/[^"']+["']/g, `from "https://esm.sh/${packageName}"`)
+    .replace(/from\s+["']\.\/src\/[^"']+["']/g, `from "https://esm.sh/${packageName}"`)
+    .replace(/import\s+["']\.\.\/src\/[^"']+["'];?/g, `import "https://esm.sh/${packageName}";`)
+    .replace(/import\s+["']\.\/src\/[^"']+["'];?/g, `import "https://esm.sh/${packageName}";`);
+};
+
 const resolveLinkStyles = (links, baseDir) => {
   const inlineStyles = [];
   const externalLinks = [];
@@ -78,21 +98,47 @@ const resolveLinkStyles = (links, baseDir) => {
   };
 };
 
+const inlineScriptSources = (scripts, baseDir) => {
+  if (!scripts) return scripts;
+  return scripts.replace(
+    /<script([^>]*?)src=["']([^"']+)["']([^>]*)><\/script>/gi,
+    (match, pre, src, post) => {
+      if (!src || isExternal(src)) {
+        return match;
+      }
+
+      const filePath = path.resolve(baseDir, src);
+      const js = readFile(filePath);
+      if (!js) {
+        return match;
+      }
+
+      const typeMatch = `${pre}${post}`.match(/type=["']([^"']+)["']/i);
+      const typeAttr = typeMatch ? ` type="${typeMatch[1]}"` : "";
+      return `<script${typeAttr}>\n${js}\n</script>`;
+    }
+  );
+};
+
 export function loadDemo(slug, kind = "demo") {
   const fileName = kind === "demo" ? "index.html" : "playground.html";
   const filePath = path.join(packagesDir, slug, "demo", fileName);
   const html = readFile(filePath);
   if (!html) return null;
+  const packageName = loadPackageName(slug);
+  const baseDir = path.dirname(filePath);
 
   const head = extractTag(html, "head");
   const body = extractTag(html, "body");
   const linkTags = collectLinkTags(head);
   const { inlineStyles, externalLinks } = resolveLinkStyles(
     linkTags,
-    path.dirname(filePath)
+    baseDir
   );
   const styles = collectTags(head, "style") + "\n" + collectTags(body, "style") + "\n" + inlineStyles;
-  const scripts = collectTags(head, "script") + "\n" + collectTags(body, "script");
+  const scriptsRaw = collectTags(head, "script") + "\n" + collectTags(body, "script");
+  const scriptsInlined = inlineScriptSources(scriptsRaw, baseDir);
+  const scripts = rewriteDemoImports(scriptsInlined, packageName);
   const cleanedBody = stripShell(stripTags(body)).trim();
 
   return {

@@ -28,7 +28,9 @@ const rewriteImports = (code = "", packageName = "") => {
   if (!code || !packageName) return code;
   return code
     .replace(/from\s+["']\.\.?\/src\/[^"']+["']/g, `from "https://esm.sh/${packageName}"`)
-    .replace(/import\s+["']\.\.?\/src\/[^"']+["'];?/g, `import "https://esm.sh/${packageName}";`);
+    .replace(/from\s+["']\.\/src\/[^"']+["']/g, `from "https://esm.sh/${packageName}"`)
+    .replace(/import\s+["']\.\.?\/src\/[^"']+["'];?/g, `import "https://esm.sh/${packageName}";`)
+    .replace(/import\s+["']\.\/src\/[^"']+["'];?/g, `import "https://esm.sh/${packageName}";`);
 };
 
 const codepenVars = `:root {

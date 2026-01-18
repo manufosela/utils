@@ -11,8 +11,6 @@
     rel="stylesheet"
   />
   <style>
-
-
 * { box-sizing: border-box; }
 
     body {
@@ -30,7 +28,7 @@
     }
 
     .container {
-      max-width: 980px;
+      max-width: 1100px;
       margin: 0 auto;
     }
 
@@ -53,13 +51,12 @@
 
     .top-links a:hover {
       color: var(--text);
-      border-color: var(--accent-strong);
+      border-color: var(--accent);
     }
 
     h1 {
       margin: 0;
       font-size: clamp(28px, 4vw, 44px);
-    
       color: var(--accent);
     }
 
@@ -72,24 +69,24 @@
       padding: 24px;
     }
 
-    .grid {
+    .demo-section {
       display: grid;
       gap: 16px;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      align-items: start;
+      margin-bottom: 20px;
     }
 
-    .card {
+    .panel {
       background: var(--bg-elevated);
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 18px;
-      display: grid;
-      gap: 10px;
     }
 
-    .card h3 { margin: 0; }
-
-    .card p { margin: 0; font-size: 0.9rem; }
+    .panel h2 {
+      margin: 0 0 8px;
+    }
 
     .badge {
       display: inline-flex;
@@ -98,14 +95,44 @@
       border: 1px solid var(--border);
       color: var(--text-muted);
       font-size: 0.75rem;
+      margin-bottom: 8px;
     }
-  
 
+    button {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(120deg, var(--accent), #ff6a00);
+      color: #111;
+      cursor: pointer;
+      font-weight: 600;
+      margin: 4px 6px 4px 0;
+    }
 
+    .output {
+      margin-top: 12px;
+      background: #0b0f1a;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.85rem;
+      max-height: 240px;
+      overflow-y: auto;
+    }
 
+    .log-entry { border-bottom: 1px solid #1f2537; padding: 4px 0; }
+    .log-entry:last-child { border-bottom: none; }
 
-
-</style>
+    .code-block {
+      background: #0b0f1a;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.85rem;
+      color: #d6d9e6;
+      white-space: pre-wrap;
+    }
+  </style>
   <link rel="stylesheet" href="../../demo-theme.css" />
 </head>
 <body>
@@ -116,28 +143,161 @@
         <a href="https://manufosela.github.io/">Main catalog</a>
         <a href="https://github.com/manufosela/utils/tree/main/packages/event-emitter">Source</a>
       </div>
-        <demo-theme-toggle></demo-theme-toggle>
+      <demo-theme-toggle></demo-theme-toggle>
       <h1>event-emitter demos</h1>
-      <p>Interactive demos for pub/sub, namespaces, and wildcard patterns.</p>
+      <p>Pub/sub basics and wildcard matching in action.</p>
     </div>
   </header>
 
   <main>
-    <div class="container grid">
-      <div class="card">
-        <span class="badge">Basics</span>
-        <h3>Basic usage</h3>
-        <p>Simple emit/on/once flows with logging output.</p>
-        <a href="./basic.html">Open demo →</a>
-      </div>
-      <div class="card">
-        <span class="badge">Wildcards</span>
-        <h3>Namespaces and wildcards</h3>
-        <p>See how * and ** match segments and namespaces.</p>
-        <a href="./wildcards.html">Open demo →</a>
-      </div>
+    <div class="container">
+      <section class="demo-section">
+        <div class="panel">
+          <span class="badge">Basics</span>
+          <h2>Basic usage</h2>
+          <p>Subscribe handlers, emit events, and use once listeners.</p>
+          <button id="emit-message">Emit message</button>
+          <button id="emit-login">Emit user:login</button>
+          <button id="emit-logout">Emit user:logout</button>
+          <button id="emit-once">Emit init (once)</button>
+          <div class="output" id="output-basic"></div>
+        </div>
+        <div class="panel">
+          <h2>Code</h2>
+          <div class="code-block" data-code="basic"></div>
+        </div>
+      </section>
+
+      <section class="demo-section">
+        <div class="panel">
+          <span class="badge">Wildcards</span>
+          <h2>Namespaces and wildcards</h2>
+          <p><strong>*</strong> matches one segment, <strong>**</strong> matches multiple segments.</p>
+          <button id="emit-login-w">Emit user:login</button>
+          <button id="emit-logout-w">Emit user:logout</button>
+          <button id="emit-admin-w">Emit user:admin:login</button>
+          <button id="emit-system-w">Emit system:ready</button>
+          <div class="output" id="output-wildcards"></div>
+        </div>
+        <div class="panel">
+          <h2>Code</h2>
+          <div class="code-block" data-code="wildcards"></div>
+        </div>
+      </section>
     </div>
   </main>
+
+  <template id="snippet-basic">
+import { EventEmitter } from "https://esm.sh/@manufosela/event-emitter";
+
+const emitter = new EventEmitter();
+
+emitter.on("message", (payload) => {
+  console.log("message", payload.text);
+});
+
+emitter.on("user:login", (user) => {
+  console.log("user logged in", user.name);
+});
+
+emitter.once("init", () => {
+  console.log("init only once");
+});
+
+emitter.emit("message", { text: "Hello World" });
+emitter.emit("user:login", { id: 1, name: "John" });
+emitter.emit("init");
+  </template>
+
+  <template id="snippet-wildcards">
+import { EventEmitter } from "https://esm.sh/@manufosela/event-emitter";
+
+const emitter = new EventEmitter({ wildcard: true });
+
+// * matches a single segment (user:login, user:logout)
+emitter.on("user:*", (payload) => {
+  console.log("user:*", payload);
+});
+
+// ** matches multiple segments (user:admin:login)
+emitter.on("user:**", (payload) => {
+  console.log("user:**", payload);
+});
+
+// ** can match any event
+emitter.on("**", (payload) => {
+  console.log("any event", payload);
+});
+
+emitter.emit("user:login", { id: 1 });
+emitter.emit("user:admin:login", { id: 2 });
+emitter.emit("system:ready", { ok: true });
+  </template>
+
+  <script type="module">
+    import { EventEmitter } from "../src/index.js";
+
+    const emitterBasic = new EventEmitter({ wildcard: true });
+    const emitterWild = new EventEmitter({ wildcard: true });
+
+    const outputBasic = document.getElementById("output-basic");
+    const outputWild = document.getElementById("output-wildcards");
+
+    const log = (container, message) => {
+      const entry = document.createElement("div");
+      entry.className = "log-entry";
+      entry.textContent = message;
+      container.prepend(entry);
+    };
+
+    emitterBasic.on("message", (data) => log(outputBasic, `message: ${JSON.stringify(data)}`));
+    emitterBasic.on("user:login", (user) => log(outputBasic, `user:login: ${user.name}`));
+    emitterBasic.on("user:logout", (user) => log(outputBasic, `user:logout: ${user.name}`));
+    emitterBasic.once("init", () => log(outputBasic, "init received (once)"));
+
+    document.getElementById("emit-message").addEventListener("click", () => {
+      emitterBasic.emit("message", { text: "Hello World!", timestamp: Date.now() });
+    });
+    document.getElementById("emit-login").addEventListener("click", () => {
+      emitterBasic.emit("user:login", { id: 1, name: "John Doe" });
+    });
+    document.getElementById("emit-logout").addEventListener("click", () => {
+      emitterBasic.emit("user:logout", { id: 1, name: "John Doe" });
+    });
+    document.getElementById("emit-once").addEventListener("click", () => {
+      emitterBasic.emit("init");
+      log(outputBasic, "init emitted");
+    });
+
+    emitterWild.on("user:*", () => log(outputWild, "Matched user:*"));
+    emitterWild.on("user:**", () => log(outputWild, "Matched user:**"));
+    emitterWild.on("**", () => log(outputWild, "Matched ** (any event)"));
+
+    document.getElementById("emit-login-w").addEventListener("click", () => {
+      emitterWild.emit("user:login", { id: 1 });
+    });
+    document.getElementById("emit-logout-w").addEventListener("click", () => {
+      emitterWild.emit("user:logout", { id: 1 });
+    });
+    document.getElementById("emit-admin-w").addEventListener("click", () => {
+      emitterWild.emit("user:admin:login", { id: 2 });
+    });
+    document.getElementById("emit-system-w").addEventListener("click", () => {
+      emitterWild.emit("system:ready", { ok: true });
+    });
+
+    const snippets = {
+      basic: document.getElementById("snippet-basic"),
+      wildcards: document.getElementById("snippet-wildcards"),
+    };
+
+    document.querySelectorAll("[data-code]").forEach((block) => {
+      const key = block.dataset.code;
+      if (snippets[key]) {
+        block.textContent = snippets[key].innerHTML.trim();
+      }
+    });
+  </script>
   <script type="module" src="../../demo-theme-toggle.js"></script>
 </body>
 </html>

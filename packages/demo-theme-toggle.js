@@ -7,17 +7,14 @@ class DemoThemeToggle extends HTMLElement {
 
   connectedCallback() {
     const saved = localStorage.getItem('utils-demo-theme');
-    if (saved === 'light' || saved === 'dark') {
-      document.documentElement.classList.toggle('dark', saved === 'dark');
-    } else {
-      document.documentElement.classList.add('dark');
-    }
+    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.toggle('light', saved === 'light');
 
     this.render();
   }
 
   render() {
-    const isDark = document.documentElement.classList.contains('dark');
+    const isLight = document.documentElement.classList.contains('light');
     this.shadowRoot.innerHTML = `
       <style>
         :host {
@@ -26,29 +23,29 @@ class DemoThemeToggle extends HTMLElement {
         .toggle {
           display: inline-flex;
           align-items: center;
-          border: 1px solid #2b3247;
+          border: 1px solid var(--line);
           border-radius: 999px;
           overflow: hidden;
-          background: #0b0f1a;
+          background: var(--surface);
         }
         button {
           border: none;
           background: transparent;
-          color: #b8c0d9;
+          color: var(--muted);
           padding: 6px 12px;
           font-size: 0.8rem;
           cursor: pointer;
           font-family: "Space Grotesk", "Trebuchet MS", Arial, sans-serif;
         }
         button.active {
-          background: linear-gradient(120deg, #ffb000, #ff6a00);
+          background: linear-gradient(120deg, var(--accent), #ff6a00);
           color: #111;
           font-weight: 600;
         }
       </style>
       <div class="toggle" role="group" aria-label="Theme toggle">
-        <button class="${isDark ? '' : 'active'}" data-theme="light">Light</button>
-        <button class="${isDark ? 'active' : ''}" data-theme="dark">Dark</button>
+        <button class="${isLight ? 'active' : ''}" data-theme="light">Light</button>
+        <button class="${isLight ? '' : 'active'}" data-theme="dark">Dark</button>
       </div>
     `;
 
@@ -59,9 +56,10 @@ class DemoThemeToggle extends HTMLElement {
 
   handleClick(event) {
     const theme = event.currentTarget.dataset.theme;
-    const isDark = theme === 'dark';
-    document.documentElement.classList.toggle('dark', isDark);
-    localStorage.setItem('utils-demo-theme', theme);
+    const isLight = theme === 'light';
+    document.documentElement.classList.toggle('light', isLight);
+    document.documentElement.classList.remove('dark');
+    localStorage.setItem('utils-demo-theme', isLight ? 'light' : 'dark');
     this.render();
   }
 }

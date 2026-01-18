@@ -12,74 +12,446 @@
     />
     <link rel="stylesheet" href="./styles.css" />
     <link rel="stylesheet" href="../../demo-theme.css" />
-</head>
+  </head>
   <body>
     <header>
       <div class="container hero">
         <div class="top-links">
           <a href="https://manufosela.github.io/utils/">Utils catalog</a>
           <a href="https://manufosela.github.io/">Main catalog</a>
+          <a href="./playground.html">Playground</a>
           <a href="https://github.com/manufosela/utils/tree/main/packages/automatic-form-validation">Source</a>
         </div>
         <demo-theme-toggle></demo-theme-toggle>
         <h1>Automatic Form Validation demos</h1>
-        <p>Explore common patterns, from basic forms to advanced interactions.</p>
+        <p>Explore core patterns from basic forms to custom validators.</p>
       </div>
     </header>
 
     <main>
-      <div class="container">
-        <h2 class="section-title">Core demos</h2>
-        <div class="grid">
-          <div class="card">
+      <div class="container demo-shell">
+        <section class="demo-section">
+          <div class="demo-card">
             <span class="badge">Basics</span>
-            <h3>Basic form</h3>
-            <p>Required fields, email validation, and submit checks.</p>
-            <a href="./basic.html">Open demo →</a>
+            <h2>Basic form</h2>
+            <p class="note">Required fields, email validation, and submit checks.</p>
+            <form id="basicForm" class="demo-form" data-validate="true" data-checkrealtime="true">
+              <div>
+                <label for="basic-name">Name</label>
+                <input
+                  id="basic-name"
+                  name="basic-name"
+                  type="text"
+                  placeholder="Jane Doe"
+                  data-required="true"
+                  data-tovalidate="alpha"
+                />
+              </div>
+              <div>
+                <label for="basic-email">Email</label>
+                <input
+                  id="basic-email"
+                  name="basic-email"
+                  type="text"
+                  placeholder="jane@example.com"
+                  data-required="true"
+                  data-tovalidate="email"
+                />
+              </div>
+              <label>
+                <input id="basic-accept" name="basic-accept" type="checkbox" data-required="true" />
+                Accept terms
+              </label>
+              <button id="basic-submit" type="submit" data-checkform="true">Submit</button>
+            </form>
           </div>
-          <div class="card">
-            <span class="badge">Realtime</span>
-            <h3>Realtime validation</h3>
-            <p>Field validation on blur with clear messaging.</p>
-            <a href="./realtime.html">Open demo →</a>
+          <div class="demo-card">
+            <h3>Code</h3>
+            <details class="code-details">
+              <summary>Show HTML + JS</summary>
+              <div class="code-block"><pre><code data-code="basic"></code></pre></div>
+            </details>
           </div>
-          <div class="card">
-            <span class="badge">Custom</span>
-            <h3>Custom validators</h3>
-            <p>Use fn: callbacks and runtime validators via API.</p>
-            <a href="./custom-validator.html">Open demo →</a>
-          </div>
-          <div class="card">
-            <span class="badge">Logic</span>
-            <h3>Conditional fields</h3>
-            <p>Show and validate fields based on selections.</p>
-            <a href="./conditional.html">Open demo →</a>
-          </div>
-          <div class="card">
-            <span class="badge">Groups</span>
-            <h3>Checkbox groups</h3>
-            <p>Min/max selection validation for grouped checkboxes.</p>
-            <a href="./checkbox-group.html">Open demo →</a>
-          </div>
-        </div>
+        </section>
 
-        <h2 class="section-title">Advanced</h2>
-        <div class="grid">
-          <div class="card">
-            <span class="badge">Full form</span>
-            <h3>Advanced form</h3>
-            <p>Complex form with radios, hidden sections, and custom flows.</p>
-            <a href="./advanced.html">Open demo →</a>
+        <section class="demo-section">
+          <div class="demo-card">
+            <span class="badge">Realtime</span>
+            <h2>Realtime validation</h2>
+            <p class="note">Fields validate on blur for quick feedback.</p>
+            <form id="realtimeForm" class="demo-form" data-validate="true" data-checkrealtime="true">
+              <div>
+                <label for="realtime-username">Username</label>
+                <input
+                  id="realtime-username"
+                  name="realtime-username"
+                  type="text"
+                  placeholder="alpha only"
+                  data-required="true"
+                  data-tovalidate="alpha"
+                />
+              </div>
+              <div>
+                <label for="realtime-phone">Telephone</label>
+                <input
+                  id="realtime-phone"
+                  name="realtime-phone"
+                  type="text"
+                  placeholder="6xx xxx xxx"
+                  data-required="true"
+                  data-tovalidate="telephone"
+                />
+              </div>
+              <button id="realtime-submit" type="submit" data-checkform="true">Submit</button>
+            </form>
           </div>
-          <div class="card">
-            <span class="badge">Sandbox</span>
-            <h3>Playground</h3>
-            <p>Edit HTML/JS, run instantly, and test validators.</p>
-            <a href="./playground.html">Open playground →</a>
+          <div class="demo-card">
+            <h3>Code</h3>
+            <details class="code-details">
+              <summary>Show HTML + JS</summary>
+              <div class="code-block"><pre><code data-code="realtime"></code></pre></div>
+            </details>
           </div>
-        </div>
+        </section>
+
+        <section class="demo-section">
+          <div class="demo-card">
+            <span class="badge">Custom</span>
+            <h2>Custom validators</h2>
+            <p class="note">Combine fn: callbacks with runtime validators.</p>
+            <form id="customForm" class="demo-form" data-validate="true">
+              <div>
+                <label for="custom-even">Even number</label>
+                <input
+                  id="custom-even"
+                  name="custom-even"
+                  type="text"
+                  data-required="true"
+                  data-tovalidate="fn:isEven"
+                  placeholder="Only even numbers"
+                />
+              </div>
+              <div>
+                <label for="custom-starts">Starts with M</label>
+                <input
+                  id="custom-starts"
+                  name="custom-starts"
+                  type="text"
+                  data-required="true"
+                  data-tovalidate="startsWithM"
+                  placeholder="Type a value"
+                />
+              </div>
+              <button id="custom-submit" type="submit" data-checkform="true">Submit</button>
+            </form>
+          </div>
+          <div class="demo-card">
+            <h3>Code</h3>
+            <details class="code-details">
+              <summary>Show HTML + JS</summary>
+              <div class="code-block"><pre><code data-code="custom"></code></pre></div>
+            </details>
+          </div>
+        </section>
+
+        <section class="demo-section">
+          <div class="demo-card">
+            <span class="badge">Logic</span>
+            <h2>Conditional fields</h2>
+            <p class="note">Show and validate sections based on selections.</p>
+            <form id="conditionalForm" class="demo-form" data-validate="true">
+              <div>
+                <label id="label_hasphone" data-name="hasphone">Do you have a phone?</label>
+                <label>
+                  <input
+                    id="conditional-no"
+                    name="hasphone"
+                    type="radio"
+                    data-required="true"
+                    value="no"
+                  />
+                  No
+                </label>
+                <label>
+                  <input
+                    id="conditional-yes"
+                    name="hasphone"
+                    type="radio"
+                    data-required="true"
+                    value="yes"
+                  />
+                  Yes
+                </label>
+              </div>
+
+              <fieldset data-activate="conditional-yes" data-deactivate="conditional-no">
+                <label for="conditional-phone">Phone number</label>
+                <input
+                  id="conditional-phone"
+                  name="conditional-phone"
+                  data-type="hiddenON"
+                  type="text"
+                  data-required="true"
+                  data-tovalidate="telephone"
+                  placeholder="Your phone"
+                />
+              </fieldset>
+
+              <button id="conditional-submit" type="submit" data-checkform="true">Submit</button>
+            </form>
+          </div>
+          <div class="demo-card">
+            <h3>Code</h3>
+            <details class="code-details">
+              <summary>Show HTML + JS</summary>
+              <div class="code-block"><pre><code data-code="conditional"></code></pre></div>
+            </details>
+          </div>
+        </section>
+
+        <section class="demo-section">
+          <div class="demo-card">
+            <span class="badge">Groups</span>
+            <h2>Checkbox groups</h2>
+            <p class="note">Validate min and max selections for grouped checkboxes.</p>
+            <form id="groupForm" class="demo-form" data-validate="true">
+              <label data-type="checkbox-group" data-min="2" data-max="3" data-error-msg="Pick 2 or 3 options">
+                Select 2 or 3 options
+              </label>
+              <label><input type="checkbox" name="group-opt" value="a" /> Option A</label>
+              <label><input type="checkbox" name="group-opt" value="b" /> Option B</label>
+              <label><input type="checkbox" name="group-opt" value="c" /> Option C</label>
+              <label><input type="checkbox" name="group-opt" value="d" /> Option D</label>
+              <button id="group-submit" type="submit" data-checkform="true">Submit</button>
+            </form>
+          </div>
+          <div class="demo-card">
+            <h3>Code</h3>
+            <details class="code-details">
+              <summary>Show HTML + JS</summary>
+              <div class="code-block"><pre><code data-code="group"></code></pre></div>
+            </details>
+          </div>
+        </section>
+
+        <section class="demo-section">
+          <div class="demo-card">
+            <span class="badge">Advanced</span>
+            <h2>Advanced form</h2>
+            <p class="note">Combine radio groups, conditional fields, and fn validators.</p>
+            <form id="advancedForm" class="demo-form" data-validate="true" data-checkrealtime="true">
+              <div>
+                <label for="advanced-name">Your name</label>
+                <input
+                  id="advanced-name"
+                  name="advanced-name"
+                  type="text"
+                  placeholder="type your name"
+                  data-required="true"
+                  data-tovalidate="alfa"
+                />
+              </div>
+              <div>
+                <label for="advanced-mobile">Mobile number</label>
+                <input
+                  id="advanced-mobile"
+                  name="advanced-mobile"
+                  maxlength="9"
+                  type="text"
+                  placeholder="type your mobile number"
+                  data-required="true"
+                  data-tovalidate="movil"
+                />
+              </div>
+              <div>
+                <label for="advanced-email">Email</label>
+                <input
+                  id="advanced-email"
+                  name="advanced-email"
+                  type="text"
+                  placeholder="type your email"
+                  data-required="true"
+                  data-tovalidate="email"
+                />
+              </div>
+              <div>
+                <input id="advanced-accept" name="advanced-accept" type="checkbox" data-required="true" />
+                <span>Accept conditions</span>
+              </div>
+              <div>
+                <label for="advanced-odd">Type an odd value:</label>
+                <input
+                  id="advanced-odd"
+                  name="advanced-odd"
+                  type="text"
+                  data-required="true"
+                  data-tovalidate="fn:checkOdd"
+                />
+              </div>
+              <div>
+                <label id="label_hasphone_advanced" data-name="hasphone-advanced">Do you have a phone number?</label>
+                <label>
+                  <input
+                    id="advanced-no"
+                    name="hasphone-advanced"
+                    type="radio"
+                    data-required="true"
+                    value="nophone"
+                  />
+                  No
+                </label>
+                <label>
+                  <input
+                    id="advanced-yes"
+                    name="hasphone-advanced"
+                    type="radio"
+                    data-required="true"
+                    value="yesphone"
+                  />
+                  Yes
+                </label>
+              </div>
+
+              <fieldset data-activate="advanced-yes" data-deactivate="advanced-no">
+                <label for="advanced-phone">Phone number</label>
+                <input
+                  id="advanced-phone"
+                  name="advanced-phone"
+                  data-type="hiddenON"
+                  type="text"
+                  data-required="true"
+                  data-tovalidate="telephone"
+                  placeholder="Your telephone number"
+                />
+              </fieldset>
+
+              <button id="advanced-submit" type="submit" data-checkform="true">Submit</button>
+            </form>
+          </div>
+          <div class="demo-card">
+            <h3>Code</h3>
+            <details class="code-details">
+              <summary>Show HTML + JS</summary>
+              <div class="code-block"><pre><code data-code="advanced"></code></pre></div>
+            </details>
+          </div>
+        </section>
       </div>
     </main>
+
+    <template id="snippet-basic">
+<form data-validate="true" data-checkrealtime="true">
+  <input data-required="true" data-tovalidate="alpha" />
+  <input data-required="true" data-tovalidate="email" />
+  <input type="checkbox" data-required="true" />
+  <button type="submit" data-checkform="true">Submit</button>
+</form>
+
+<script type="module">
+  import { ValidateForm } from "https://esm.sh/@manufosela/automatic-form-validation";
+  new ValidateForm();
+</script>
+    </template>
+
+    <template id="snippet-realtime">
+<form data-validate="true" data-checkrealtime="true">
+  <input data-required="true" data-tovalidate="alpha" />
+  <input data-required="true" data-tovalidate="telephone" />
+</form>
+
+<script type="module">
+  import { ValidateForm } from "https://esm.sh/@manufosela/automatic-form-validation";
+  new ValidateForm();
+</script>
+    </template>
+
+    <template id="snippet-custom">
+<input data-tovalidate="fn:isEven" />
+<input data-tovalidate="startsWithM" />
+
+<script>
+  function isEven(value) {
+    return Number(value) % 2 === 0;
+  }
+</script>
+
+<script type="module">
+  import { ValidateForm } from "https://esm.sh/@manufosela/automatic-form-validation";
+  const validator = new ValidateForm();
+  validator.addValidator("startsWithM", (value) => value.toLowerCase().startsWith("m"));
+</script>
+    </template>
+
+    <template id="snippet-conditional">
+<label data-name="hasphone">Do you have a phone?</label>
+<input id="hasphoneYES" name="hasphone" type="radio" />
+
+<fieldset data-activate="hasphoneYES" data-deactivate="hasphoneNO">
+  <input data-type="hiddenON" data-required="true" data-tovalidate="telephone" />
+</fieldset>
+
+<script type="module">
+  import { ValidateForm } from "https://esm.sh/@manufosela/automatic-form-validation";
+  new ValidateForm();
+</script>
+    </template>
+
+    <template id="snippet-group">
+<label data-type="checkbox-group" data-min="2" data-max="3">
+  Select 2 or 3 options
+</label>
+
+<script type="module">
+  import { ValidateForm } from "https://esm.sh/@manufosela/automatic-form-validation";
+  new ValidateForm();
+</script>
+    </template>
+
+    <template id="snippet-advanced">
+<form data-validate="true" data-checkrealtime="true">
+  <input data-required="true" data-tovalidate="email" />
+  <input data-tovalidate="fn:checkOdd" />
+</form>
+
+<script>
+  function checkOdd(value) {
+    return Number(value) % 2 === 1;
+  }
+</script>
+
+<script type="module">
+  import { ValidateForm } from "https://esm.sh/@manufosela/automatic-form-validation";
+  new ValidateForm();
+</script>
+    </template>
+
+    <script type="module">
+      import { ValidateForm } from "../src/ValidateForm.js";
+
+      const validator = new ValidateForm();
+
+      const isEven = (value) => Number(value) % 2 === 0;
+      globalThis.isEven = isEven;
+      globalThis.checkOdd = (value) => Number(value) % 2 === 1;
+
+      validator.addValidator("startsWithM", (value) => value.toLowerCase().startsWith("m"));
+
+      const snippets = {
+        basic: document.getElementById("snippet-basic"),
+        realtime: document.getElementById("snippet-realtime"),
+        custom: document.getElementById("snippet-custom"),
+        conditional: document.getElementById("snippet-conditional"),
+        group: document.getElementById("snippet-group"),
+        advanced: document.getElementById("snippet-advanced"),
+      };
+
+      document.querySelectorAll("[data-code]").forEach((block) => {
+        const key = block.dataset.code;
+        if (snippets[key]) {
+          block.textContent = snippets[key].innerHTML.trim();
+        }
+      });
+    </script>
     <script type="module" src="../../demo-theme-toggle.js"></script>
-</body>
+  </body>
 </html>

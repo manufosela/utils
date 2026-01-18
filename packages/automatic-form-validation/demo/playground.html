@@ -41,7 +41,7 @@
             </div>
             <div>
               <h3>JavaScript</h3>
-              <textarea id="jsInput">import { ValidateForm } from "../src/ValidateForm.js";
+              <textarea id="jsInput">import { ValidateForm } from "https://esm.sh/@manufosela/automatic-form-validation";
 
 new ValidateForm();</textarea>
             </div>
@@ -66,10 +66,20 @@ new ValidateForm();</textarea>
       const baseHtml = htmlInput.value.trim();
       const baseJs = jsInput.value.trim();
       const baseHref = new URL('./', window.location.href).href;
+      const moduleUrl = "https://esm.sh/@manufosela/automatic-form-validation";
+
+      const normalizeImports = (code) =>
+        code
+          .replace(/from\s+["']\.\.\/src\/[^"']+["']/g, `from "${moduleUrl}"`)
+          .replace(/from\s+["']\.\/src\/[^"']+["']/g, `from "${moduleUrl}"`)
+          .replace(/from\s+["']@manufosela\/automatic-form-validation["']/g, `from "${moduleUrl}"`)
+          .replace(/import\s+["']\.\.\/src\/[^"']+["'];?/g, `import "${moduleUrl}";`)
+          .replace(/import\s+["']\.\/src\/[^"']+["'];?/g, `import "${moduleUrl}";`)
+          .replace(/import\s+["']@manufosela\/automatic-form-validation["'];?/g, `import "${moduleUrl}";`);
 
       const render = () => {
         const html = htmlInput.value.trim() || baseHtml;
-        const js = jsInput.value.trim() || baseJs;
+        const js = normalizeImports(jsInput.value.trim() || baseJs);
         const doc = `
 <!DOCTYPE html>
 <html>
@@ -77,11 +87,34 @@ new ValidateForm();</textarea>
     <meta charset="utf-8" />
     <base href="${baseHref}" />
     <style>
-      body { font-family: Arial, sans-serif; padding: 16px; }
+      :root {
+        color-scheme: dark;
+      }
+      body {
+        font-family: "Space Grotesk", "Trebuchet MS", Arial, sans-serif;
+        padding: 16px;
+        background: #0f1117;
+        color: #f3f6ff;
+      }
       label { display: block; margin-bottom: 6px; }
-      input { margin-bottom: 12px; padding: 6px; }
+      input, select, textarea {
+        margin-bottom: 12px;
+        padding: 6px 8px;
+        border-radius: 8px;
+        border: 1px solid #2b3247;
+        background: #0b0f1a;
+        color: #f3f6ff;
+      }
+      button {
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: none;
+        background: linear-gradient(120deg, #ffb000, #ff6a00);
+        color: #111;
+        cursor: pointer;
+        font-weight: 600;
+      }
     </style>
-  <link rel="stylesheet" href="../../demo-theme.css" />
   </head>
   <body>
     ${html}
