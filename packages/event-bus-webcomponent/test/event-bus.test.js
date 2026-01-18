@@ -4,6 +4,8 @@ import {
   ALL,
   ALL_TYPES,
   createEnvelope,
+  createComponentRef,
+  normalizeTarget,
   matchesTarget,
   shouldExcludeSource,
 } from '../src/index.js';
@@ -28,6 +30,25 @@ describe('event-bus-webcomponent', () => {
     expect(matchesTarget(target, component)).toBe(true);
   });
 
+  it('normalizes target defaults', () => {
+    const target = normalizeTarget();
+    expect(target.id).toBe(ALL);
+    expect(target.type).toBe(ALL_TYPES);
+    expect(target.excludeSource).toBe(false);
+  });
+
+  it('creates component ref from element', () => {
+    const el = document.createElement('my-widget');
+    el.id = 'widget-1';
+    const ref = createComponentRef(el);
+    expect(ref).toEqual({ id: 'widget-1', type: 'my-widget' });
+  });
+
+  it('throws when element is missing id', () => {
+    const el = document.createElement('demo-widget');
+    expect(() => createComponentRef(el)).toThrow('Component element must have an id');
+  });
+
   it('delivers events to matching component', () => {
     const bus = new WebComponentEventBus();
     const handler = vi.fn();
@@ -42,6 +63,11 @@ describe('event-bus-webcomponent', () => {
     });
 
     expect(handler).toHaveBeenCalledTimes(1);
+  });
+
+  it('throws when handler is invalid', () => {
+    const bus = new WebComponentEventBus();
+    expect(() => bus.on({ id: 'a', type: 'demo' }, null)).toThrow('Handler must be a function');
   });
 
   it('filters by event name when provided', () => {
@@ -59,6 +85,29 @@ describe('event-bus-webcomponent', () => {
 
     bus.emit({
       name: 'only-this',
+      detail: {},
+      source: { id: 'sender', type: 'sender' },
+      target: { id: 'widget-1', type: 'demo-widget' },
+    });
+
+    expect(handler).toHaveBeenCalledTimes(1);
+  });
+
+  it('once() only handles first matching event', () => {
+    const bus = new WebComponentEventBus();
+    const handler = vi.fn();
+
+    bus.once({ id: 'widget-1', type: 'demo-widget' }, handler);
+
+    bus.emit({
+      name: 'demo',
+      detail: {},
+      source: { id: 'sender', type: 'sender' },
+      target: { id: 'widget-1', type: 'demo-widget' },
+    });
+
+    bus.emit({
+      name: 'demo',
       detail: {},
       source: { id: 'sender', type: 'sender' },
       target: { id: 'widget-1', type: 'demo-widget' },
