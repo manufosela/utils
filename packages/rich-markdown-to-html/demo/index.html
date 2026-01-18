@@ -26,8 +26,8 @@
       display: grid;
       gap: 0.75rem;
       padding: 0.75rem 1rem;
-      background: #111827;
-      color: #f3f4f6;
+      background: var(--bg-panel);
+      color: var(--text);
       align-items: center;
     }
 
@@ -40,9 +40,9 @@
 
     .topbar a {
       font-size: 0.8rem;
-      color: #e5e7eb;
+      color: var(--text-muted);
       text-decoration: none;
-      border: 1px solid #374151;
+      border: 1px solid var(--border);
       padding: 0.35rem 0.75rem;
       border-radius: 999px;
     }
@@ -73,8 +73,8 @@
 
     .panel-header {
       padding: 1rem;
-      background: var(--text);
-      color: white;
+      background: var(--accent);
+      color: #111;
       font-weight: 600;
     }
 
@@ -113,7 +113,7 @@
 
     #preview p {
       line-height: 1.6;
-      color: #444;
+      color: var(--text-muted);
     }
 
     #preview a {
@@ -126,7 +126,8 @@
     }
 
     #preview code {
-      background: #f4f4f4;
+      background: var(--code-bg);
+      color: var(--code-text);
       padding: 0.2em 0.4em;
       border-radius: 3px;
       font-family: 'Monaco', 'Menlo', monospace;
@@ -134,8 +135,8 @@
     }
 
     #preview pre {
-      background: #282c34;
-      color: #abb2bf;
+      background: var(--code-bg);
+      color: var(--code-text);
       padding: 1rem;
       border-radius: 6px;
       overflow-x: auto;
@@ -187,12 +188,12 @@
     }
 
     #preview th {
-      background: #f4f4f4;
+      background: var(--bg-panel);
       font-weight: 600;
     }
 
     #preview tr:nth-child(even) {
-      background: #f9f9f9;
+      background: var(--bg-2);
     }
 
     #preview hr {
@@ -208,7 +209,7 @@
 
     .options {
       padding: 0.5rem 1rem;
-      background: #e9ecef;
+      background: var(--bg-panel);
       display: flex;
       gap: 1rem;
       flex-wrap: wrap;
