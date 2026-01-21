@@ -27,6 +27,8 @@ jobs:
           node-version: 20
           cache: pnpm
       - name: Install dependencies
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
         run: pnpm install --frozen-lockfile
       - name: Build site
         run: SITE_URL=https://manufosela.github.io/utils/ BASE_PATH=/utils/ pnpm --dir apps/site build
