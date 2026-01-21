@@ -1,0 +1,1211 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>@manufosela/system-capabilities</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><style>@import"https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap";.astro-route-announcer{position:absolute;left:0;top:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}:root{color-scheme:dark;--bg: #0c0f14;--bg-elevated: #141923;--bg-panel: #171d28;--border: #262f3f;--text: #f4f6fb;--text-muted: #a7b0c2;--text-dim: #7d879b;--accent: #ff8a3d;--accent-strong: #ff6a00;--accent-soft: rgba(255, 138, 61, .16);--shadow: 0 20px 50px rgba(5, 8, 14, .45);--radius-lg: 22px;--radius-md: 14px;--radius-sm: 10px;--max-width: 1160px;--font-sans: "Space Grotesk", "Manrope", "IBM Plex Sans", system-ui, sans-serif;--font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace}html.light{color-scheme:light;--bg: #f7f6f2;--bg-elevated: #ffffff;--bg-panel: #fffaf2;--border: #e4dfd6;--text: #1a1c22;--text-muted: #5b6170;--text-dim: #8c92a1;--accent: #ff7a1a;--accent-strong: #ff5c00;--accent-soft: rgba(255, 122, 26, .15);--shadow: 0 16px 40px rgba(19, 20, 26, .15)}*{box-sizing:border-box}body{margin:0;font-family:var(--font-sans);background:radial-gradient(circle at 15% 20%,rgba(255,138,61,.12),transparent 40%),radial-gradient(circle at 85% 0%,rgba(255,106,0,.16),transparent 30%),var(--bg);color:var(--text);min-height:100vh}a{color:inherit;text-decoration:none}a:hover{color:var(--accent)}main{padding:40px 24px 80px}.container{width:100%;max-width:var(--max-width);margin:0 auto}.page-title{font-size:clamp(2.2rem,1.2rem + 3vw,3.4rem);margin:0;color:var(--accent)}.page-subtitle{margin-top:10px;color:var(--text-muted);font-size:1.1rem;max-width:720px}.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;margin-top:34px}.card{background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;min-height:220px;box-shadow:var(--shadow);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}.card:hover{transform:translateY(-4px);border-color:#ff8a3d66;box-shadow:0 28px 60px #07090f80}.card h3{margin:0 0 8px;font-size:1.3rem}.card p{margin:0;color:var(--text-muted);line-height:1.5}.tag{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:.75rem;letter-spacing:.02em}.header-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}.header-links a{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg-panel);color:var(--text-muted);font-size:.9rem}.header-links a:hover{border-color:var(--accent);color:var(--text)}.demo-surface{margin-top:28px;background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;box-shadow:var(--shadow)}.demo-embed{display:grid;gap:24px}.code-panel{background:#0b0f16;border-radius:var(--radius-md);padding:16px;border:1px solid rgba(255,138,61,.2);color:#e5e9f2;font-family:var(--font-mono);font-size:.85rem;overflow:auto}footer{border-top:1px solid var(--border);color:var(--text-dim);padding:40px 24px 60px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:24px}.topbar a{font-weight:600}.theme-toggle{border:1px solid var(--border);background:var(--bg-panel);color:var(--text);border-radius:999px;padding:8px 14px;cursor:pointer;font-size:.85rem}.code-label{margin:24px 0 10px;color:var(--text-muted);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase}.code-details{margin-top:24px;border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;background:var(--bg-elevated)}.code-details summary{cursor:pointer;color:var(--accent);font-weight:600;letter-spacing:.02em}.code-details[open] summary{margin-bottom:12px}
+</style><script type="module" src="/utils/_astro/hoisted.BScVxmeO.js"></script></head> <body> <header class="topbar"> <a href="/">@manufosela/system-capabilities</a> <div class="header-links">  <button class="theme-toggle" type="button" data-theme-toggle>Light mode</button> <script type="module">
+  const root = document.documentElement;
+  const toggle = document.querySelector('[data-theme-toggle]');
+  const stored = localStorage.getItem('theme');
+
+  if (stored === 'light') {
+    root.classList.add('light');
+  }
+
+  const updateLabel = () => {
+    const isLight = root.classList.contains('light');
+    toggle.textContent = isLight ? 'Dark mode' : 'Light mode';
+  };
+
+  updateLabel();
+
+  toggle.addEventListener('click', () => {
+    root.classList.toggle('light');
+    localStorage.setItem('theme', root.classList.contains('light') ? 'light' : 'dark');
+    updateLabel();
+  });
+</script> </div> </header> <main> <div class="container">  <div> <h1 class="page-title">@manufosela/system-capabilities</h1> <p class="page-subtitle">Browser and system feature detection utility</p> <div class="header-links"> <a href="/utils/">← Back to components</a><a href="https://github.com/manufosela/utils">GitHub Repo</a> </div> </div> <div class="demo-surface"> <div><style>
+
+
+
+
+    * {
+      box-sizing: border-box;
+    }
+
+    h1 {
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+
+    .section {
+      background: var(--bg-elevated);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .section h2 {
+      margin: 0 0 1rem;
+      color: var(--text);
+      font-size: 1.25rem;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 0.5rem;
+    }
+
+    .browser-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+
+    .info-item {
+      text-align: center;
+      padding: 1rem;
+      background: var(--bg-panel);
+      border-radius: 4px;
+    }
+
+    .info-item .label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+
+    .info-item .value {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .capabilities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.5rem;
+    }
+
+    .capability {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      background: var(--bg-panel);
+      border-radius: 4px;
+      font-size: 0.875rem;
+    }
+
+    .capability .indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .capability .indicator.supported {
+      background: #28a745;
+    }
+
+    .capability .indicator.not-supported {
+      background: #dc3545;
+    }
+
+    .capability .indicator.loading {
+      background: #ffc107;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .capability .name {
+      color: var(--text);
+    }
+
+    .screen-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+    }
+
+    .connection-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+
+    .preferences {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .preference {
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      font-size: 0.875rem;
+    }
+
+    .preference.active {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .preference.inactive {
+      background: var(--bg-panel);
+      color: var(--text-muted);
+    }
+
+    .category-title {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin: 1rem 0 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .category-title:first-child {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
+    }
+
+    .top-links {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .top-links a {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+    }
+
+    .code-block {
+      background: #0b0f1a;
+      border: 1px solid #2b3247;
+      border-radius: 8px;
+      padding: 12px;
+      color: #d6d9e6;
+      font-family: "JetBrains Mono", "Courier New", monospace;
+      font-size: 0.85rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  
+
+
+
+</style>
+
+:root {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+:root.light {
+  --bg: #f5f5f7;
+  --bg-2: #ffffff;
+  --bg-spot-1: #f8e9d0;
+  --bg-spot-2: #e8eef8;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #ffb000;
+  --accent-2: #00a7d6;
+  --surface: #f3f4f6;
+  --code-bg: #111827;
+  --code-text: #f9fafb;
+}
+
+:root.dark {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+h1 {
+  color: var(--accent) !important;
+}
+
+.top-links a,
+.topbar a {
+  color: var(--muted) !important;
+  border-color: var(--line) !important;
+}
+
+.top-links a:hover,
+.topbar a:hover {
+  color: var(--text) !important;
+}
+
+.card,
+.section,
+.demo-section,
+.panel {
+  background: var(--card) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+.code-block,
+pre,
+code,
+.output,
+.current-url,
+.event-log,
+.result-card,
+.log {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  border-color: var(--line) !important;
+}
+
+input,
+select,
+textarea {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+button {
+  background: linear-gradient(120deg, var(--accent), #ff6a00) !important;
+  color: #111 !important;
+}
+
+footer {
+  color: var(--muted) !important;
+}
+
+footer a {
+  color: var(--text) !important;
+}</div><div class="demo-embed"><div class="top-links">
+    <a href="https://manufosela.github.io/utils/">Utils catalog</a>
+    <a href="https://manufosela.github.io/">Main catalog</a>
+    <a href="https://github.com/manufosela/utils/tree/main/packages/system-capabilities">Source</a>
+  </div>
+        <demo-theme-toggle></demo-theme-toggle>
+  <h1>system-capabilities</h1>
+  <p class="subtitle">Browser and system feature detection utility</p>
+
+  <div class="section">
+    <h2>Quick usage</h2>
+    <pre class="code-block"><code>import { supports, getCapabilitiesSync } from '@manufosela/system-capabilities';
+
+if (supports('webgl')) {
+  // init WebGL
+}
+
+const caps = getCapabilitiesSync();
+</code></pre>
+  </div>
+
+  <div class="section">
+    <h2>Browser Information</h2>
+    <div class="browser-info" id="browserInfo"></div>
+  </div>
+
+  <div class="section">
+    <h2>System Information</h2>
+    <div class="browser-info" id="systemInfo"></div>
+  </div>
+
+  <div class="section">
+    <h2>Screen Information</h2>
+    <div class="screen-info" id="screenInfo"></div>
+  </div>
+
+  <div class="section">
+    <h2>Network Connection</h2>
+    <div class="connection-info" id="connectionInfo"></div>
+  </div>
+
+  <div class="section">
+    <h2>User Preferences</h2>
+    <div class="preferences" id="preferences"></div>
+  </div>
+
+  <div class="section">
+    <h2>Capabilities</h2>
+    <div id="capabilities"></div>
+  </div></div> <div><script type="module">
+    import {
+      getBrowserInfo,
+      getCapabilities,
+      getCapabilitiesSync,
+      getDeviceMemory,
+      getHardwareConcurrency,
+      getConnectionInfo,
+      getScreenInfo,
+      prefersReducedMotion,
+      prefersDarkMode,
+      isStandalone
+    } from "https://esm.sh/@manufosela/system-capabilities";
+
+    // Browser Info
+    const browserInfo = getBrowserInfo();
+    const browserInfoEl = document.getElementById('browserInfo');
+    browserInfoEl.innerHTML = `
+      <div class="info-item">
+        <div class="label">Browser</div>
+        <div class="value">${browserInfo.name}</div>
+      </div>
+      <div class="info-item">
+        <div class="label">Version</div>
+        <div class="value">${browserInfo.version}</div>
+      </div>
+      <div class="info-item">
+        <div class="label">Engine</div>
+        <div class="value">${browserInfo.engine}</div>
+      </div>
+      <div class="info-item">
+        <div class="label">OS</div>
+        <div class="value">${browserInfo.os}</div>
+      </div>
+      <div class="info-item">
+        <div class="label">OS Version</div>
+        <div class="value">${browserInfo.osVersion}</div>
+      </div>
+      <div class="info-item">
+        <div class="label">Mobile</div>
+        <div class="value">${browserInfo.isMobile ? 'Yes' : 'No'}</div>
+      </div>
+    `;
+
+    // System Info
+    const memory = getDeviceMemory();
+    const cores = getHardwareConcurrency();
+    const systemInfoEl = document.getElementById('systemInfo');
+    systemInfoEl.innerHTML = `
+      <div class="info-item">
+        <div class="label">Device Memory</div>
+        <div class="value">${memory ? memory + ' GB' : 'N/A'}</div>
+      </div>
+      <div class="info-item">
+        <div class="label">CPU Cores</div>
+        <div class="value">${cores || 'N/A'}</div>
+      </div>
+      <div class="info-item">
+        <div class="label">Standalone Mode</div>
+        <div class="value">${isStandalone() ? 'Yes' : 'No'}</div>
+      </div>
+    `;
+
+    // Screen Info
+    const screenData = getScreenInfo();
+    const screenInfoEl = document.getElementById('screenInfo');
+    screenInfoEl.innerHTML = `
+      <div class="info-item">
+        <div class="label">Resolution</div>
+        <div class="value">${screenData.width} x ${screenData.height}</div>
+      </div>
+      <div class="info-item">
+        <div class="label">Available</div>
+        <div class="value">${screenData.availWidth} x ${screenData.availHeight}</div>
+      </div>
+      <div class="info-item">
+        <div class="label">Color Depth</div>
+        <div class="value">${screenData.colorDepth} bit</div>
+      </div>
+      <div class="info-item">
+        <div class="label">Pixel Ratio</div>
+        <div class="value">${screenData.pixelRatio}x</div>
+      </div>
+      <div class="info-item">
+        <div class="label">Orientation</div>
+        <div class="value">${screenData.orientation}</div>
+      </div>
+    `;
+
+    // Connection Info
+    const connection = getConnectionInfo();
+    const connectionInfoEl = document.getElementById('connectionInfo');
+    if (connection) {
+      connectionInfoEl.innerHTML = `
+        <div class="info-item">
+          <div class="label">Type</div>
+          <div class="value">${connection.effectiveType}</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Downlink</div>
+          <div class="value">${connection.downlink} Mbps</div>
+        </div>
+        <div class="info-item">
+          <div class="label">RTT</div>
+          <div class="value">${connection.rtt} ms</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Save Data</div>
+          <div class="value">${connection.saveData ? 'Yes' : 'No'}</div>
+        </div>
+      `;
+    } else {
+      connectionInfoEl.innerHTML = '<p style="color: var(--text-muted);">Network Information API not available</p>';
+    }
+
+    // User Preferences
+    const preferencesEl = document.getElementById('preferences');
+    preferencesEl.innerHTML = `
+      <div class="preference ${prefersReducedMotion() ? 'active' : 'inactive'}">
+        Reduced Motion: ${prefersReducedMotion() ? 'Yes' : 'No'}
+      </div>
+      <div class="preference ${prefersDarkMode() ? 'active' : 'inactive'}">
+        Dark Mode: ${prefersDarkMode() ? 'Yes' : 'No'}
+      </div>
+    `;
+
+    // Capabilities
+    const capabilitiesEl = document.getElementById('capabilities');
+    const syncCaps = getCapabilitiesSync();
+
+    // Group capabilities by category
+    const categories = {
+      'Graphics': ['webgl', 'webgl2', 'canvas', 'offscreenCanvas', 'webAnimations'],
+      'Communication': ['webrtc', 'websockets', 'fetch'],
+      'Workers': ['serviceWorker', 'webWorkers', 'sharedWorkers'],
+      'Notifications': ['pushNotifications', 'notifications'],
+      'Location & Sensors': ['geolocation', 'deviceOrientation', 'deviceMotion'],
+      'Input': ['touch', 'pointerEvents', 'gamepad'],
+      'Storage': ['indexedDB', 'localStorage', 'sessionStorage', 'cookies'],
+      'Media': ['webm', 'mediaRecorder', 'mediaSession', 'speechRecognition', 'speechSynthesis'],
+      'Device APIs': ['bluetooth', 'usb', 'midi', 'vibration', 'batteryStatus', 'networkInfo', 'wakeLock'],
+      'Security': ['crypto'],
+      'Clipboard & Share': ['clipboard', 'share'],
+      'Display': ['fullscreen', 'pictureInPicture'],
+      'Observers': ['intersectionObserver', 'resizeObserver', 'mutationObserver'],
+      'Web Components': ['customElements', 'shadowDOM'],
+      'ES Features': ['modules', 'dynamicImport'],
+      'Image Formats (async)': ['webp', 'avif']
+    };
+
+    let html = '';
+    for (const [category, features] of Object.entries(categories)) {
+      html += `<div class="category-title">${category}</div>`;
+      html += '<div class="capabilities-grid">';
+      for (const feature of features) {
+        const isAsync = ['webp', 'avif'].includes(feature);
+        const supported = syncCaps[feature];
+        html += `
+          <div class="capability" data-feature="${feature}">
+            <span class="indicator ${isAsync ? 'loading' : (supported ? 'supported' : 'not-supported')}"></span>
+            <span class="name">${feature}</span>
+          </div>
+        `;
+      }
+      html += '</div>';
+    }
+    capabilitiesEl.innerHTML = html;
+
+    // Load async capabilities
+    getCapabilities().then(fullCaps => {
+      ['webp', 'avif'].forEach(feature => {
+        const el = document.querySelector(`[data-feature="${feature}"] .indicator`);
+        if (el) {
+          el.classList.remove('loading');
+          el.classList.add(fullCaps[feature] ? 'supported' : 'not-supported');
+        }
+      });
+    });
+  </script>
+<script type="module">
+class DemoThemeToggle extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  connectedCallback() {
+    const saved = localStorage.getItem('utils-demo-theme');
+    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.toggle('light', saved === 'light');
+
+    this.render();
+  }
+
+  render() {
+    const isLight = document.documentElement.classList.contains('light');
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host {
+          display: inline-flex;
+        }
+        .toggle {
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid var(--line);
+          border-radius: 999px;
+          overflow: hidden;
+          background: var(--surface);
+        }
+        button {
+          border: none;
+          background: transparent;
+          color: var(--muted);
+          padding: 6px 12px;
+          font-size: 0.8rem;
+          cursor: pointer;
+          font-family: "Space Grotesk", "Trebuchet MS", Arial, sans-serif;
+        }
+        button.active {
+          background: linear-gradient(120deg, var(--accent), #ff6a00);
+          color: #111;
+          font-weight: 600;
+        }
+      </style>
+      <div class="toggle" role="group" aria-label="Theme toggle">
+        <button class="${isLight ? 'active' : ''}" data-theme="light">Light</button>
+        <button class="${isLight ? '' : 'active'}" data-theme="dark">Dark</button>
+      </div>
+    `;
+
+    this.shadowRoot.querySelectorAll('button').forEach((btn) => {
+      btn.addEventListener('click', this.handleClick);
+    });
+  }
+
+  handleClick(event) {
+    const theme = event.currentTarget.dataset.theme;
+    const isLight = theme === 'light';
+    document.documentElement.classList.toggle('light', isLight);
+    document.documentElement.classList.remove('dark');
+    localStorage.setItem('utils-demo-theme', isLight ? 'light' : 'dark');
+    this.render();
+  }
+}
+
+customElements.define('demo-theme-toggle', DemoThemeToggle);
+
+</script></div><details class="code-details"> <summary>Demo code (CodePen-ready HTML, CSS, JS)</summary> <div> <div class="code-label">HTML (html)</div> <pre class="code-panel"><code>&lt;div class=&quot;top-links&quot;&gt;
+    &lt;a href=&quot;https://manufosela.github.io/utils/&quot;&gt;Utils catalog&lt;/a&gt;
+    &lt;a href=&quot;https://manufosela.github.io/&quot;&gt;Main catalog&lt;/a&gt;
+    &lt;a href=&quot;https://github.com/manufosela/utils/tree/main/packages/system-capabilities&quot;&gt;Source&lt;/a&gt;
+  &lt;/div&gt;
+        &lt;demo-theme-toggle&gt;&lt;/demo-theme-toggle&gt;
+  &lt;h1&gt;system-capabilities&lt;/h1&gt;
+  &lt;p class=&quot;subtitle&quot;&gt;Browser and system feature detection utility&lt;/p&gt;
+
+  &lt;div class=&quot;section&quot;&gt;
+    &lt;h2&gt;Quick usage&lt;/h2&gt;
+    &lt;pre class=&quot;code-block&quot;&gt;&lt;code&gt;import { supports, getCapabilitiesSync } from &#39;@manufosela/system-capabilities&#39;;
+
+if (supports(&#39;webgl&#39;)) {
+  // init WebGL
+}
+
+const caps = getCapabilitiesSync();
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;section&quot;&gt;
+    &lt;h2&gt;Browser Information&lt;/h2&gt;
+    &lt;div class=&quot;browser-info&quot; id=&quot;browserInfo&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;section&quot;&gt;
+    &lt;h2&gt;System Information&lt;/h2&gt;
+    &lt;div class=&quot;browser-info&quot; id=&quot;systemInfo&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;section&quot;&gt;
+    &lt;h2&gt;Screen Information&lt;/h2&gt;
+    &lt;div class=&quot;screen-info&quot; id=&quot;screenInfo&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;section&quot;&gt;
+    &lt;h2&gt;Network Connection&lt;/h2&gt;
+    &lt;div class=&quot;connection-info&quot; id=&quot;connectionInfo&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;section&quot;&gt;
+    &lt;h2&gt;User Preferences&lt;/h2&gt;
+    &lt;div class=&quot;preferences&quot; id=&quot;preferences&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;section&quot;&gt;
+    &lt;h2&gt;Capabilities&lt;/h2&gt;
+    &lt;div id=&quot;capabilities&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;</code></pre> </div> <div> <div class="code-label">CSS (css)</div> <pre class="code-panel"><code>:root {
+  --bg: #0c0f14;
+  --bg-elevated: #141923;
+  --bg-panel: #171d28;
+  --border: #262f3f;
+  --text: #f4f6fb;
+  --text-muted: #a7b0c2;
+  --text-dim: #7d879b;
+  --accent: #ff8a3d;
+  --accent-strong: #ff6a00;
+  --accent-soft: rgba(255, 138, 61, 0.16);
+  --shadow: 0 20px 50px rgba(5, 8, 14, 0.45);
+  --radius-lg: 22px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --max-width: 1160px;
+}
+
+* {
+      box-sizing: border-box;
+    }
+
+    h1 {
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+
+    .section {
+      background: var(--bg-elevated);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .section h2 {
+      margin: 0 0 1rem;
+      color: var(--text);
+      font-size: 1.25rem;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 0.5rem;
+    }
+
+    .browser-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+
+    .info-item {
+      text-align: center;
+      padding: 1rem;
+      background: var(--bg-panel);
+      border-radius: 4px;
+    }
+
+    .info-item .label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+
+    .info-item .value {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .capabilities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.5rem;
+    }
+
+    .capability {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.75rem;
+      background: var(--bg-panel);
+      border-radius: 4px;
+      font-size: 0.875rem;
+    }
+
+    .capability .indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .capability .indicator.supported {
+      background: #28a745;
+    }
+
+    .capability .indicator.not-supported {
+      background: #dc3545;
+    }
+
+    .capability .indicator.loading {
+      background: #ffc107;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .capability .name {
+      color: var(--text);
+    }
+
+    .screen-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+    }
+
+    .connection-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+
+    .preferences {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .preference {
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      font-size: 0.875rem;
+    }
+
+    .preference.active {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .preference.inactive {
+      background: var(--bg-panel);
+      color: var(--text-muted);
+    }
+
+    .category-title {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin: 1rem 0 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .category-title:first-child {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
+    }
+
+    .top-links {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .top-links a {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+    }
+
+    .code-block {
+      background: #0b0f1a;
+      border: 1px solid #2b3247;
+      border-radius: 8px;
+      padding: 12px;
+      color: #d6d9e6;
+      font-family: &quot;JetBrains Mono&quot;, &quot;Courier New&quot;, monospace;
+      font-size: 0.85rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  
+
+
+
+
+
+:root {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+:root.light {
+  --bg: #f5f5f7;
+  --bg-2: #ffffff;
+  --bg-spot-1: #f8e9d0;
+  --bg-spot-2: #e8eef8;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #ffb000;
+  --accent-2: #00a7d6;
+  --surface: #f3f4f6;
+  --code-bg: #111827;
+  --code-text: #f9fafb;
+}
+
+:root.dark {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+h1 {
+  color: var(--accent) !important;
+}
+
+.top-links a,
+.topbar a {
+  color: var(--muted) !important;
+  border-color: var(--line) !important;
+}
+
+.top-links a:hover,
+.topbar a:hover {
+  color: var(--text) !important;
+}
+
+.card,
+.section,
+.demo-section,
+.panel {
+  background: var(--card) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+.code-block,
+pre,
+code,
+.output,
+.current-url,
+.event-log,
+.result-card,
+.log {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  border-color: var(--line) !important;
+}
+
+input,
+select,
+textarea {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+button {
+  background: linear-gradient(120deg, var(--accent), #ff6a00) !important;
+  color: #111 !important;
+}
+
+footer {
+  color: var(--muted) !important;
+}
+
+footer a {
+  color: var(--text) !important;
+}</code></pre> </div> <div> <div class="code-label">JS (js)</div> <pre class="code-panel"><code>import {
+      getBrowserInfo,
+      getCapabilities,
+      getCapabilitiesSync,
+      getDeviceMemory,
+      getHardwareConcurrency,
+      getConnectionInfo,
+      getScreenInfo,
+      prefersReducedMotion,
+      prefersDarkMode,
+      isStandalone
+    } from &quot;https://esm.sh/@manufosela/system-capabilities&quot;;
+
+    // Browser Info
+    const browserInfo = getBrowserInfo();
+    const browserInfoEl = document.getElementById(&#39;browserInfo&#39;);
+    browserInfoEl.innerHTML = `
+      &lt;div class=&quot;info-item&quot;&gt;
+        &lt;div class=&quot;label&quot;&gt;Browser&lt;/div&gt;
+        &lt;div class=&quot;value&quot;&gt;${browserInfo.name}&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;info-item&quot;&gt;
+        &lt;div class=&quot;label&quot;&gt;Version&lt;/div&gt;
+        &lt;div class=&quot;value&quot;&gt;${browserInfo.version}&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;info-item&quot;&gt;
+        &lt;div class=&quot;label&quot;&gt;Engine&lt;/div&gt;
+        &lt;div class=&quot;value&quot;&gt;${browserInfo.engine}&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;info-item&quot;&gt;
+        &lt;div class=&quot;label&quot;&gt;OS&lt;/div&gt;
+        &lt;div class=&quot;value&quot;&gt;${browserInfo.os}&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;info-item&quot;&gt;
+        &lt;div class=&quot;label&quot;&gt;OS Version&lt;/div&gt;
+        &lt;div class=&quot;value&quot;&gt;${browserInfo.osVersion}&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;info-item&quot;&gt;
+        &lt;div class=&quot;label&quot;&gt;Mobile&lt;/div&gt;
+        &lt;div class=&quot;value&quot;&gt;${browserInfo.isMobile ? &#39;Yes&#39; : &#39;No&#39;}&lt;/div&gt;
+      &lt;/div&gt;
+    `;
+
+    // System Info
+    const memory = getDeviceMemory();
+    const cores = getHardwareConcurrency();
+    const systemInfoEl = document.getElementById(&#39;systemInfo&#39;);
+    systemInfoEl.innerHTML = `
+      &lt;div class=&quot;info-item&quot;&gt;
+        &lt;div class=&quot;label&quot;&gt;Device Memory&lt;/div&gt;
+        &lt;div class=&quot;value&quot;&gt;${memory ? memory + &#39; GB&#39; : &#39;N/A&#39;}&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;info-item&quot;&gt;
+        &lt;div class=&quot;label&quot;&gt;CPU Cores&lt;/div&gt;
+        &lt;div class=&quot;value&quot;&gt;${cores || &#39;N/A&#39;}&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;info-item&quot;&gt;
+        &lt;div class=&quot;label&quot;&gt;Standalone Mode&lt;/div&gt;
+        &lt;div class=&quot;value&quot;&gt;${isStandalone() ? &#39;Yes&#39; : &#39;No&#39;}&lt;/div&gt;
+      &lt;/div&gt;
+    `;
+
+    // Screen Info
+    const screenData = getScreenInfo();
+    const screenInfoEl = document.getElementById(&#39;screenInfo&#39;);
+    screenInfoEl.innerHTML = `
+      &lt;div class=&quot;info-item&quot;&gt;
+        &lt;div class=&quot;label&quot;&gt;Resolution&lt;/div&gt;
+        &lt;div class=&quot;value&quot;&gt;${screenData.width} x ${screenData.height}&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;info-item&quot;&gt;
+        &lt;div class=&quot;label&quot;&gt;Available&lt;/div&gt;
+        &lt;div class=&quot;value&quot;&gt;${screenData.availWidth} x ${screenData.availHeight}&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;info-item&quot;&gt;
+        &lt;div class=&quot;label&quot;&gt;Color Depth&lt;/div&gt;
+        &lt;div class=&quot;value&quot;&gt;${screenData.colorDepth} bit&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;info-item&quot;&gt;
+        &lt;div class=&quot;label&quot;&gt;Pixel Ratio&lt;/div&gt;
+        &lt;div class=&quot;value&quot;&gt;${screenData.pixelRatio}x&lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;info-item&quot;&gt;
+        &lt;div class=&quot;label&quot;&gt;Orientation&lt;/div&gt;
+        &lt;div class=&quot;value&quot;&gt;${screenData.orientation}&lt;/div&gt;
+      &lt;/div&gt;
+    `;
+
+    // Connection Info
+    const connection = getConnectionInfo();
+    const connectionInfoEl = document.getElementById(&#39;connectionInfo&#39;);
+    if (connection) {
+      connectionInfoEl.innerHTML = `
+        &lt;div class=&quot;info-item&quot;&gt;
+          &lt;div class=&quot;label&quot;&gt;Type&lt;/div&gt;
+          &lt;div class=&quot;value&quot;&gt;${connection.effectiveType}&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;info-item&quot;&gt;
+          &lt;div class=&quot;label&quot;&gt;Downlink&lt;/div&gt;
+          &lt;div class=&quot;value&quot;&gt;${connection.downlink} Mbps&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;info-item&quot;&gt;
+          &lt;div class=&quot;label&quot;&gt;RTT&lt;/div&gt;
+          &lt;div class=&quot;value&quot;&gt;${connection.rtt} ms&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;info-item&quot;&gt;
+          &lt;div class=&quot;label&quot;&gt;Save Data&lt;/div&gt;
+          &lt;div class=&quot;value&quot;&gt;${connection.saveData ? &#39;Yes&#39; : &#39;No&#39;}&lt;/div&gt;
+        &lt;/div&gt;
+      `;
+    } else {
+      connectionInfoEl.innerHTML = &#39;&lt;p style=&quot;color: var(--text-muted);&quot;&gt;Network Information API not available&lt;/p&gt;&#39;;
+    }
+
+    // User Preferences
+    const preferencesEl = document.getElementById(&#39;preferences&#39;);
+    preferencesEl.innerHTML = `
+      &lt;div class=&quot;preference ${prefersReducedMotion() ? &#39;active&#39; : &#39;inactive&#39;}&quot;&gt;
+        Reduced Motion: ${prefersReducedMotion() ? &#39;Yes&#39; : &#39;No&#39;}
+      &lt;/div&gt;
+      &lt;div class=&quot;preference ${prefersDarkMode() ? &#39;active&#39; : &#39;inactive&#39;}&quot;&gt;
+        Dark Mode: ${prefersDarkMode() ? &#39;Yes&#39; : &#39;No&#39;}
+      &lt;/div&gt;
+    `;
+
+    // Capabilities
+    const capabilitiesEl = document.getElementById(&#39;capabilities&#39;);
+    const syncCaps = getCapabilitiesSync();
+
+    // Group capabilities by category
+    const categories = {
+      &#39;Graphics&#39;: [&#39;webgl&#39;, &#39;webgl2&#39;, &#39;canvas&#39;, &#39;offscreenCanvas&#39;, &#39;webAnimations&#39;],
+      &#39;Communication&#39;: [&#39;webrtc&#39;, &#39;websockets&#39;, &#39;fetch&#39;],
+      &#39;Workers&#39;: [&#39;serviceWorker&#39;, &#39;webWorkers&#39;, &#39;sharedWorkers&#39;],
+      &#39;Notifications&#39;: [&#39;pushNotifications&#39;, &#39;notifications&#39;],
+      &#39;Location &amp; Sensors&#39;: [&#39;geolocation&#39;, &#39;deviceOrientation&#39;, &#39;deviceMotion&#39;],
+      &#39;Input&#39;: [&#39;touch&#39;, &#39;pointerEvents&#39;, &#39;gamepad&#39;],
+      &#39;Storage&#39;: [&#39;indexedDB&#39;, &#39;localStorage&#39;, &#39;sessionStorage&#39;, &#39;cookies&#39;],
+      &#39;Media&#39;: [&#39;webm&#39;, &#39;mediaRecorder&#39;, &#39;mediaSession&#39;, &#39;speechRecognition&#39;, &#39;speechSynthesis&#39;],
+      &#39;Device APIs&#39;: [&#39;bluetooth&#39;, &#39;usb&#39;, &#39;midi&#39;, &#39;vibration&#39;, &#39;batteryStatus&#39;, &#39;networkInfo&#39;, &#39;wakeLock&#39;],
+      &#39;Security&#39;: [&#39;crypto&#39;],
+      &#39;Clipboard &amp; Share&#39;: [&#39;clipboard&#39;, &#39;share&#39;],
+      &#39;Display&#39;: [&#39;fullscreen&#39;, &#39;pictureInPicture&#39;],
+      &#39;Observers&#39;: [&#39;intersectionObserver&#39;, &#39;resizeObserver&#39;, &#39;mutationObserver&#39;],
+      &#39;Web Components&#39;: [&#39;customElements&#39;, &#39;shadowDOM&#39;],
+      &#39;ES Features&#39;: [&#39;modules&#39;, &#39;dynamicImport&#39;],
+      &#39;Image Formats (async)&#39;: [&#39;webp&#39;, &#39;avif&#39;]
+    };
+
+    let html = &#39;&#39;;
+    for (const [category, features] of Object.entries(categories)) {
+      html += `&lt;div class=&quot;category-title&quot;&gt;${category}&lt;/div&gt;`;
+      html += &#39;&lt;div class=&quot;capabilities-grid&quot;&gt;&#39;;
+      for (const feature of features) {
+        const isAsync = [&#39;webp&#39;, &#39;avif&#39;].includes(feature);
+        const supported = syncCaps[feature];
+        html += `
+          &lt;div class=&quot;capability&quot; data-feature=&quot;${feature}&quot;&gt;
+            &lt;span class=&quot;indicator ${isAsync ? &#39;loading&#39; : (supported ? &#39;supported&#39; : &#39;not-supported&#39;)}&quot;&gt;&lt;/span&gt;
+            &lt;span class=&quot;name&quot;&gt;${feature}&lt;/span&gt;
+          &lt;/div&gt;
+        `;
+      }
+      html += &#39;&lt;/div&gt;&#39;;
+    }
+    capabilitiesEl.innerHTML = html;
+
+    // Load async capabilities
+    getCapabilities().then(fullCaps =&gt; {
+      [&#39;webp&#39;, &#39;avif&#39;].forEach(feature =&gt; {
+        const el = document.querySelector(`[data-feature=&quot;${feature}&quot;] .indicator`);
+        if (el) {
+          el.classList.remove(&#39;loading&#39;);
+          el.classList.add(fullCaps[feature] ? &#39;supported&#39; : &#39;not-supported&#39;);
+        }
+      });
+    });
+  
+
+class DemoThemeToggle extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: &#39;open&#39; });
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  connectedCallback() {
+    const saved = localStorage.getItem(&#39;utils-demo-theme&#39;);
+    document.documentElement.classList.remove(&#39;dark&#39;);
+    document.documentElement.classList.toggle(&#39;light&#39;, saved === &#39;light&#39;);
+
+    this.render();
+  }
+
+  render() {
+    const isLight = document.documentElement.classList.contains(&#39;light&#39;);
+    this.shadowRoot.innerHTML = `
+      &lt;style&gt;
+        :host {
+          display: inline-flex;
+        }
+        .toggle {
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid var(--line);
+          border-radius: 999px;
+          overflow: hidden;
+          background: var(--surface);
+        }
+        button {
+          border: none;
+          background: transparent;
+          color: var(--muted);
+          padding: 6px 12px;
+          font-size: 0.8rem;
+          cursor: pointer;
+          font-family: &quot;Space Grotesk&quot;, &quot;Trebuchet MS&quot;, Arial, sans-serif;
+        }
+        button.active {
+          background: linear-gradient(120deg, var(--accent), #ff6a00);
+          color: #111;
+          font-weight: 600;
+        }
+      &lt;/style&gt;
+      &lt;div class=&quot;toggle&quot; role=&quot;group&quot; aria-label=&quot;Theme toggle&quot;&gt;
+        &lt;button class=&quot;${isLight ? &#39;active&#39; : &#39;&#39;}&quot; data-theme=&quot;light&quot;&gt;Light&lt;/button&gt;
+        &lt;button class=&quot;${isLight ? &#39;&#39; : &#39;active&#39;}&quot; data-theme=&quot;dark&quot;&gt;Dark&lt;/button&gt;
+      &lt;/div&gt;
+    `;
+
+    this.shadowRoot.querySelectorAll(&#39;button&#39;).forEach((btn) =&gt; {
+      btn.addEventListener(&#39;click&#39;, this.handleClick);
+    });
+  }
+
+  handleClick(event) {
+    const theme = event.currentTarget.dataset.theme;
+    const isLight = theme === &#39;light&#39;;
+    document.documentElement.classList.toggle(&#39;light&#39;, isLight);
+    document.documentElement.classList.remove(&#39;dark&#39;);
+    localStorage.setItem(&#39;utils-demo-theme&#39;, isLight ? &#39;light&#39; : &#39;dark&#39;);
+    this.render();
+  }
+}
+
+customElements.define(&#39;demo-theme-toggle&#39;, DemoThemeToggle);</code></pre> </div> </details> </div>  </div> </main> <footer> <div class="container"> <p>Built by manufosela. Lightweight, accessible, and standards-first web components.</p> </div> </footer> </body></html>

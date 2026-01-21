@@ -1,0 +1,1159 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>@manufosela/rich-markdown-to-html</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><style>@import"https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap";.astro-route-announcer{position:absolute;left:0;top:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}:root{color-scheme:dark;--bg: #0c0f14;--bg-elevated: #141923;--bg-panel: #171d28;--border: #262f3f;--text: #f4f6fb;--text-muted: #a7b0c2;--text-dim: #7d879b;--accent: #ff8a3d;--accent-strong: #ff6a00;--accent-soft: rgba(255, 138, 61, .16);--shadow: 0 20px 50px rgba(5, 8, 14, .45);--radius-lg: 22px;--radius-md: 14px;--radius-sm: 10px;--max-width: 1160px;--font-sans: "Space Grotesk", "Manrope", "IBM Plex Sans", system-ui, sans-serif;--font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace}html.light{color-scheme:light;--bg: #f7f6f2;--bg-elevated: #ffffff;--bg-panel: #fffaf2;--border: #e4dfd6;--text: #1a1c22;--text-muted: #5b6170;--text-dim: #8c92a1;--accent: #ff7a1a;--accent-strong: #ff5c00;--accent-soft: rgba(255, 122, 26, .15);--shadow: 0 16px 40px rgba(19, 20, 26, .15)}*{box-sizing:border-box}body{margin:0;font-family:var(--font-sans);background:radial-gradient(circle at 15% 20%,rgba(255,138,61,.12),transparent 40%),radial-gradient(circle at 85% 0%,rgba(255,106,0,.16),transparent 30%),var(--bg);color:var(--text);min-height:100vh}a{color:inherit;text-decoration:none}a:hover{color:var(--accent)}main{padding:40px 24px 80px}.container{width:100%;max-width:var(--max-width);margin:0 auto}.page-title{font-size:clamp(2.2rem,1.2rem + 3vw,3.4rem);margin:0;color:var(--accent)}.page-subtitle{margin-top:10px;color:var(--text-muted);font-size:1.1rem;max-width:720px}.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;margin-top:34px}.card{background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;min-height:220px;box-shadow:var(--shadow);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}.card:hover{transform:translateY(-4px);border-color:#ff8a3d66;box-shadow:0 28px 60px #07090f80}.card h3{margin:0 0 8px;font-size:1.3rem}.card p{margin:0;color:var(--text-muted);line-height:1.5}.tag{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:.75rem;letter-spacing:.02em}.header-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}.header-links a{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg-panel);color:var(--text-muted);font-size:.9rem}.header-links a:hover{border-color:var(--accent);color:var(--text)}.demo-surface{margin-top:28px;background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;box-shadow:var(--shadow)}.demo-embed{display:grid;gap:24px}.code-panel{background:#0b0f16;border-radius:var(--radius-md);padding:16px;border:1px solid rgba(255,138,61,.2);color:#e5e9f2;font-family:var(--font-mono);font-size:.85rem;overflow:auto}footer{border-top:1px solid var(--border);color:var(--text-dim);padding:40px 24px 60px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:24px}.topbar a{font-weight:600}.theme-toggle{border:1px solid var(--border);background:var(--bg-panel);color:var(--text);border-radius:999px;padding:8px 14px;cursor:pointer;font-size:.85rem}.code-label{margin:24px 0 10px;color:var(--text-muted);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase}.code-details{margin-top:24px;border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;background:var(--bg-elevated)}.code-details summary{cursor:pointer;color:var(--accent);font-weight:600;letter-spacing:.02em}.code-details[open] summary{margin-bottom:12px}
+</style><script type="module" src="/utils/_astro/hoisted.BScVxmeO.js"></script></head> <body> <header class="topbar"> <a href="/">@manufosela/rich-markdown-to-html</a> <div class="header-links">  <button class="theme-toggle" type="button" data-theme-toggle>Light mode</button> <script type="module">
+  const root = document.documentElement;
+  const toggle = document.querySelector('[data-theme-toggle]');
+  const stored = localStorage.getItem('theme');
+
+  if (stored === 'light') {
+    root.classList.add('light');
+  }
+
+  const updateLabel = () => {
+    const isLight = root.classList.contains('light');
+    toggle.textContent = isLight ? 'Dark mode' : 'Light mode';
+  };
+
+  updateLabel();
+
+  toggle.addEventListener('click', () => {
+    root.classList.toggle('light');
+    localStorage.setItem('theme', root.classList.contains('light') ? 'light' : 'dark');
+    updateLabel();
+  });
+</script> </div> </header> <main> <div class="container">  <div> <h1 class="page-title">@manufosela/rich-markdown-to-html</h1> <p class="page-subtitle">Markdown to HTML converter with support for tables, code blocks, and task lists</p> <div class="header-links"> <a href="/utils/">← Back to components</a><a href="https://github.com/manufosela/utils">GitHub Repo</a> </div> </div> <div class="demo-surface"> <div><style>
+
+
+
+
+    * {
+      box-sizing: border-box;
+    }
+
+    .topbar {
+      display: grid;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: var(--bg-panel);
+      color: var(--text);
+      align-items: center;
+    }
+
+    .topbar-links {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .topbar a {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: calc(100vh - 110px);
+    }
+
+    .code-block {
+      background: #0b0f1a;
+      border: 1px solid #2b3247;
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: #d6d9e6;
+      font-family: "JetBrains Mono", "Courier New", monospace;
+      font-size: 0.8rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .panel {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .panel-header {
+      padding: 1rem;
+      background: var(--accent);
+      color: #111;
+      font-weight: 600;
+    }
+
+    .panel-content {
+      flex: 1;
+      overflow: auto;
+    }
+
+    #editor {
+      width: 100%;
+      height: 100%;
+      padding: 1rem;
+      border: none;
+      resize: none;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    #preview {
+      padding: 1rem 2rem;
+      background: var(--bg-elevated);
+    }
+
+    /* Preview Styles */
+    #preview h1, #preview h2, #preview h3,
+    #preview h4, #preview h5, #preview h6 {
+      margin-top: 1.5em;
+      margin-bottom: 0.5em;
+      color: var(--text);
+    }
+
+    #preview h1 { font-size: 2rem; border-bottom: 2px solid var(--border); padding-bottom: 0.3em; }
+    #preview h2 { font-size: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.3em; }
+    #preview h3 { font-size: 1.25rem; }
+
+    #preview p {
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    #preview a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    #preview a:hover {
+      text-decoration: underline;
+    }
+
+    #preview code {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 0.2em 0.4em;
+      border-radius: 3px;
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 0.9em;
+    }
+
+    #preview pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 1rem;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+
+    #preview pre code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+    }
+
+    #preview blockquote {
+      border-left: 4px solid var(--accent);
+      margin: 1em 0;
+      padding: 0.5em 1em;
+      background: var(--bg-panel);
+      color: var(--text-muted);
+    }
+
+    #preview ul, #preview ol {
+      padding-left: 2em;
+      line-height: 1.8;
+    }
+
+    #preview .task-list {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    #preview .task-list-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+    }
+
+    #preview .task-list-item input {
+      margin: 0;
+    }
+
+    #preview table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 1em 0;
+    }
+
+    #preview th, #preview td {
+      border: 1px solid var(--border);
+      padding: 0.75em;
+    }
+
+    #preview th {
+      background: var(--bg-panel);
+      font-weight: 600;
+    }
+
+    #preview tr:nth-child(even) {
+      background: var(--bg-2);
+    }
+
+    #preview hr {
+      border: none;
+      border-top: 2px solid var(--border);
+      margin: 2em 0;
+    }
+
+    #preview img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .options {
+      padding: 0.5rem 1rem;
+      background: var(--bg-panel);
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      font-size: 0.875rem;
+    }
+
+    .options label {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      cursor: pointer;
+      color: var(--text);
+    }
+
+    .options input {
+      accent-color: var(--accent);
+    }
+
+    .toc {
+      background: var(--bg-panel);
+      padding: 1rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+
+    .toc ul {
+      list-style: none;
+      padding-left: 1em;
+      margin: 0;
+    }
+
+    .toc > ul {
+      padding-left: 0;
+    }
+
+    .toc a {
+      color: var(--text-muted);
+    }
+
+    .toc-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+  
+
+
+
+</style>
+
+:root {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+:root.light {
+  --bg: #f5f5f7;
+  --bg-2: #ffffff;
+  --bg-spot-1: #f8e9d0;
+  --bg-spot-2: #e8eef8;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #ffb000;
+  --accent-2: #00a7d6;
+  --surface: #f3f4f6;
+  --code-bg: #111827;
+  --code-text: #f9fafb;
+}
+
+:root.dark {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+h1 {
+  color: var(--accent) !important;
+}
+
+.top-links a,
+.topbar a {
+  color: var(--muted) !important;
+  border-color: var(--line) !important;
+}
+
+.top-links a:hover,
+.topbar a:hover {
+  color: var(--text) !important;
+}
+
+.card,
+.section,
+.demo-section,
+.panel {
+  background: var(--card) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+.code-block,
+pre,
+code,
+.output,
+.current-url,
+.event-log,
+.result-card,
+.log {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  border-color: var(--line) !important;
+}
+
+input,
+select,
+textarea {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+button {
+  background: linear-gradient(120deg, var(--accent), #ff6a00) !important;
+  color: #111 !important;
+}
+
+footer {
+  color: var(--muted) !important;
+}
+
+footer a {
+  color: var(--text) !important;
+}</div><div class="demo-embed"><div class="topbar">
+    <demo-theme-toggle></demo-theme-toggle>
+    <div class="topbar-links">
+      <a href="https://manufosela.github.io/utils/">Utils catalog</a>
+      <a href="https://manufosela.github.io/">Main catalog</a>
+      <a href="https://github.com/manufosela/utils/tree/main/packages/rich-markdown-to-html">Source</a>
+      <span style="margin-left: auto; font-size: 0.85rem; color: #9ca3af;">Live markdown playground</span>
+    </div>
+    <div class="code-block">import { parse } from '@manufosela/rich-markdown-to-html';
+
+const html = parse(markdown, { linkify: true, taskLists: true });
+</div>
+  </div>
+  <div class="container">
+    <div class="panel">
+      <div class="panel-header">Markdown Input</div>
+      <div class="options">
+        <label><input type="checkbox" id="breaks"> Line Breaks</label>
+        <label><input type="checkbox" id="linkify" checked> Auto-link URLs</label>
+        <label><input type="checkbox" id="taskLists" checked> Task Lists</label>
+        <label><input type="checkbox" id="tables" checked> Tables</label>
+        <label><input type="checkbox" id="typographer"> Typographer</label>
+        <label><input type="checkbox" id="showToc"> Show TOC</label>
+      </div>
+      <div class="panel-content">
+        <textarea id="editor"># Welcome to Rich Markdown
+
+This is a **live preview** markdown editor powered by `@manufosela/rich-markdown-to-html`.
+
+## Features
+
+### Text Formatting
+
+You can use **bold**, *italic*, and ~~strikethrough~~ text.
+
+### Code
+
+Inline code: `const x = 1;`
+
+Code blocks with syntax highlighting:
+
+```javascript
+function greet(name) {
+  console.log(`Hello, ${name}!`);
+}
+```
+
+### Lists
+
+Unordered list:
+- Item one
+- Item two
+- Item three
+
+Ordered list:
+1. First item
+2. Second item
+3. Third item
+
+### Task Lists
+
+- [x] Completed task
+- [ ] Incomplete task
+- [x] Another done task
+
+### Blockquotes
+
+> This is a blockquote.
+> It can span multiple lines.
+
+### Tables
+
+| Feature | Status | Notes |
+|:--------|:------:|------:|
+| Tables | Done | Aligned! |
+| Lists | Done | Task lists too |
+| Code | Done | With highlighting |
+
+### Links and Images
+
+Visit [Google](https://google.com "Search Engine") for more info.
+
+Auto-linked URL: https://example.com
+
+---
+
+## Try It!
+
+Edit this text and see the live preview update instantly.
+</textarea>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-header">HTML Preview</div>
+      <div class="panel-content" id="preview"></div>
+    </div>
+  </div></div> <div><script type="module">
+    import { parse, generateTOC, renderTOC } from "https://esm.sh/@manufosela/rich-markdown-to-html";
+
+    const editor = document.getElementById('editor');
+    const preview = document.getElementById('preview');
+    const optionBreaks = document.getElementById('breaks');
+    const optionLinkify = document.getElementById('linkify');
+    const optionTaskLists = document.getElementById('taskLists');
+    const optionTables = document.getElementById('tables');
+    const optionTypographer = document.getElementById('typographer');
+    const optionShowToc = document.getElementById('showToc');
+
+    function updatePreview() {
+      const options = {
+        breaks: optionBreaks.checked,
+        linkify: optionLinkify.checked,
+        taskLists: optionTaskLists.checked,
+        tables: optionTables.checked,
+        typographer: optionTypographer.checked
+      };
+
+      const markdown = editor.value;
+      let html = '';
+
+      if (optionShowToc.checked) {
+        const toc = generateTOC(markdown, { maxLevel: 3 });
+        if (toc.length > 0) {
+          html += '<div class="toc"><div class="toc-title">Table of Contents</div>';
+          html += renderTOC(toc);
+          html += '</div>';
+        }
+      }
+
+      html += parse(markdown, options);
+      preview.innerHTML = html;
+    }
+
+    // Initial render
+    updatePreview();
+
+    // Update on input
+    editor.addEventListener('input', updatePreview);
+
+    // Update on option change
+    [optionBreaks, optionLinkify, optionTaskLists, optionTables, optionTypographer, optionShowToc]
+      .forEach(el => el.addEventListener('change', updatePreview));
+  </script>
+<script type="module">
+class DemoThemeToggle extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  connectedCallback() {
+    const saved = localStorage.getItem('utils-demo-theme');
+    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.toggle('light', saved === 'light');
+
+    this.render();
+  }
+
+  render() {
+    const isLight = document.documentElement.classList.contains('light');
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host {
+          display: inline-flex;
+        }
+        .toggle {
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid var(--line);
+          border-radius: 999px;
+          overflow: hidden;
+          background: var(--surface);
+        }
+        button {
+          border: none;
+          background: transparent;
+          color: var(--muted);
+          padding: 6px 12px;
+          font-size: 0.8rem;
+          cursor: pointer;
+          font-family: "Space Grotesk", "Trebuchet MS", Arial, sans-serif;
+        }
+        button.active {
+          background: linear-gradient(120deg, var(--accent), #ff6a00);
+          color: #111;
+          font-weight: 600;
+        }
+      </style>
+      <div class="toggle" role="group" aria-label="Theme toggle">
+        <button class="${isLight ? 'active' : ''}" data-theme="light">Light</button>
+        <button class="${isLight ? '' : 'active'}" data-theme="dark">Dark</button>
+      </div>
+    `;
+
+    this.shadowRoot.querySelectorAll('button').forEach((btn) => {
+      btn.addEventListener('click', this.handleClick);
+    });
+  }
+
+  handleClick(event) {
+    const theme = event.currentTarget.dataset.theme;
+    const isLight = theme === 'light';
+    document.documentElement.classList.toggle('light', isLight);
+    document.documentElement.classList.remove('dark');
+    localStorage.setItem('utils-demo-theme', isLight ? 'light' : 'dark');
+    this.render();
+  }
+}
+
+customElements.define('demo-theme-toggle', DemoThemeToggle);
+
+</script></div><details class="code-details"> <summary>Demo code (CodePen-ready HTML, CSS, JS)</summary> <div> <div class="code-label">HTML (html)</div> <pre class="code-panel"><code>&lt;div class=&quot;topbar&quot;&gt;
+    &lt;demo-theme-toggle&gt;&lt;/demo-theme-toggle&gt;
+    &lt;div class=&quot;topbar-links&quot;&gt;
+      &lt;a href=&quot;https://manufosela.github.io/utils/&quot;&gt;Utils catalog&lt;/a&gt;
+      &lt;a href=&quot;https://manufosela.github.io/&quot;&gt;Main catalog&lt;/a&gt;
+      &lt;a href=&quot;https://github.com/manufosela/utils/tree/main/packages/rich-markdown-to-html&quot;&gt;Source&lt;/a&gt;
+      &lt;span style=&quot;margin-left: auto; font-size: 0.85rem; color: #9ca3af;&quot;&gt;Live markdown playground&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;code-block&quot;&gt;import { parse } from &#39;@manufosela/rich-markdown-to-html&#39;;
+
+const html = parse(markdown, { linkify: true, taskLists: true });
+&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;container&quot;&gt;
+    &lt;div class=&quot;panel&quot;&gt;
+      &lt;div class=&quot;panel-header&quot;&gt;Markdown Input&lt;/div&gt;
+      &lt;div class=&quot;options&quot;&gt;
+        &lt;label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;breaks&quot;&gt; Line Breaks&lt;/label&gt;
+        &lt;label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;linkify&quot; checked&gt; Auto-link URLs&lt;/label&gt;
+        &lt;label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;taskLists&quot; checked&gt; Task Lists&lt;/label&gt;
+        &lt;label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;tables&quot; checked&gt; Tables&lt;/label&gt;
+        &lt;label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;typographer&quot;&gt; Typographer&lt;/label&gt;
+        &lt;label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;showToc&quot;&gt; Show TOC&lt;/label&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;panel-content&quot;&gt;
+        &lt;textarea id=&quot;editor&quot;&gt;# Welcome to Rich Markdown
+
+This is a **live preview** markdown editor powered by `@manufosela/rich-markdown-to-html`.
+
+## Features
+
+### Text Formatting
+
+You can use **bold**, *italic*, and ~~strikethrough~~ text.
+
+### Code
+
+Inline code: `const x = 1;`
+
+Code blocks with syntax highlighting:
+
+```javascript
+function greet(name) {
+  console.log(`Hello, ${name}!`);
+}
+```
+
+### Lists
+
+Unordered list:
+- Item one
+- Item two
+- Item three
+
+Ordered list:
+1. First item
+2. Second item
+3. Third item
+
+### Task Lists
+
+- [x] Completed task
+- [ ] Incomplete task
+- [x] Another done task
+
+### Blockquotes
+
+&gt; This is a blockquote.
+&gt; It can span multiple lines.
+
+### Tables
+
+| Feature | Status | Notes |
+|:--------|:------:|------:|
+| Tables | Done | Aligned! |
+| Lists | Done | Task lists too |
+| Code | Done | With highlighting |
+
+### Links and Images
+
+Visit [Google](https://google.com &quot;Search Engine&quot;) for more info.
+
+Auto-linked URL: https://example.com
+
+---
+
+## Try It!
+
+Edit this text and see the live preview update instantly.
+&lt;/textarea&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;panel&quot;&gt;
+      &lt;div class=&quot;panel-header&quot;&gt;HTML Preview&lt;/div&gt;
+      &lt;div class=&quot;panel-content&quot; id=&quot;preview&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;</code></pre> </div> <div> <div class="code-label">CSS (css)</div> <pre class="code-panel"><code>:root {
+  --bg: #0c0f14;
+  --bg-elevated: #141923;
+  --bg-panel: #171d28;
+  --border: #262f3f;
+  --text: #f4f6fb;
+  --text-muted: #a7b0c2;
+  --text-dim: #7d879b;
+  --accent: #ff8a3d;
+  --accent-strong: #ff6a00;
+  --accent-soft: rgba(255, 138, 61, 0.16);
+  --shadow: 0 20px 50px rgba(5, 8, 14, 0.45);
+  --radius-lg: 22px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --max-width: 1160px;
+}
+
+* {
+      box-sizing: border-box;
+    }
+
+    .topbar {
+      display: grid;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background: var(--bg-panel);
+      color: var(--text);
+      align-items: center;
+    }
+
+    .topbar-links {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .topbar a {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      height: calc(100vh - 110px);
+    }
+
+    .code-block {
+      background: #0b0f1a;
+      border: 1px solid #2b3247;
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: #d6d9e6;
+      font-family: &quot;JetBrains Mono&quot;, &quot;Courier New&quot;, monospace;
+      font-size: 0.8rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .panel {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .panel-header {
+      padding: 1rem;
+      background: var(--accent);
+      color: #111;
+      font-weight: 600;
+    }
+
+    .panel-content {
+      flex: 1;
+      overflow: auto;
+    }
+
+    #editor {
+      width: 100%;
+      height: 100%;
+      padding: 1rem;
+      border: none;
+      resize: none;
+      font-family: &#39;Monaco&#39;, &#39;Menlo&#39;, monospace;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    #preview {
+      padding: 1rem 2rem;
+      background: var(--bg-elevated);
+    }
+
+    /* Preview Styles */
+    #preview h1, #preview h2, #preview h3,
+    #preview h4, #preview h5, #preview h6 {
+      margin-top: 1.5em;
+      margin-bottom: 0.5em;
+      color: var(--text);
+    }
+
+    #preview h1 { font-size: 2rem; border-bottom: 2px solid var(--border); padding-bottom: 0.3em; }
+    #preview h2 { font-size: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.3em; }
+    #preview h3 { font-size: 1.25rem; }
+
+    #preview p {
+      line-height: 1.6;
+      color: var(--text-muted);
+    }
+
+    #preview a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    #preview a:hover {
+      text-decoration: underline;
+    }
+
+    #preview code {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 0.2em 0.4em;
+      border-radius: 3px;
+      font-family: &#39;Monaco&#39;, &#39;Menlo&#39;, monospace;
+      font-size: 0.9em;
+    }
+
+    #preview pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 1rem;
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+
+    #preview pre code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+    }
+
+    #preview blockquote {
+      border-left: 4px solid var(--accent);
+      margin: 1em 0;
+      padding: 0.5em 1em;
+      background: var(--bg-panel);
+      color: var(--text-muted);
+    }
+
+    #preview ul, #preview ol {
+      padding-left: 2em;
+      line-height: 1.8;
+    }
+
+    #preview .task-list {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    #preview .task-list-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+    }
+
+    #preview .task-list-item input {
+      margin: 0;
+    }
+
+    #preview table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 1em 0;
+    }
+
+    #preview th, #preview td {
+      border: 1px solid var(--border);
+      padding: 0.75em;
+    }
+
+    #preview th {
+      background: var(--bg-panel);
+      font-weight: 600;
+    }
+
+    #preview tr:nth-child(even) {
+      background: var(--bg-2);
+    }
+
+    #preview hr {
+      border: none;
+      border-top: 2px solid var(--border);
+      margin: 2em 0;
+    }
+
+    #preview img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .options {
+      padding: 0.5rem 1rem;
+      background: var(--bg-panel);
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      font-size: 0.875rem;
+    }
+
+    .options label {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      cursor: pointer;
+      color: var(--text);
+    }
+
+    .options input {
+      accent-color: var(--accent);
+    }
+
+    .toc {
+      background: var(--bg-panel);
+      padding: 1rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+
+    .toc ul {
+      list-style: none;
+      padding-left: 1em;
+      margin: 0;
+    }
+
+    .toc &gt; ul {
+      padding-left: 0;
+    }
+
+    .toc a {
+      color: var(--text-muted);
+    }
+
+    .toc-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+  
+
+
+
+
+
+:root {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+:root.light {
+  --bg: #f5f5f7;
+  --bg-2: #ffffff;
+  --bg-spot-1: #f8e9d0;
+  --bg-spot-2: #e8eef8;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #ffb000;
+  --accent-2: #00a7d6;
+  --surface: #f3f4f6;
+  --code-bg: #111827;
+  --code-text: #f9fafb;
+}
+
+:root.dark {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+h1 {
+  color: var(--accent) !important;
+}
+
+.top-links a,
+.topbar a {
+  color: var(--muted) !important;
+  border-color: var(--line) !important;
+}
+
+.top-links a:hover,
+.topbar a:hover {
+  color: var(--text) !important;
+}
+
+.card,
+.section,
+.demo-section,
+.panel {
+  background: var(--card) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+.code-block,
+pre,
+code,
+.output,
+.current-url,
+.event-log,
+.result-card,
+.log {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  border-color: var(--line) !important;
+}
+
+input,
+select,
+textarea {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+button {
+  background: linear-gradient(120deg, var(--accent), #ff6a00) !important;
+  color: #111 !important;
+}
+
+footer {
+  color: var(--muted) !important;
+}
+
+footer a {
+  color: var(--text) !important;
+}</code></pre> </div> <div> <div class="code-label">JS (js)</div> <pre class="code-panel"><code>import { parse, generateTOC, renderTOC } from &quot;https://esm.sh/@manufosela/rich-markdown-to-html&quot;;
+
+    const editor = document.getElementById(&#39;editor&#39;);
+    const preview = document.getElementById(&#39;preview&#39;);
+    const optionBreaks = document.getElementById(&#39;breaks&#39;);
+    const optionLinkify = document.getElementById(&#39;linkify&#39;);
+    const optionTaskLists = document.getElementById(&#39;taskLists&#39;);
+    const optionTables = document.getElementById(&#39;tables&#39;);
+    const optionTypographer = document.getElementById(&#39;typographer&#39;);
+    const optionShowToc = document.getElementById(&#39;showToc&#39;);
+
+    function updatePreview() {
+      const options = {
+        breaks: optionBreaks.checked,
+        linkify: optionLinkify.checked,
+        taskLists: optionTaskLists.checked,
+        tables: optionTables.checked,
+        typographer: optionTypographer.checked
+      };
+
+      const markdown = editor.value;
+      let html = &#39;&#39;;
+
+      if (optionShowToc.checked) {
+        const toc = generateTOC(markdown, { maxLevel: 3 });
+        if (toc.length &gt; 0) {
+          html += &#39;&lt;div class=&quot;toc&quot;&gt;&lt;div class=&quot;toc-title&quot;&gt;Table of Contents&lt;/div&gt;&#39;;
+          html += renderTOC(toc);
+          html += &#39;&lt;/div&gt;&#39;;
+        }
+      }
+
+      html += parse(markdown, options);
+      preview.innerHTML = html;
+    }
+
+    // Initial render
+    updatePreview();
+
+    // Update on input
+    editor.addEventListener(&#39;input&#39;, updatePreview);
+
+    // Update on option change
+    [optionBreaks, optionLinkify, optionTaskLists, optionTables, optionTypographer, optionShowToc]
+      .forEach(el =&gt; el.addEventListener(&#39;change&#39;, updatePreview));
+  
+
+class DemoThemeToggle extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: &#39;open&#39; });
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  connectedCallback() {
+    const saved = localStorage.getItem(&#39;utils-demo-theme&#39;);
+    document.documentElement.classList.remove(&#39;dark&#39;);
+    document.documentElement.classList.toggle(&#39;light&#39;, saved === &#39;light&#39;);
+
+    this.render();
+  }
+
+  render() {
+    const isLight = document.documentElement.classList.contains(&#39;light&#39;);
+    this.shadowRoot.innerHTML = `
+      &lt;style&gt;
+        :host {
+          display: inline-flex;
+        }
+        .toggle {
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid var(--line);
+          border-radius: 999px;
+          overflow: hidden;
+          background: var(--surface);
+        }
+        button {
+          border: none;
+          background: transparent;
+          color: var(--muted);
+          padding: 6px 12px;
+          font-size: 0.8rem;
+          cursor: pointer;
+          font-family: &quot;Space Grotesk&quot;, &quot;Trebuchet MS&quot;, Arial, sans-serif;
+        }
+        button.active {
+          background: linear-gradient(120deg, var(--accent), #ff6a00);
+          color: #111;
+          font-weight: 600;
+        }
+      &lt;/style&gt;
+      &lt;div class=&quot;toggle&quot; role=&quot;group&quot; aria-label=&quot;Theme toggle&quot;&gt;
+        &lt;button class=&quot;${isLight ? &#39;active&#39; : &#39;&#39;}&quot; data-theme=&quot;light&quot;&gt;Light&lt;/button&gt;
+        &lt;button class=&quot;${isLight ? &#39;&#39; : &#39;active&#39;}&quot; data-theme=&quot;dark&quot;&gt;Dark&lt;/button&gt;
+      &lt;/div&gt;
+    `;
+
+    this.shadowRoot.querySelectorAll(&#39;button&#39;).forEach((btn) =&gt; {
+      btn.addEventListener(&#39;click&#39;, this.handleClick);
+    });
+  }
+
+  handleClick(event) {
+    const theme = event.currentTarget.dataset.theme;
+    const isLight = theme === &#39;light&#39;;
+    document.documentElement.classList.toggle(&#39;light&#39;, isLight);
+    document.documentElement.classList.remove(&#39;dark&#39;);
+    localStorage.setItem(&#39;utils-demo-theme&#39;, isLight ? &#39;light&#39; : &#39;dark&#39;);
+    this.render();
+  }
+}
+
+customElements.define(&#39;demo-theme-toggle&#39;, DemoThemeToggle);</code></pre> </div> </details> </div>  </div> </main> <footer> <div class="container"> <p>Built by manufosela. Lightweight, accessible, and standards-first web components.</p> </div> </footer> </body></html>

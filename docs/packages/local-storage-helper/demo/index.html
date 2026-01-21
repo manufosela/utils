@@ -1,0 +1,806 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>@manufosela/local-storage-helper</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><style>@import"https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap";.astro-route-announcer{position:absolute;left:0;top:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}:root{color-scheme:dark;--bg: #0c0f14;--bg-elevated: #141923;--bg-panel: #171d28;--border: #262f3f;--text: #f4f6fb;--text-muted: #a7b0c2;--text-dim: #7d879b;--accent: #ff8a3d;--accent-strong: #ff6a00;--accent-soft: rgba(255, 138, 61, .16);--shadow: 0 20px 50px rgba(5, 8, 14, .45);--radius-lg: 22px;--radius-md: 14px;--radius-sm: 10px;--max-width: 1160px;--font-sans: "Space Grotesk", "Manrope", "IBM Plex Sans", system-ui, sans-serif;--font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace}html.light{color-scheme:light;--bg: #f7f6f2;--bg-elevated: #ffffff;--bg-panel: #fffaf2;--border: #e4dfd6;--text: #1a1c22;--text-muted: #5b6170;--text-dim: #8c92a1;--accent: #ff7a1a;--accent-strong: #ff5c00;--accent-soft: rgba(255, 122, 26, .15);--shadow: 0 16px 40px rgba(19, 20, 26, .15)}*{box-sizing:border-box}body{margin:0;font-family:var(--font-sans);background:radial-gradient(circle at 15% 20%,rgba(255,138,61,.12),transparent 40%),radial-gradient(circle at 85% 0%,rgba(255,106,0,.16),transparent 30%),var(--bg);color:var(--text);min-height:100vh}a{color:inherit;text-decoration:none}a:hover{color:var(--accent)}main{padding:40px 24px 80px}.container{width:100%;max-width:var(--max-width);margin:0 auto}.page-title{font-size:clamp(2.2rem,1.2rem + 3vw,3.4rem);margin:0;color:var(--accent)}.page-subtitle{margin-top:10px;color:var(--text-muted);font-size:1.1rem;max-width:720px}.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;margin-top:34px}.card{background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;min-height:220px;box-shadow:var(--shadow);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}.card:hover{transform:translateY(-4px);border-color:#ff8a3d66;box-shadow:0 28px 60px #07090f80}.card h3{margin:0 0 8px;font-size:1.3rem}.card p{margin:0;color:var(--text-muted);line-height:1.5}.tag{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:.75rem;letter-spacing:.02em}.header-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}.header-links a{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg-panel);color:var(--text-muted);font-size:.9rem}.header-links a:hover{border-color:var(--accent);color:var(--text)}.demo-surface{margin-top:28px;background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;box-shadow:var(--shadow)}.demo-embed{display:grid;gap:24px}.code-panel{background:#0b0f16;border-radius:var(--radius-md);padding:16px;border:1px solid rgba(255,138,61,.2);color:#e5e9f2;font-family:var(--font-mono);font-size:.85rem;overflow:auto}footer{border-top:1px solid var(--border);color:var(--text-dim);padding:40px 24px 60px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:24px}.topbar a{font-weight:600}.theme-toggle{border:1px solid var(--border);background:var(--bg-panel);color:var(--text);border-radius:999px;padding:8px 14px;cursor:pointer;font-size:.85rem}.code-label{margin:24px 0 10px;color:var(--text-muted);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase}.code-details{margin-top:24px;border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;background:var(--bg-elevated)}.code-details summary{cursor:pointer;color:var(--accent);font-weight:600;letter-spacing:.02em}.code-details[open] summary{margin-bottom:12px}
+</style><script type="module" src="/utils/_astro/hoisted.BScVxmeO.js"></script></head> <body> <header class="topbar"> <a href="/">@manufosela/local-storage-helper</a> <div class="header-links">  <button class="theme-toggle" type="button" data-theme-toggle>Light mode</button> <script type="module">
+  const root = document.documentElement;
+  const toggle = document.querySelector('[data-theme-toggle]');
+  const stored = localStorage.getItem('theme');
+
+  if (stored === 'light') {
+    root.classList.add('light');
+  }
+
+  const updateLabel = () => {
+    const isLight = root.classList.contains('light');
+    toggle.textContent = isLight ? 'Dark mode' : 'Light mode';
+  };
+
+  updateLabel();
+
+  toggle.addEventListener('click', () => {
+    root.classList.toggle('light');
+    localStorage.setItem('theme', root.classList.contains('light') ? 'light' : 'dark');
+    updateLabel();
+  });
+</script> </div> </header> <main> <div class="container">  <div> <h1 class="page-title">@manufosela/local-storage-helper</h1> <p class="page-subtitle">localStorage wrapper with TTL support, JSON serialization, and automatic expiration</p> <div class="header-links"> <a href="/utils/">← Back to components</a><a href="https://github.com/manufosela/utils">GitHub Repo</a> </div> </div> <div class="demo-surface"> <div>h1 { color: var(--accent); }
+    .demo-section {
+      background: var(--bg-elevated);
+      padding: 2rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .demo-section h2 {
+      margin-top: 0;
+      color: var(--text-muted);
+    }
+    button {
+      padding: 0.5rem 1rem;
+      margin: 0.25rem;
+      border: none;
+      border-radius: 4px;
+      background: var(--accent);
+      color: white;
+      cursor: pointer;
+    }
+    button:hover { background: var(--accent-strong); }
+    button.danger { background: #dc3545; }
+    button.danger:hover { background: #c82333; }
+    input {
+      padding: 0.5rem;
+      margin: 0.25rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+    .output {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: var(--bg-panel);
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.875rem;
+      white-space: pre-wrap;
+    }
+    .row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      align-items: center;
+    }
+    .top-links {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .top-links a {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+    }
+
+    .code-block {
+      background: #0b0f1a;
+      border: 1px solid #2b3247;
+      border-radius: 8px;
+      padding: 12px;
+      color: #d6d9e6;
+      font-family: "JetBrains Mono", "Courier New", monospace;
+      font-size: 0.85rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  
+
+
+
+</style>
+
+:root {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+:root.light {
+  --bg: #f5f5f7;
+  --bg-2: #ffffff;
+  --bg-spot-1: #f8e9d0;
+  --bg-spot-2: #e8eef8;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #ffb000;
+  --accent-2: #00a7d6;
+  --surface: #f3f4f6;
+  --code-bg: #111827;
+  --code-text: #f9fafb;
+}
+
+:root.dark {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+h1 {
+  color: var(--accent) !important;
+}
+
+.top-links a,
+.topbar a {
+  color: var(--muted) !important;
+  border-color: var(--line) !important;
+}
+
+.top-links a:hover,
+.topbar a:hover {
+  color: var(--text) !important;
+}
+
+.card,
+.section,
+.demo-section,
+.panel {
+  background: var(--card) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+.code-block,
+pre,
+code,
+.output,
+.current-url,
+.event-log,
+.result-card,
+.log {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  border-color: var(--line) !important;
+}
+
+input,
+select,
+textarea {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+button {
+  background: linear-gradient(120deg, var(--accent), #ff6a00) !important;
+  color: #111 !important;
+}
+
+footer {
+  color: var(--muted) !important;
+}
+
+footer a {
+  color: var(--text) !important;
+}</div><div class="demo-embed"><div class="top-links">
+    <a href="https://manufosela.github.io/utils/">Utils catalog</a>
+    <a href="https://manufosela.github.io/">Main catalog</a>
+    <a href="https://github.com/manufosela/utils/tree/main/packages/local-storage-helper">Source</a>
+  </div>
+        <demo-theme-toggle></demo-theme-toggle>
+  <h1>local-storage-helper Demo</h1>
+
+  <div class="demo-section">
+    <h2>Quick usage</h2>
+    <pre class="code-block"><code>import { LocalStorageHelper } from '@manufosela/local-storage-helper';
+
+const storage = new LocalStorageHelper({ prefix: 'demo_' });
+storage.set('user', { name: 'Ada' });
+</code></pre>
+  </div>
+
+  <div class="demo-section">
+    <h2>Basic Operations</h2>
+    <div class="row">
+      <input type="text" id="key" placeholder="Key" value="myKey">
+      <input type="text" id="value" placeholder="Value" value="Hello World">
+      <button id="set">Set</button>
+      <button id="get">Get</button>
+      <button id="remove" class="danger">Remove</button>
+    </div>
+    <div class="output" id="output">Results will appear here...</div>
+    <pre class="code-block"><code>import { LocalStorageHelper } from '@manufosela/local-storage-helper';
+
+const storage = new LocalStorageHelper({ prefix: 'demo_' });
+storage.set('myKey', 'Hello World');
+storage.get('myKey');
+storage.remove('myKey');
+</code></pre>
+  </div>
+
+  <div class="demo-section">
+    <h2>With TTL</h2>
+    <div class="row">
+      <input type="text" id="ttl-key" placeholder="Key" value="tempData">
+      <input type="number" id="ttl-seconds" placeholder="TTL (seconds)" value="10">
+      <button id="set-ttl">Set with TTL</button>
+      <button id="check-ttl">Check TTL</button>
+    </div>
+    <div class="output" id="ttl-output">Set a value with TTL to see expiration...</div>
+    <pre class="code-block"><code>storage.set('tempData', 'expiring', 10_000);
+storage.getTTL('tempData');</code></pre>
+  </div>
+
+  <div class="demo-section">
+    <h2>Storage Info</h2>
+    <button id="show-keys">Show All Keys</button>
+    <button id="show-size">Show Size</button>
+    <button id="clear-all" class="danger">Clear All</button>
+    <div class="output" id="info-output">Click a button to see storage info...</div>
+    <pre class="code-block"><code>storage.keys();
+storage.getSize();
+storage.clear();</code></pre>
+  </div></div> <div><script type="module">
+    import { LocalStorageHelper } from "https://esm.sh/@manufosela/local-storage-helper";
+
+    const storage = new LocalStorageHelper({ prefix: 'demo_' });
+    const output = document.getElementById('output');
+    const ttlOutput = document.getElementById('ttl-output');
+    const infoOutput = document.getElementById('info-output');
+
+    // Basic operations
+    document.getElementById('set').addEventListener('click', () => {
+      const key = document.getElementById('key').value;
+      const value = document.getElementById('value').value;
+      storage.set(key, value);
+      output.textContent = `Set "${key}" = "${value}"`;
+    });
+
+    document.getElementById('get').addEventListener('click', () => {
+      const key = document.getElementById('key').value;
+      const value = storage.get(key);
+      output.textContent = value !== null
+        ? `Get "${key}" = ${JSON.stringify(value)}`
+        : `Key "${key}" not found`;
+    });
+
+    document.getElementById('remove').addEventListener('click', () => {
+      const key = document.getElementById('key').value;
+      storage.remove(key);
+      output.textContent = `Removed "${key}"`;
+    });
+
+    // TTL operations
+    document.getElementById('set-ttl').addEventListener('click', () => {
+      const key = document.getElementById('ttl-key').value;
+      const seconds = parseInt(document.getElementById('ttl-seconds').value);
+      storage.set(key, `Value expires in ${seconds}s`, seconds * 1000);
+      ttlOutput.textContent = `Set "${key}" with ${seconds}s TTL`;
+
+      // Start countdown
+      const interval = setInterval(() => {
+        const remaining = storage.getTTL(key);
+        if (remaining === null) {
+          ttlOutput.textContent = `"${key}" has expired!`;
+          clearInterval(interval);
+        } else {
+          ttlOutput.textContent = `"${key}" expires in ${Math.ceil(remaining / 1000)}s`;
+        }
+      }, 1000);
+    });
+
+    document.getElementById('check-ttl').addEventListener('click', () => {
+      const key = document.getElementById('ttl-key').value;
+      const remaining = storage.getTTL(key);
+      ttlOutput.textContent = remaining !== null
+        ? `"${key}" TTL: ${Math.ceil(remaining / 1000)}s remaining`
+        : `"${key}" has no TTL or doesn't exist`;
+    });
+
+    // Info operations
+    document.getElementById('show-keys').addEventListener('click', () => {
+      const keys = storage.keys();
+      infoOutput.textContent = `Keys (${keys.length}):\n${keys.join('\n') || '(none)'}`;
+    });
+
+    document.getElementById('show-size').addEventListener('click', () => {
+      const { used, available, items } = storage.getSize();
+      infoOutput.textContent = `Storage Info:
+Items: ${items}
+Used: ${(used / 1024).toFixed(2)} KB
+Available: ${(available / 1024).toFixed(2)} KB`;
+    });
+
+    document.getElementById('clear-all').addEventListener('click', () => {
+      storage.clear();
+      infoOutput.textContent = 'All demo_ prefixed items cleared';
+    });
+  </script>
+<script type="module">
+class DemoThemeToggle extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  connectedCallback() {
+    const saved = localStorage.getItem('utils-demo-theme');
+    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.toggle('light', saved === 'light');
+
+    this.render();
+  }
+
+  render() {
+    const isLight = document.documentElement.classList.contains('light');
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host {
+          display: inline-flex;
+        }
+        .toggle {
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid var(--line);
+          border-radius: 999px;
+          overflow: hidden;
+          background: var(--surface);
+        }
+        button {
+          border: none;
+          background: transparent;
+          color: var(--muted);
+          padding: 6px 12px;
+          font-size: 0.8rem;
+          cursor: pointer;
+          font-family: "Space Grotesk", "Trebuchet MS", Arial, sans-serif;
+        }
+        button.active {
+          background: linear-gradient(120deg, var(--accent), #ff6a00);
+          color: #111;
+          font-weight: 600;
+        }
+      </style>
+      <div class="toggle" role="group" aria-label="Theme toggle">
+        <button class="${isLight ? 'active' : ''}" data-theme="light">Light</button>
+        <button class="${isLight ? '' : 'active'}" data-theme="dark">Dark</button>
+      </div>
+    `;
+
+    this.shadowRoot.querySelectorAll('button').forEach((btn) => {
+      btn.addEventListener('click', this.handleClick);
+    });
+  }
+
+  handleClick(event) {
+    const theme = event.currentTarget.dataset.theme;
+    const isLight = theme === 'light';
+    document.documentElement.classList.toggle('light', isLight);
+    document.documentElement.classList.remove('dark');
+    localStorage.setItem('utils-demo-theme', isLight ? 'light' : 'dark');
+    this.render();
+  }
+}
+
+customElements.define('demo-theme-toggle', DemoThemeToggle);
+
+</script></div><details class="code-details"> <summary>Demo code (CodePen-ready HTML, CSS, JS)</summary> <div> <div class="code-label">HTML (html)</div> <pre class="code-panel"><code>&lt;div class=&quot;top-links&quot;&gt;
+    &lt;a href=&quot;https://manufosela.github.io/utils/&quot;&gt;Utils catalog&lt;/a&gt;
+    &lt;a href=&quot;https://manufosela.github.io/&quot;&gt;Main catalog&lt;/a&gt;
+    &lt;a href=&quot;https://github.com/manufosela/utils/tree/main/packages/local-storage-helper&quot;&gt;Source&lt;/a&gt;
+  &lt;/div&gt;
+        &lt;demo-theme-toggle&gt;&lt;/demo-theme-toggle&gt;
+  &lt;h1&gt;local-storage-helper Demo&lt;/h1&gt;
+
+  &lt;div class=&quot;demo-section&quot;&gt;
+    &lt;h2&gt;Quick usage&lt;/h2&gt;
+    &lt;pre class=&quot;code-block&quot;&gt;&lt;code&gt;import { LocalStorageHelper } from &#39;@manufosela/local-storage-helper&#39;;
+
+const storage = new LocalStorageHelper({ prefix: &#39;demo_&#39; });
+storage.set(&#39;user&#39;, { name: &#39;Ada&#39; });
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;demo-section&quot;&gt;
+    &lt;h2&gt;Basic Operations&lt;/h2&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;input type=&quot;text&quot; id=&quot;key&quot; placeholder=&quot;Key&quot; value=&quot;myKey&quot;&gt;
+      &lt;input type=&quot;text&quot; id=&quot;value&quot; placeholder=&quot;Value&quot; value=&quot;Hello World&quot;&gt;
+      &lt;button id=&quot;set&quot;&gt;Set&lt;/button&gt;
+      &lt;button id=&quot;get&quot;&gt;Get&lt;/button&gt;
+      &lt;button id=&quot;remove&quot; class=&quot;danger&quot;&gt;Remove&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;output&quot; id=&quot;output&quot;&gt;Results will appear here...&lt;/div&gt;
+    &lt;pre class=&quot;code-block&quot;&gt;&lt;code&gt;import { LocalStorageHelper } from &#39;@manufosela/local-storage-helper&#39;;
+
+const storage = new LocalStorageHelper({ prefix: &#39;demo_&#39; });
+storage.set(&#39;myKey&#39;, &#39;Hello World&#39;);
+storage.get(&#39;myKey&#39;);
+storage.remove(&#39;myKey&#39;);
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;demo-section&quot;&gt;
+    &lt;h2&gt;With TTL&lt;/h2&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;input type=&quot;text&quot; id=&quot;ttl-key&quot; placeholder=&quot;Key&quot; value=&quot;tempData&quot;&gt;
+      &lt;input type=&quot;number&quot; id=&quot;ttl-seconds&quot; placeholder=&quot;TTL (seconds)&quot; value=&quot;10&quot;&gt;
+      &lt;button id=&quot;set-ttl&quot;&gt;Set with TTL&lt;/button&gt;
+      &lt;button id=&quot;check-ttl&quot;&gt;Check TTL&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;output&quot; id=&quot;ttl-output&quot;&gt;Set a value with TTL to see expiration...&lt;/div&gt;
+    &lt;pre class=&quot;code-block&quot;&gt;&lt;code&gt;storage.set(&#39;tempData&#39;, &#39;expiring&#39;, 10_000);
+storage.getTTL(&#39;tempData&#39;);&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;demo-section&quot;&gt;
+    &lt;h2&gt;Storage Info&lt;/h2&gt;
+    &lt;button id=&quot;show-keys&quot;&gt;Show All Keys&lt;/button&gt;
+    &lt;button id=&quot;show-size&quot;&gt;Show Size&lt;/button&gt;
+    &lt;button id=&quot;clear-all&quot; class=&quot;danger&quot;&gt;Clear All&lt;/button&gt;
+    &lt;div class=&quot;output&quot; id=&quot;info-output&quot;&gt;Click a button to see storage info...&lt;/div&gt;
+    &lt;pre class=&quot;code-block&quot;&gt;&lt;code&gt;storage.keys();
+storage.getSize();
+storage.clear();&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;</code></pre> </div> <div> <div class="code-label">CSS (css)</div> <pre class="code-panel"><code>:root {
+  --bg: #0c0f14;
+  --bg-elevated: #141923;
+  --bg-panel: #171d28;
+  --border: #262f3f;
+  --text: #f4f6fb;
+  --text-muted: #a7b0c2;
+  --text-dim: #7d879b;
+  --accent: #ff8a3d;
+  --accent-strong: #ff6a00;
+  --accent-soft: rgba(255, 138, 61, 0.16);
+  --shadow: 0 20px 50px rgba(5, 8, 14, 0.45);
+  --radius-lg: 22px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --max-width: 1160px;
+}
+
+h1 { color: var(--accent); }
+    .demo-section {
+      background: var(--bg-elevated);
+      padding: 2rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .demo-section h2 {
+      margin-top: 0;
+      color: var(--text-muted);
+    }
+    button {
+      padding: 0.5rem 1rem;
+      margin: 0.25rem;
+      border: none;
+      border-radius: 4px;
+      background: var(--accent);
+      color: white;
+      cursor: pointer;
+    }
+    button:hover { background: var(--accent-strong); }
+    button.danger { background: #dc3545; }
+    button.danger:hover { background: #c82333; }
+    input {
+      padding: 0.5rem;
+      margin: 0.25rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+    .output {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: var(--bg-panel);
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.875rem;
+      white-space: pre-wrap;
+    }
+    .row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      align-items: center;
+    }
+    .top-links {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .top-links a {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+    }
+
+    .code-block {
+      background: #0b0f1a;
+      border: 1px solid #2b3247;
+      border-radius: 8px;
+      padding: 12px;
+      color: #d6d9e6;
+      font-family: &quot;JetBrains Mono&quot;, &quot;Courier New&quot;, monospace;
+      font-size: 0.85rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  
+
+
+
+
+
+:root {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+:root.light {
+  --bg: #f5f5f7;
+  --bg-2: #ffffff;
+  --bg-spot-1: #f8e9d0;
+  --bg-spot-2: #e8eef8;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #ffb000;
+  --accent-2: #00a7d6;
+  --surface: #f3f4f6;
+  --code-bg: #111827;
+  --code-text: #f9fafb;
+}
+
+:root.dark {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+h1 {
+  color: var(--accent) !important;
+}
+
+.top-links a,
+.topbar a {
+  color: var(--muted) !important;
+  border-color: var(--line) !important;
+}
+
+.top-links a:hover,
+.topbar a:hover {
+  color: var(--text) !important;
+}
+
+.card,
+.section,
+.demo-section,
+.panel {
+  background: var(--card) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+.code-block,
+pre,
+code,
+.output,
+.current-url,
+.event-log,
+.result-card,
+.log {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  border-color: var(--line) !important;
+}
+
+input,
+select,
+textarea {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+button {
+  background: linear-gradient(120deg, var(--accent), #ff6a00) !important;
+  color: #111 !important;
+}
+
+footer {
+  color: var(--muted) !important;
+}
+
+footer a {
+  color: var(--text) !important;
+}</code></pre> </div> <div> <div class="code-label">JS (js)</div> <pre class="code-panel"><code>import { LocalStorageHelper } from &quot;https://esm.sh/@manufosela/local-storage-helper&quot;;
+
+    const storage = new LocalStorageHelper({ prefix: &#39;demo_&#39; });
+    const output = document.getElementById(&#39;output&#39;);
+    const ttlOutput = document.getElementById(&#39;ttl-output&#39;);
+    const infoOutput = document.getElementById(&#39;info-output&#39;);
+
+    // Basic operations
+    document.getElementById(&#39;set&#39;).addEventListener(&#39;click&#39;, () =&gt; {
+      const key = document.getElementById(&#39;key&#39;).value;
+      const value = document.getElementById(&#39;value&#39;).value;
+      storage.set(key, value);
+      output.textContent = `Set &quot;${key}&quot; = &quot;${value}&quot;`;
+    });
+
+    document.getElementById(&#39;get&#39;).addEventListener(&#39;click&#39;, () =&gt; {
+      const key = document.getElementById(&#39;key&#39;).value;
+      const value = storage.get(key);
+      output.textContent = value !== null
+        ? `Get &quot;${key}&quot; = ${JSON.stringify(value)}`
+        : `Key &quot;${key}&quot; not found`;
+    });
+
+    document.getElementById(&#39;remove&#39;).addEventListener(&#39;click&#39;, () =&gt; {
+      const key = document.getElementById(&#39;key&#39;).value;
+      storage.remove(key);
+      output.textContent = `Removed &quot;${key}&quot;`;
+    });
+
+    // TTL operations
+    document.getElementById(&#39;set-ttl&#39;).addEventListener(&#39;click&#39;, () =&gt; {
+      const key = document.getElementById(&#39;ttl-key&#39;).value;
+      const seconds = parseInt(document.getElementById(&#39;ttl-seconds&#39;).value);
+      storage.set(key, `Value expires in ${seconds}s`, seconds * 1000);
+      ttlOutput.textContent = `Set &quot;${key}&quot; with ${seconds}s TTL`;
+
+      // Start countdown
+      const interval = setInterval(() =&gt; {
+        const remaining = storage.getTTL(key);
+        if (remaining === null) {
+          ttlOutput.textContent = `&quot;${key}&quot; has expired!`;
+          clearInterval(interval);
+        } else {
+          ttlOutput.textContent = `&quot;${key}&quot; expires in ${Math.ceil(remaining / 1000)}s`;
+        }
+      }, 1000);
+    });
+
+    document.getElementById(&#39;check-ttl&#39;).addEventListener(&#39;click&#39;, () =&gt; {
+      const key = document.getElementById(&#39;ttl-key&#39;).value;
+      const remaining = storage.getTTL(key);
+      ttlOutput.textContent = remaining !== null
+        ? `&quot;${key}&quot; TTL: ${Math.ceil(remaining / 1000)}s remaining`
+        : `&quot;${key}&quot; has no TTL or doesn&#39;t exist`;
+    });
+
+    // Info operations
+    document.getElementById(&#39;show-keys&#39;).addEventListener(&#39;click&#39;, () =&gt; {
+      const keys = storage.keys();
+      infoOutput.textContent = `Keys (${keys.length}):\n${keys.join(&#39;\n&#39;) || &#39;(none)&#39;}`;
+    });
+
+    document.getElementById(&#39;show-size&#39;).addEventListener(&#39;click&#39;, () =&gt; {
+      const { used, available, items } = storage.getSize();
+      infoOutput.textContent = `Storage Info:
+Items: ${items}
+Used: ${(used / 1024).toFixed(2)} KB
+Available: ${(available / 1024).toFixed(2)} KB`;
+    });
+
+    document.getElementById(&#39;clear-all&#39;).addEventListener(&#39;click&#39;, () =&gt; {
+      storage.clear();
+      infoOutput.textContent = &#39;All demo_ prefixed items cleared&#39;;
+    });
+  
+
+class DemoThemeToggle extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: &#39;open&#39; });
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  connectedCallback() {
+    const saved = localStorage.getItem(&#39;utils-demo-theme&#39;);
+    document.documentElement.classList.remove(&#39;dark&#39;);
+    document.documentElement.classList.toggle(&#39;light&#39;, saved === &#39;light&#39;);
+
+    this.render();
+  }
+
+  render() {
+    const isLight = document.documentElement.classList.contains(&#39;light&#39;);
+    this.shadowRoot.innerHTML = `
+      &lt;style&gt;
+        :host {
+          display: inline-flex;
+        }
+        .toggle {
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid var(--line);
+          border-radius: 999px;
+          overflow: hidden;
+          background: var(--surface);
+        }
+        button {
+          border: none;
+          background: transparent;
+          color: var(--muted);
+          padding: 6px 12px;
+          font-size: 0.8rem;
+          cursor: pointer;
+          font-family: &quot;Space Grotesk&quot;, &quot;Trebuchet MS&quot;, Arial, sans-serif;
+        }
+        button.active {
+          background: linear-gradient(120deg, var(--accent), #ff6a00);
+          color: #111;
+          font-weight: 600;
+        }
+      &lt;/style&gt;
+      &lt;div class=&quot;toggle&quot; role=&quot;group&quot; aria-label=&quot;Theme toggle&quot;&gt;
+        &lt;button class=&quot;${isLight ? &#39;active&#39; : &#39;&#39;}&quot; data-theme=&quot;light&quot;&gt;Light&lt;/button&gt;
+        &lt;button class=&quot;${isLight ? &#39;&#39; : &#39;active&#39;}&quot; data-theme=&quot;dark&quot;&gt;Dark&lt;/button&gt;
+      &lt;/div&gt;
+    `;
+
+    this.shadowRoot.querySelectorAll(&#39;button&#39;).forEach((btn) =&gt; {
+      btn.addEventListener(&#39;click&#39;, this.handleClick);
+    });
+  }
+
+  handleClick(event) {
+    const theme = event.currentTarget.dataset.theme;
+    const isLight = theme === &#39;light&#39;;
+    document.documentElement.classList.toggle(&#39;light&#39;, isLight);
+    document.documentElement.classList.remove(&#39;dark&#39;);
+    localStorage.setItem(&#39;utils-demo-theme&#39;, isLight ? &#39;light&#39; : &#39;dark&#39;);
+    this.render();
+  }
+}
+
+customElements.define(&#39;demo-theme-toggle&#39;, DemoThemeToggle);</code></pre> </div> </details> </div>  </div> </main> <footer> <div class="container"> <p>Built by manufosela. Lightweight, accessible, and standards-first web components.</p> </div> </footer> </body></html>

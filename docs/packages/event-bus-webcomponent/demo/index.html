@@ -1,0 +1,964 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>@manufosela/event-bus-webcomponent</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><style>@import"https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap";.astro-route-announcer{position:absolute;left:0;top:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}:root{color-scheme:dark;--bg: #0c0f14;--bg-elevated: #141923;--bg-panel: #171d28;--border: #262f3f;--text: #f4f6fb;--text-muted: #a7b0c2;--text-dim: #7d879b;--accent: #ff8a3d;--accent-strong: #ff6a00;--accent-soft: rgba(255, 138, 61, .16);--shadow: 0 20px 50px rgba(5, 8, 14, .45);--radius-lg: 22px;--radius-md: 14px;--radius-sm: 10px;--max-width: 1160px;--font-sans: "Space Grotesk", "Manrope", "IBM Plex Sans", system-ui, sans-serif;--font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace}html.light{color-scheme:light;--bg: #f7f6f2;--bg-elevated: #ffffff;--bg-panel: #fffaf2;--border: #e4dfd6;--text: #1a1c22;--text-muted: #5b6170;--text-dim: #8c92a1;--accent: #ff7a1a;--accent-strong: #ff5c00;--accent-soft: rgba(255, 122, 26, .15);--shadow: 0 16px 40px rgba(19, 20, 26, .15)}*{box-sizing:border-box}body{margin:0;font-family:var(--font-sans);background:radial-gradient(circle at 15% 20%,rgba(255,138,61,.12),transparent 40%),radial-gradient(circle at 85% 0%,rgba(255,106,0,.16),transparent 30%),var(--bg);color:var(--text);min-height:100vh}a{color:inherit;text-decoration:none}a:hover{color:var(--accent)}main{padding:40px 24px 80px}.container{width:100%;max-width:var(--max-width);margin:0 auto}.page-title{font-size:clamp(2.2rem,1.2rem + 3vw,3.4rem);margin:0;color:var(--accent)}.page-subtitle{margin-top:10px;color:var(--text-muted);font-size:1.1rem;max-width:720px}.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;margin-top:34px}.card{background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;min-height:220px;box-shadow:var(--shadow);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}.card:hover{transform:translateY(-4px);border-color:#ff8a3d66;box-shadow:0 28px 60px #07090f80}.card h3{margin:0 0 8px;font-size:1.3rem}.card p{margin:0;color:var(--text-muted);line-height:1.5}.tag{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:.75rem;letter-spacing:.02em}.header-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}.header-links a{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg-panel);color:var(--text-muted);font-size:.9rem}.header-links a:hover{border-color:var(--accent);color:var(--text)}.demo-surface{margin-top:28px;background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;box-shadow:var(--shadow)}.demo-embed{display:grid;gap:24px}.code-panel{background:#0b0f16;border-radius:var(--radius-md);padding:16px;border:1px solid rgba(255,138,61,.2);color:#e5e9f2;font-family:var(--font-mono);font-size:.85rem;overflow:auto}footer{border-top:1px solid var(--border);color:var(--text-dim);padding:40px 24px 60px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:24px}.topbar a{font-weight:600}.theme-toggle{border:1px solid var(--border);background:var(--bg-panel);color:var(--text);border-radius:999px;padding:8px 14px;cursor:pointer;font-size:.85rem}.code-label{margin:24px 0 10px;color:var(--text-muted);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase}.code-details{margin-top:24px;border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;background:var(--bg-elevated)}.code-details summary{cursor:pointer;color:var(--accent);font-weight:600;letter-spacing:.02em}.code-details[open] summary{margin-bottom:12px}
+</style><script type="module" src="/utils/_astro/hoisted.BScVxmeO.js"></script></head> <body> <header class="topbar"> <a href="/">@manufosela/event-bus-webcomponent</a> <div class="header-links">  <button class="theme-toggle" type="button" data-theme-toggle>Light mode</button> <script type="module">
+  const root = document.documentElement;
+  const toggle = document.querySelector('[data-theme-toggle]');
+  const stored = localStorage.getItem('theme');
+
+  if (stored === 'light') {
+    root.classList.add('light');
+  }
+
+  const updateLabel = () => {
+    const isLight = root.classList.contains('light');
+    toggle.textContent = isLight ? 'Dark mode' : 'Light mode';
+  };
+
+  updateLabel();
+
+  toggle.addEventListener('click', () => {
+    root.classList.toggle('light');
+    localStorage.setItem('theme', root.classList.contains('light') ? 'light' : 'dark');
+    updateLabel();
+  });
+</script> </div> </header> <main> <div class="container">  <div> <h1 class="page-title">@manufosela/event-bus-webcomponent</h1> <p class="page-subtitle">DOM CustomEvent bus for web components with source/target envelopes.</p> <div class="header-links"> <a href="/utils/">← Back to components</a><a href="https://github.com/manufosela/utils">GitHub Repo</a> </div> </div> <div class="demo-surface"> <div><link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  /></div><div><style>
+
+
+* { box-sizing: border-box; }
+    header {
+      padding: 32px 24px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .top-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .top-links a {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 12px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-decoration: none;
+    }
+    h1 { margin: 0; font-size: clamp(28px, 4vw, 44px); 
+      color: var(--accent);
+    }
+    p { margin: 8px 0 0; color: var(--text-muted); }
+    main { padding: 24px; }
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+    .card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      display: grid;
+      gap: 10px;
+    }
+    .control-card {
+      grid-column: 1 / -1;
+      display: grid;
+      gap: 16px;
+    }
+    .control-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .pill {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+    label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    select, input[type="checkbox"] {
+      accent-color: var(--accent);
+    }
+    select {
+      background: var(--bg-panel);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      border-radius: 8px;
+    }
+    button {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(120deg, var(--accent), #ff6a00);
+      color: #111;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button.secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .log {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.85rem;
+      height: 160px;
+      overflow-y: auto;
+    }
+    .code-block {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.85rem;
+      color: #d6d9e6;
+      white-space: pre-wrap;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem 0 3rem;
+      color: var(--text-muted);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+  
+
+
+
+
+
+</style>
+
+:root {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+:root.light {
+  --bg: #f5f5f7;
+  --bg-2: #ffffff;
+  --bg-spot-1: #f8e9d0;
+  --bg-spot-2: #e8eef8;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #ffb000;
+  --accent-2: #00a7d6;
+  --surface: #f3f4f6;
+  --code-bg: #111827;
+  --code-text: #f9fafb;
+}
+
+:root.dark {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+h1 {
+  color: var(--accent) !important;
+}
+
+.top-links a,
+.topbar a {
+  color: var(--muted) !important;
+  border-color: var(--line) !important;
+}
+
+.top-links a:hover,
+.topbar a:hover {
+  color: var(--text) !important;
+}
+
+.card,
+.section,
+.demo-section,
+.panel {
+  background: var(--card) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+.code-block,
+pre,
+code,
+.output,
+.current-url,
+.event-log,
+.result-card,
+.log {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  border-color: var(--line) !important;
+}
+
+input,
+select,
+textarea {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+button {
+  background: linear-gradient(120deg, var(--accent), #ff6a00) !important;
+  color: #111 !important;
+}
+
+footer {
+  color: var(--muted) !important;
+}
+
+footer a {
+  color: var(--text) !important;
+}</div><div class="demo-embed"><main>
+    <div class="container grid">
+      <section class="card control-card">
+        <h2>Send events</h2>
+        <div class="control-row">
+          <span class="pill">Sender</span>
+          <select id="senderSelect">
+            <option value="card-a">Component A</option>
+            <option value="card-b">Component B</option>
+            <option value="card-c">Component C</option>
+            <option value="card-d">Component D</option>
+          </select>
+          <label>
+            <input type="checkbox" id="excludeSelf" checked /> Broadcast: exclude sender
+          </label>
+        </div>
+        <div class="control-row">
+          <label>
+            Event name
+            <input type="text" id="eventNameInput" value="ping" />
+          </label>
+          <label style="flex: 1 1 320px;">
+            Payload (JSON)
+            <input type="text" id="payloadInput" value='{"note":"Hello"}' />
+          </label>
+        </div>
+        <div class="control-row">
+          <button data-target="card-a">Send to A</button>
+          <button data-target="card-b">Send to B</button>
+          <button data-target="card-c">Send to C</button>
+          <button data-target="card-d">Send to D</button>
+          <button class="secondary" data-group="bcd">Send to B+C+D</button>
+          <button class="secondary" data-group="all">Broadcast ALL</button>
+        </div>
+        <div class="code-block">import { WebComponentEventBus, ALL, ALL_TYPES } from '@manufosela/event-bus-webcomponent';
+
+const bus = new WebComponentEventBus();
+
+bus.on({ id: 'card-b', type: 'demo-card' }, (envelope) => {
+  console.log(envelope.name, envelope.detail);
+});
+
+bus.emit({
+  name: 'ping',
+  detail: { ok: true },
+  source: { id: 'card-a', type: 'demo-card' },
+  target: { id: ALL, type: ALL_TYPES, excludeSource: true }
+});</div>
+      </section>
+
+      <section class="card">
+        <h3>Component A (card-a)</h3>
+        <div class="log" id="logA"></div>
+      </section>
+      <section class="card">
+        <h3>Component B (card-b)</h3>
+        <div class="log" id="logB"></div>
+      </section>
+      <section class="card">
+        <h3>Component C (card-c)</h3>
+        <div class="log" id="logC"></div>
+      </section>
+      <section class="card">
+        <h3>Component D (card-d)</h3>
+        <div class="log" id="logD"></div>
+      </section>
+    </div>
+  </main></div> <div><script type="module">
+    import { WebComponentEventBus, ALL, ALL_TYPES } from "https://esm.sh/@manufosela/event-bus-webcomponent";
+
+    const bus = new WebComponentEventBus();
+
+    const components = {
+      'card-a': { id: 'card-a', type: 'demo-card' },
+      'card-b': { id: 'card-b', type: 'demo-card' },
+      'card-c': { id: 'card-c', type: 'demo-card' },
+      'card-d': { id: 'card-d', type: 'demo-card' },
+    };
+
+    const logs = {
+      'card-a': document.getElementById('logA'),
+      'card-b': document.getElementById('logB'),
+      'card-c': document.getElementById('logC'),
+      'card-d': document.getElementById('logD'),
+    };
+
+    const log = (container, message) => {
+      const entry = document.createElement('div');
+      entry.textContent = message;
+      container.prepend(entry);
+    };
+
+    Object.values(components).forEach((component) => {
+      bus.on(component, (envelope) => {
+        log(logs[component.id], `Received ${envelope.name} from ${envelope.source.id}`);
+      });
+    });
+
+    const senderSelect = document.getElementById('senderSelect');
+    const excludeSelf = document.getElementById('excludeSelf');
+    const eventNameInput = document.getElementById('eventNameInput');
+    const payloadInput = document.getElementById('payloadInput');
+
+    const readPayload = () => {
+      const raw = payloadInput.value.trim();
+      if (!raw) {
+        return {};
+      }
+      try {
+        return JSON.parse(raw);
+      } catch (error) {
+        return { raw };
+      }
+    };
+
+    const emitTo = (targetId) => {
+      const sender = components[senderSelect.value];
+      const target = components[targetId];
+      bus.emit({
+        name: eventNameInput.value.trim() || 'direct',
+        detail: { to: targetId, ...readPayload() },
+        source: sender,
+        target,
+      });
+    };
+
+    const emitGroup = (targets) => {
+      const sender = components[senderSelect.value];
+      targets.forEach((id) => {
+        bus.emit({
+          name: eventNameInput.value.trim() || 'group',
+          detail: { to: id, ...readPayload() },
+          source: sender,
+          target: components[id],
+        });
+      });
+    };
+
+    const emitAll = () => {
+      const sender = components[senderSelect.value];
+      bus.emit({
+        name: eventNameInput.value.trim() || 'broadcast',
+        detail: { note: 'Hello all', ...readPayload() },
+        source: sender,
+        target: {
+          id: ALL,
+          type: ALL_TYPES,
+          excludeSource: excludeSelf.checked,
+        },
+      });
+    };
+
+    document.querySelectorAll('button[data-target]').forEach((button) => {
+      button.addEventListener('click', () => emitTo(button.dataset.target));
+    });
+
+    document.querySelectorAll('button[data-group]').forEach((button) => {
+      button.addEventListener('click', () => {
+        if (button.dataset.group === 'bcd') {
+          emitGroup(['card-b', 'card-c', 'card-d']);
+        }
+        if (button.dataset.group === 'all') {
+          emitAll();
+        }
+      });
+    });
+  </script>
+<script type="module">
+class DemoThemeToggle extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  connectedCallback() {
+    const saved = localStorage.getItem('utils-demo-theme');
+    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.toggle('light', saved === 'light');
+
+    this.render();
+  }
+
+  render() {
+    const isLight = document.documentElement.classList.contains('light');
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host {
+          display: inline-flex;
+        }
+        .toggle {
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid var(--line);
+          border-radius: 999px;
+          overflow: hidden;
+          background: var(--surface);
+        }
+        button {
+          border: none;
+          background: transparent;
+          color: var(--muted);
+          padding: 6px 12px;
+          font-size: 0.8rem;
+          cursor: pointer;
+          font-family: "Space Grotesk", "Trebuchet MS", Arial, sans-serif;
+        }
+        button.active {
+          background: linear-gradient(120deg, var(--accent), #ff6a00);
+          color: #111;
+          font-weight: 600;
+        }
+      </style>
+      <div class="toggle" role="group" aria-label="Theme toggle">
+        <button class="${isLight ? 'active' : ''}" data-theme="light">Light</button>
+        <button class="${isLight ? '' : 'active'}" data-theme="dark">Dark</button>
+      </div>
+    `;
+
+    this.shadowRoot.querySelectorAll('button').forEach((btn) => {
+      btn.addEventListener('click', this.handleClick);
+    });
+  }
+
+  handleClick(event) {
+    const theme = event.currentTarget.dataset.theme;
+    const isLight = theme === 'light';
+    document.documentElement.classList.toggle('light', isLight);
+    document.documentElement.classList.remove('dark');
+    localStorage.setItem('utils-demo-theme', isLight ? 'light' : 'dark');
+    this.render();
+  }
+}
+
+customElements.define('demo-theme-toggle', DemoThemeToggle);
+
+</script></div><details class="code-details"> <summary>Demo code (CodePen-ready HTML, CSS, JS)</summary> <div> <div class="code-label">HTML (html)</div> <pre class="code-panel"><code>&lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot; /&gt;
+&lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; crossorigin /&gt;
+&lt;link
+    href=&quot;https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&amp;display=swap&quot;
+    rel=&quot;stylesheet&quot;
+  /&gt;
+&lt;main&gt;
+    &lt;div class=&quot;container grid&quot;&gt;
+      &lt;section class=&quot;card control-card&quot;&gt;
+        &lt;h2&gt;Send events&lt;/h2&gt;
+        &lt;div class=&quot;control-row&quot;&gt;
+          &lt;span class=&quot;pill&quot;&gt;Sender&lt;/span&gt;
+          &lt;select id=&quot;senderSelect&quot;&gt;
+            &lt;option value=&quot;card-a&quot;&gt;Component A&lt;/option&gt;
+            &lt;option value=&quot;card-b&quot;&gt;Component B&lt;/option&gt;
+            &lt;option value=&quot;card-c&quot;&gt;Component C&lt;/option&gt;
+            &lt;option value=&quot;card-d&quot;&gt;Component D&lt;/option&gt;
+          &lt;/select&gt;
+          &lt;label&gt;
+            &lt;input type=&quot;checkbox&quot; id=&quot;excludeSelf&quot; checked /&gt; Broadcast: exclude sender
+          &lt;/label&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;control-row&quot;&gt;
+          &lt;label&gt;
+            Event name
+            &lt;input type=&quot;text&quot; id=&quot;eventNameInput&quot; value=&quot;ping&quot; /&gt;
+          &lt;/label&gt;
+          &lt;label style=&quot;flex: 1 1 320px;&quot;&gt;
+            Payload (JSON)
+            &lt;input type=&quot;text&quot; id=&quot;payloadInput&quot; value=&#39;{&quot;note&quot;:&quot;Hello&quot;}&#39; /&gt;
+          &lt;/label&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;control-row&quot;&gt;
+          &lt;button data-target=&quot;card-a&quot;&gt;Send to A&lt;/button&gt;
+          &lt;button data-target=&quot;card-b&quot;&gt;Send to B&lt;/button&gt;
+          &lt;button data-target=&quot;card-c&quot;&gt;Send to C&lt;/button&gt;
+          &lt;button data-target=&quot;card-d&quot;&gt;Send to D&lt;/button&gt;
+          &lt;button class=&quot;secondary&quot; data-group=&quot;bcd&quot;&gt;Send to B+C+D&lt;/button&gt;
+          &lt;button class=&quot;secondary&quot; data-group=&quot;all&quot;&gt;Broadcast ALL&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;code-block&quot;&gt;import { WebComponentEventBus, ALL, ALL_TYPES } from &#39;@manufosela/event-bus-webcomponent&#39;;
+
+const bus = new WebComponentEventBus();
+
+bus.on({ id: &#39;card-b&#39;, type: &#39;demo-card&#39; }, (envelope) =&gt; {
+  console.log(envelope.name, envelope.detail);
+});
+
+bus.emit({
+  name: &#39;ping&#39;,
+  detail: { ok: true },
+  source: { id: &#39;card-a&#39;, type: &#39;demo-card&#39; },
+  target: { id: ALL, type: ALL_TYPES, excludeSource: true }
+});&lt;/div&gt;
+      &lt;/section&gt;
+
+      &lt;section class=&quot;card&quot;&gt;
+        &lt;h3&gt;Component A (card-a)&lt;/h3&gt;
+        &lt;div class=&quot;log&quot; id=&quot;logA&quot;&gt;&lt;/div&gt;
+      &lt;/section&gt;
+      &lt;section class=&quot;card&quot;&gt;
+        &lt;h3&gt;Component B (card-b)&lt;/h3&gt;
+        &lt;div class=&quot;log&quot; id=&quot;logB&quot;&gt;&lt;/div&gt;
+      &lt;/section&gt;
+      &lt;section class=&quot;card&quot;&gt;
+        &lt;h3&gt;Component C (card-c)&lt;/h3&gt;
+        &lt;div class=&quot;log&quot; id=&quot;logC&quot;&gt;&lt;/div&gt;
+      &lt;/section&gt;
+      &lt;section class=&quot;card&quot;&gt;
+        &lt;h3&gt;Component D (card-d)&lt;/h3&gt;
+        &lt;div class=&quot;log&quot; id=&quot;logD&quot;&gt;&lt;/div&gt;
+      &lt;/section&gt;
+    &lt;/div&gt;
+  &lt;/main&gt;</code></pre> </div> <div> <div class="code-label">CSS (css)</div> <pre class="code-panel"><code>:root {
+  --bg: #0c0f14;
+  --bg-elevated: #141923;
+  --bg-panel: #171d28;
+  --border: #262f3f;
+  --text: #f4f6fb;
+  --text-muted: #a7b0c2;
+  --text-dim: #7d879b;
+  --accent: #ff8a3d;
+  --accent-strong: #ff6a00;
+  --accent-soft: rgba(255, 138, 61, 0.16);
+  --shadow: 0 20px 50px rgba(5, 8, 14, 0.45);
+  --radius-lg: 22px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --max-width: 1160px;
+}
+
+* { box-sizing: border-box; }
+    header {
+      padding: 32px 24px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .top-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .top-links a {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 12px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-decoration: none;
+    }
+    h1 { margin: 0; font-size: clamp(28px, 4vw, 44px); 
+      color: var(--accent);
+    }
+    p { margin: 8px 0 0; color: var(--text-muted); }
+    main { padding: 24px; }
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+    .card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      display: grid;
+      gap: 10px;
+    }
+    .control-card {
+      grid-column: 1 / -1;
+      display: grid;
+      gap: 16px;
+    }
+    .control-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    .pill {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+    label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    select, input[type=&quot;checkbox&quot;] {
+      accent-color: var(--accent);
+    }
+    select {
+      background: var(--bg-panel);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      border-radius: 8px;
+    }
+    button {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(120deg, var(--accent), #ff6a00);
+      color: #111;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button.secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .log {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.85rem;
+      height: 160px;
+      overflow-y: auto;
+    }
+    .code-block {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.85rem;
+      color: #d6d9e6;
+      white-space: pre-wrap;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem 0 3rem;
+      color: var(--text-muted);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+  
+
+
+
+
+
+
+
+:root {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+:root.light {
+  --bg: #f5f5f7;
+  --bg-2: #ffffff;
+  --bg-spot-1: #f8e9d0;
+  --bg-spot-2: #e8eef8;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #ffb000;
+  --accent-2: #00a7d6;
+  --surface: #f3f4f6;
+  --code-bg: #111827;
+  --code-text: #f9fafb;
+}
+
+:root.dark {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+h1 {
+  color: var(--accent) !important;
+}
+
+.top-links a,
+.topbar a {
+  color: var(--muted) !important;
+  border-color: var(--line) !important;
+}
+
+.top-links a:hover,
+.topbar a:hover {
+  color: var(--text) !important;
+}
+
+.card,
+.section,
+.demo-section,
+.panel {
+  background: var(--card) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+.code-block,
+pre,
+code,
+.output,
+.current-url,
+.event-log,
+.result-card,
+.log {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  border-color: var(--line) !important;
+}
+
+input,
+select,
+textarea {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+button {
+  background: linear-gradient(120deg, var(--accent), #ff6a00) !important;
+  color: #111 !important;
+}
+
+footer {
+  color: var(--muted) !important;
+}
+
+footer a {
+  color: var(--text) !important;
+}</code></pre> </div> <div> <div class="code-label">JS (js)</div> <pre class="code-panel"><code>import { WebComponentEventBus, ALL, ALL_TYPES } from &quot;https://esm.sh/@manufosela/event-bus-webcomponent&quot;;
+
+    const bus = new WebComponentEventBus();
+
+    const components = {
+      &#39;card-a&#39;: { id: &#39;card-a&#39;, type: &#39;demo-card&#39; },
+      &#39;card-b&#39;: { id: &#39;card-b&#39;, type: &#39;demo-card&#39; },
+      &#39;card-c&#39;: { id: &#39;card-c&#39;, type: &#39;demo-card&#39; },
+      &#39;card-d&#39;: { id: &#39;card-d&#39;, type: &#39;demo-card&#39; },
+    };
+
+    const logs = {
+      &#39;card-a&#39;: document.getElementById(&#39;logA&#39;),
+      &#39;card-b&#39;: document.getElementById(&#39;logB&#39;),
+      &#39;card-c&#39;: document.getElementById(&#39;logC&#39;),
+      &#39;card-d&#39;: document.getElementById(&#39;logD&#39;),
+    };
+
+    const log = (container, message) =&gt; {
+      const entry = document.createElement(&#39;div&#39;);
+      entry.textContent = message;
+      container.prepend(entry);
+    };
+
+    Object.values(components).forEach((component) =&gt; {
+      bus.on(component, (envelope) =&gt; {
+        log(logs[component.id], `Received ${envelope.name} from ${envelope.source.id}`);
+      });
+    });
+
+    const senderSelect = document.getElementById(&#39;senderSelect&#39;);
+    const excludeSelf = document.getElementById(&#39;excludeSelf&#39;);
+    const eventNameInput = document.getElementById(&#39;eventNameInput&#39;);
+    const payloadInput = document.getElementById(&#39;payloadInput&#39;);
+
+    const readPayload = () =&gt; {
+      const raw = payloadInput.value.trim();
+      if (!raw) {
+        return {};
+      }
+      try {
+        return JSON.parse(raw);
+      } catch (error) {
+        return { raw };
+      }
+    };
+
+    const emitTo = (targetId) =&gt; {
+      const sender = components[senderSelect.value];
+      const target = components[targetId];
+      bus.emit({
+        name: eventNameInput.value.trim() || &#39;direct&#39;,
+        detail: { to: targetId, ...readPayload() },
+        source: sender,
+        target,
+      });
+    };
+
+    const emitGroup = (targets) =&gt; {
+      const sender = components[senderSelect.value];
+      targets.forEach((id) =&gt; {
+        bus.emit({
+          name: eventNameInput.value.trim() || &#39;group&#39;,
+          detail: { to: id, ...readPayload() },
+          source: sender,
+          target: components[id],
+        });
+      });
+    };
+
+    const emitAll = () =&gt; {
+      const sender = components[senderSelect.value];
+      bus.emit({
+        name: eventNameInput.value.trim() || &#39;broadcast&#39;,
+        detail: { note: &#39;Hello all&#39;, ...readPayload() },
+        source: sender,
+        target: {
+          id: ALL,
+          type: ALL_TYPES,
+          excludeSource: excludeSelf.checked,
+        },
+      });
+    };
+
+    document.querySelectorAll(&#39;button[data-target]&#39;).forEach((button) =&gt; {
+      button.addEventListener(&#39;click&#39;, () =&gt; emitTo(button.dataset.target));
+    });
+
+    document.querySelectorAll(&#39;button[data-group]&#39;).forEach((button) =&gt; {
+      button.addEventListener(&#39;click&#39;, () =&gt; {
+        if (button.dataset.group === &#39;bcd&#39;) {
+          emitGroup([&#39;card-b&#39;, &#39;card-c&#39;, &#39;card-d&#39;]);
+        }
+        if (button.dataset.group === &#39;all&#39;) {
+          emitAll();
+        }
+      });
+    });
+  
+
+class DemoThemeToggle extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: &#39;open&#39; });
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  connectedCallback() {
+    const saved = localStorage.getItem(&#39;utils-demo-theme&#39;);
+    document.documentElement.classList.remove(&#39;dark&#39;);
+    document.documentElement.classList.toggle(&#39;light&#39;, saved === &#39;light&#39;);
+
+    this.render();
+  }
+
+  render() {
+    const isLight = document.documentElement.classList.contains(&#39;light&#39;);
+    this.shadowRoot.innerHTML = `
+      &lt;style&gt;
+        :host {
+          display: inline-flex;
+        }
+        .toggle {
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid var(--line);
+          border-radius: 999px;
+          overflow: hidden;
+          background: var(--surface);
+        }
+        button {
+          border: none;
+          background: transparent;
+          color: var(--muted);
+          padding: 6px 12px;
+          font-size: 0.8rem;
+          cursor: pointer;
+          font-family: &quot;Space Grotesk&quot;, &quot;Trebuchet MS&quot;, Arial, sans-serif;
+        }
+        button.active {
+          background: linear-gradient(120deg, var(--accent), #ff6a00);
+          color: #111;
+          font-weight: 600;
+        }
+      &lt;/style&gt;
+      &lt;div class=&quot;toggle&quot; role=&quot;group&quot; aria-label=&quot;Theme toggle&quot;&gt;
+        &lt;button class=&quot;${isLight ? &#39;active&#39; : &#39;&#39;}&quot; data-theme=&quot;light&quot;&gt;Light&lt;/button&gt;
+        &lt;button class=&quot;${isLight ? &#39;&#39; : &#39;active&#39;}&quot; data-theme=&quot;dark&quot;&gt;Dark&lt;/button&gt;
+      &lt;/div&gt;
+    `;
+
+    this.shadowRoot.querySelectorAll(&#39;button&#39;).forEach((btn) =&gt; {
+      btn.addEventListener(&#39;click&#39;, this.handleClick);
+    });
+  }
+
+  handleClick(event) {
+    const theme = event.currentTarget.dataset.theme;
+    const isLight = theme === &#39;light&#39;;
+    document.documentElement.classList.toggle(&#39;light&#39;, isLight);
+    document.documentElement.classList.remove(&#39;dark&#39;);
+    localStorage.setItem(&#39;utils-demo-theme&#39;, isLight ? &#39;light&#39; : &#39;dark&#39;);
+    this.render();
+  }
+}
+
+customElements.define(&#39;demo-theme-toggle&#39;, DemoThemeToggle);</code></pre> </div> </details> </div>  </div> </main> <footer> <div class="container"> <p>Built by manufosela. Lightweight, accessible, and standards-first web components.</p> </div> </footer> </body></html>

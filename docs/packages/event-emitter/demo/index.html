@@ -1,0 +1,918 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>@manufosela/event-emitter</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><style>@import"https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap";.astro-route-announcer{position:absolute;left:0;top:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}:root{color-scheme:dark;--bg: #0c0f14;--bg-elevated: #141923;--bg-panel: #171d28;--border: #262f3f;--text: #f4f6fb;--text-muted: #a7b0c2;--text-dim: #7d879b;--accent: #ff8a3d;--accent-strong: #ff6a00;--accent-soft: rgba(255, 138, 61, .16);--shadow: 0 20px 50px rgba(5, 8, 14, .45);--radius-lg: 22px;--radius-md: 14px;--radius-sm: 10px;--max-width: 1160px;--font-sans: "Space Grotesk", "Manrope", "IBM Plex Sans", system-ui, sans-serif;--font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace}html.light{color-scheme:light;--bg: #f7f6f2;--bg-elevated: #ffffff;--bg-panel: #fffaf2;--border: #e4dfd6;--text: #1a1c22;--text-muted: #5b6170;--text-dim: #8c92a1;--accent: #ff7a1a;--accent-strong: #ff5c00;--accent-soft: rgba(255, 122, 26, .15);--shadow: 0 16px 40px rgba(19, 20, 26, .15)}*{box-sizing:border-box}body{margin:0;font-family:var(--font-sans);background:radial-gradient(circle at 15% 20%,rgba(255,138,61,.12),transparent 40%),radial-gradient(circle at 85% 0%,rgba(255,106,0,.16),transparent 30%),var(--bg);color:var(--text);min-height:100vh}a{color:inherit;text-decoration:none}a:hover{color:var(--accent)}main{padding:40px 24px 80px}.container{width:100%;max-width:var(--max-width);margin:0 auto}.page-title{font-size:clamp(2.2rem,1.2rem + 3vw,3.4rem);margin:0;color:var(--accent)}.page-subtitle{margin-top:10px;color:var(--text-muted);font-size:1.1rem;max-width:720px}.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;margin-top:34px}.card{background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;min-height:220px;box-shadow:var(--shadow);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}.card:hover{transform:translateY(-4px);border-color:#ff8a3d66;box-shadow:0 28px 60px #07090f80}.card h3{margin:0 0 8px;font-size:1.3rem}.card p{margin:0;color:var(--text-muted);line-height:1.5}.tag{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:.75rem;letter-spacing:.02em}.header-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}.header-links a{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg-panel);color:var(--text-muted);font-size:.9rem}.header-links a:hover{border-color:var(--accent);color:var(--text)}.demo-surface{margin-top:28px;background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;box-shadow:var(--shadow)}.demo-embed{display:grid;gap:24px}.code-panel{background:#0b0f16;border-radius:var(--radius-md);padding:16px;border:1px solid rgba(255,138,61,.2);color:#e5e9f2;font-family:var(--font-mono);font-size:.85rem;overflow:auto}footer{border-top:1px solid var(--border);color:var(--text-dim);padding:40px 24px 60px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:24px}.topbar a{font-weight:600}.theme-toggle{border:1px solid var(--border);background:var(--bg-panel);color:var(--text);border-radius:999px;padding:8px 14px;cursor:pointer;font-size:.85rem}.code-label{margin:24px 0 10px;color:var(--text-muted);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase}.code-details{margin-top:24px;border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;background:var(--bg-elevated)}.code-details summary{cursor:pointer;color:var(--accent);font-weight:600;letter-spacing:.02em}.code-details[open] summary{margin-bottom:12px}
+</style><script type="module" src="/utils/_astro/hoisted.BScVxmeO.js"></script></head> <body> <header class="topbar"> <a href="/">@manufosela/event-emitter</a> <div class="header-links">  <button class="theme-toggle" type="button" data-theme-toggle>Light mode</button> <script type="module">
+  const root = document.documentElement;
+  const toggle = document.querySelector('[data-theme-toggle]');
+  const stored = localStorage.getItem('theme');
+
+  if (stored === 'light') {
+    root.classList.add('light');
+  }
+
+  const updateLabel = () => {
+    const isLight = root.classList.contains('light');
+    toggle.textContent = isLight ? 'Dark mode' : 'Light mode';
+  };
+
+  updateLabel();
+
+  toggle.addEventListener('click', () => {
+    root.classList.toggle('light');
+    localStorage.setItem('theme', root.classList.contains('light') ? 'light' : 'dark');
+    updateLabel();
+  });
+</script> </div> </header> <main> <div class="container">  <div> <h1 class="page-title">@manufosela/event-emitter</h1> <p class="page-subtitle">Lightweight pub/sub event emitter with namespaced events support</p> <div class="header-links"> <a href="/utils/">← Back to components</a><a href="https://github.com/manufosela/utils">GitHub Repo</a> </div> </div> <div class="demo-surface"> <div><link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  /></div><div><style>
+* { box-sizing: border-box; }
+
+    header {
+      padding: 32px 24px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .top-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .top-links a {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 12px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .top-links a:hover {
+      color: var(--text);
+      border-color: var(--accent);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 44px);
+      color: var(--accent);
+    }
+
+    p {
+      color: var(--text-muted);
+      margin: 8px 0 0;
+    }
+
+    main {
+      padding: 24px;
+    }
+
+    .demo-section {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      align-items: start;
+      margin-bottom: 20px;
+    }
+
+    .panel {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    .panel h2 {
+      margin: 0 0 8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-bottom: 8px;
+    }
+
+    button {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(120deg, var(--accent), #ff6a00);
+      color: #111;
+      cursor: pointer;
+      font-weight: 600;
+      margin: 4px 6px 4px 0;
+    }
+
+    .output {
+      margin-top: 12px;
+      background: #0b0f1a;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.85rem;
+      max-height: 240px;
+      overflow-y: auto;
+    }
+
+    .log-entry { border-bottom: 1px solid #1f2537; padding: 4px 0; }
+    .log-entry:last-child { border-bottom: none; }
+
+    .code-block {
+      background: #0b0f1a;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.85rem;
+      color: #d6d9e6;
+      white-space: pre-wrap;
+    }
+  </style>
+
+:root {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+:root.light {
+  --bg: #f5f5f7;
+  --bg-2: #ffffff;
+  --bg-spot-1: #f8e9d0;
+  --bg-spot-2: #e8eef8;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #ffb000;
+  --accent-2: #00a7d6;
+  --surface: #f3f4f6;
+  --code-bg: #111827;
+  --code-text: #f9fafb;
+}
+
+:root.dark {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+h1 {
+  color: var(--accent) !important;
+}
+
+.top-links a,
+.topbar a {
+  color: var(--muted) !important;
+  border-color: var(--line) !important;
+}
+
+.top-links a:hover,
+.topbar a:hover {
+  color: var(--text) !important;
+}
+
+.card,
+.section,
+.demo-section,
+.panel {
+  background: var(--card) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+.code-block,
+pre,
+code,
+.output,
+.current-url,
+.event-log,
+.result-card,
+.log {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  border-color: var(--line) !important;
+}
+
+input,
+select,
+textarea {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+button {
+  background: linear-gradient(120deg, var(--accent), #ff6a00) !important;
+  color: #111 !important;
+}
+
+footer {
+  color: var(--muted) !important;
+}
+
+footer a {
+  color: var(--text) !important;
+}</div><div class="demo-embed"><main>
+    <div class="container">
+      <section class="demo-section">
+        <div class="panel">
+          <span class="badge">Basics</span>
+          <h2>Basic usage</h2>
+          <p>Subscribe handlers, emit events, and use once listeners.</p>
+          <button id="emit-message">Emit message</button>
+          <button id="emit-login">Emit user:login</button>
+          <button id="emit-logout">Emit user:logout</button>
+          <button id="emit-once">Emit init (once)</button>
+          <div class="output" id="output-basic"></div>
+        </div>
+        <div class="panel">
+          <h2>Code</h2>
+          <div class="code-block" data-code="basic"></div>
+        </div>
+      </section>
+
+      <section class="demo-section">
+        <div class="panel">
+          <span class="badge">Wildcards</span>
+          <h2>Namespaces and wildcards</h2>
+          <p><strong>*</strong> matches one segment, <strong>**</strong> matches multiple segments.</p>
+          <button id="emit-login-w">Emit user:login</button>
+          <button id="emit-logout-w">Emit user:logout</button>
+          <button id="emit-admin-w">Emit user:admin:login</button>
+          <button id="emit-system-w">Emit system:ready</button>
+          <div class="output" id="output-wildcards"></div>
+        </div>
+        <div class="panel">
+          <h2>Code</h2>
+          <div class="code-block" data-code="wildcards"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <template id="snippet-basic">
+import { EventEmitter } from "https://esm.sh/@manufosela/event-emitter";
+
+const emitter = new EventEmitter();
+
+emitter.on("message", (payload) => {
+  console.log("message", payload.text);
+});
+
+emitter.on("user:login", (user) => {
+  console.log("user logged in", user.name);
+});
+
+emitter.once("init", () => {
+  console.log("init only once");
+});
+
+emitter.emit("message", { text: "Hello World" });
+emitter.emit("user:login", { id: 1, name: "John" });
+emitter.emit("init");
+  </template>
+
+  <template id="snippet-wildcards">
+import { EventEmitter } from "https://esm.sh/@manufosela/event-emitter";
+
+const emitter = new EventEmitter({ wildcard: true });
+
+// * matches a single segment (user:login, user:logout)
+emitter.on("user:*", (payload) => {
+  console.log("user:*", payload);
+});
+
+// ** matches multiple segments (user:admin:login)
+emitter.on("user:**", (payload) => {
+  console.log("user:**", payload);
+});
+
+// ** can match any event
+emitter.on("**", (payload) => {
+  console.log("any event", payload);
+});
+
+emitter.emit("user:login", { id: 1 });
+emitter.emit("user:admin:login", { id: 2 });
+emitter.emit("system:ready", { ok: true });
+  </template></div> <div><script type="module">
+    import { EventEmitter } from "https://esm.sh/@manufosela/event-emitter";
+
+    const emitterBasic = new EventEmitter({ wildcard: true });
+    const emitterWild = new EventEmitter({ wildcard: true });
+
+    const outputBasic = document.getElementById("output-basic");
+    const outputWild = document.getElementById("output-wildcards");
+
+    const log = (container, message) => {
+      const entry = document.createElement("div");
+      entry.className = "log-entry";
+      entry.textContent = message;
+      container.prepend(entry);
+    };
+
+    emitterBasic.on("message", (data) => log(outputBasic, `message: ${JSON.stringify(data)}`));
+    emitterBasic.on("user:login", (user) => log(outputBasic, `user:login: ${user.name}`));
+    emitterBasic.on("user:logout", (user) => log(outputBasic, `user:logout: ${user.name}`));
+    emitterBasic.once("init", () => log(outputBasic, "init received (once)"));
+
+    document.getElementById("emit-message").addEventListener("click", () => {
+      emitterBasic.emit("message", { text: "Hello World!", timestamp: Date.now() });
+    });
+    document.getElementById("emit-login").addEventListener("click", () => {
+      emitterBasic.emit("user:login", { id: 1, name: "John Doe" });
+    });
+    document.getElementById("emit-logout").addEventListener("click", () => {
+      emitterBasic.emit("user:logout", { id: 1, name: "John Doe" });
+    });
+    document.getElementById("emit-once").addEventListener("click", () => {
+      emitterBasic.emit("init");
+      log(outputBasic, "init emitted");
+    });
+
+    emitterWild.on("user:*", () => log(outputWild, "Matched user:*"));
+    emitterWild.on("user:**", () => log(outputWild, "Matched user:**"));
+    emitterWild.on("**", () => log(outputWild, "Matched ** (any event)"));
+
+    document.getElementById("emit-login-w").addEventListener("click", () => {
+      emitterWild.emit("user:login", { id: 1 });
+    });
+    document.getElementById("emit-logout-w").addEventListener("click", () => {
+      emitterWild.emit("user:logout", { id: 1 });
+    });
+    document.getElementById("emit-admin-w").addEventListener("click", () => {
+      emitterWild.emit("user:admin:login", { id: 2 });
+    });
+    document.getElementById("emit-system-w").addEventListener("click", () => {
+      emitterWild.emit("system:ready", { ok: true });
+    });
+
+    const snippets = {
+      basic: document.getElementById("snippet-basic"),
+      wildcards: document.getElementById("snippet-wildcards"),
+    };
+
+    document.querySelectorAll("[data-code]").forEach((block) => {
+      const key = block.dataset.code;
+      if (snippets[key]) {
+        block.textContent = snippets[key].innerHTML.trim();
+      }
+    });
+  </script>
+<script type="module">
+class DemoThemeToggle extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  connectedCallback() {
+    const saved = localStorage.getItem('utils-demo-theme');
+    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.toggle('light', saved === 'light');
+
+    this.render();
+  }
+
+  render() {
+    const isLight = document.documentElement.classList.contains('light');
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host {
+          display: inline-flex;
+        }
+        .toggle {
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid var(--line);
+          border-radius: 999px;
+          overflow: hidden;
+          background: var(--surface);
+        }
+        button {
+          border: none;
+          background: transparent;
+          color: var(--muted);
+          padding: 6px 12px;
+          font-size: 0.8rem;
+          cursor: pointer;
+          font-family: "Space Grotesk", "Trebuchet MS", Arial, sans-serif;
+        }
+        button.active {
+          background: linear-gradient(120deg, var(--accent), #ff6a00);
+          color: #111;
+          font-weight: 600;
+        }
+      </style>
+      <div class="toggle" role="group" aria-label="Theme toggle">
+        <button class="${isLight ? 'active' : ''}" data-theme="light">Light</button>
+        <button class="${isLight ? '' : 'active'}" data-theme="dark">Dark</button>
+      </div>
+    `;
+
+    this.shadowRoot.querySelectorAll('button').forEach((btn) => {
+      btn.addEventListener('click', this.handleClick);
+    });
+  }
+
+  handleClick(event) {
+    const theme = event.currentTarget.dataset.theme;
+    const isLight = theme === 'light';
+    document.documentElement.classList.toggle('light', isLight);
+    document.documentElement.classList.remove('dark');
+    localStorage.setItem('utils-demo-theme', isLight ? 'light' : 'dark');
+    this.render();
+  }
+}
+
+customElements.define('demo-theme-toggle', DemoThemeToggle);
+
+</script></div><details class="code-details"> <summary>Demo code (CodePen-ready HTML, CSS, JS)</summary> <div> <div class="code-label">HTML (html)</div> <pre class="code-panel"><code>&lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot; /&gt;
+&lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; crossorigin /&gt;
+&lt;link
+    href=&quot;https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&amp;display=swap&quot;
+    rel=&quot;stylesheet&quot;
+  /&gt;
+&lt;main&gt;
+    &lt;div class=&quot;container&quot;&gt;
+      &lt;section class=&quot;demo-section&quot;&gt;
+        &lt;div class=&quot;panel&quot;&gt;
+          &lt;span class=&quot;badge&quot;&gt;Basics&lt;/span&gt;
+          &lt;h2&gt;Basic usage&lt;/h2&gt;
+          &lt;p&gt;Subscribe handlers, emit events, and use once listeners.&lt;/p&gt;
+          &lt;button id=&quot;emit-message&quot;&gt;Emit message&lt;/button&gt;
+          &lt;button id=&quot;emit-login&quot;&gt;Emit user:login&lt;/button&gt;
+          &lt;button id=&quot;emit-logout&quot;&gt;Emit user:logout&lt;/button&gt;
+          &lt;button id=&quot;emit-once&quot;&gt;Emit init (once)&lt;/button&gt;
+          &lt;div class=&quot;output&quot; id=&quot;output-basic&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;panel&quot;&gt;
+          &lt;h2&gt;Code&lt;/h2&gt;
+          &lt;div class=&quot;code-block&quot; data-code=&quot;basic&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/section&gt;
+
+      &lt;section class=&quot;demo-section&quot;&gt;
+        &lt;div class=&quot;panel&quot;&gt;
+          &lt;span class=&quot;badge&quot;&gt;Wildcards&lt;/span&gt;
+          &lt;h2&gt;Namespaces and wildcards&lt;/h2&gt;
+          &lt;p&gt;&lt;strong&gt;*&lt;/strong&gt; matches one segment, &lt;strong&gt;**&lt;/strong&gt; matches multiple segments.&lt;/p&gt;
+          &lt;button id=&quot;emit-login-w&quot;&gt;Emit user:login&lt;/button&gt;
+          &lt;button id=&quot;emit-logout-w&quot;&gt;Emit user:logout&lt;/button&gt;
+          &lt;button id=&quot;emit-admin-w&quot;&gt;Emit user:admin:login&lt;/button&gt;
+          &lt;button id=&quot;emit-system-w&quot;&gt;Emit system:ready&lt;/button&gt;
+          &lt;div class=&quot;output&quot; id=&quot;output-wildcards&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;panel&quot;&gt;
+          &lt;h2&gt;Code&lt;/h2&gt;
+          &lt;div class=&quot;code-block&quot; data-code=&quot;wildcards&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/section&gt;
+    &lt;/div&gt;
+  &lt;/main&gt;
+
+  &lt;template id=&quot;snippet-basic&quot;&gt;
+import { EventEmitter } from &quot;https://esm.sh/@manufosela/event-emitter&quot;;
+
+const emitter = new EventEmitter();
+
+emitter.on(&quot;message&quot;, (payload) =&gt; {
+  console.log(&quot;message&quot;, payload.text);
+});
+
+emitter.on(&quot;user:login&quot;, (user) =&gt; {
+  console.log(&quot;user logged in&quot;, user.name);
+});
+
+emitter.once(&quot;init&quot;, () =&gt; {
+  console.log(&quot;init only once&quot;);
+});
+
+emitter.emit(&quot;message&quot;, { text: &quot;Hello World&quot; });
+emitter.emit(&quot;user:login&quot;, { id: 1, name: &quot;John&quot; });
+emitter.emit(&quot;init&quot;);
+  &lt;/template&gt;
+
+  &lt;template id=&quot;snippet-wildcards&quot;&gt;
+import { EventEmitter } from &quot;https://esm.sh/@manufosela/event-emitter&quot;;
+
+const emitter = new EventEmitter({ wildcard: true });
+
+// * matches a single segment (user:login, user:logout)
+emitter.on(&quot;user:*&quot;, (payload) =&gt; {
+  console.log(&quot;user:*&quot;, payload);
+});
+
+// ** matches multiple segments (user:admin:login)
+emitter.on(&quot;user:**&quot;, (payload) =&gt; {
+  console.log(&quot;user:**&quot;, payload);
+});
+
+// ** can match any event
+emitter.on(&quot;**&quot;, (payload) =&gt; {
+  console.log(&quot;any event&quot;, payload);
+});
+
+emitter.emit(&quot;user:login&quot;, { id: 1 });
+emitter.emit(&quot;user:admin:login&quot;, { id: 2 });
+emitter.emit(&quot;system:ready&quot;, { ok: true });
+  &lt;/template&gt;</code></pre> </div> <div> <div class="code-label">CSS (css)</div> <pre class="code-panel"><code>:root {
+  --bg: #0c0f14;
+  --bg-elevated: #141923;
+  --bg-panel: #171d28;
+  --border: #262f3f;
+  --text: #f4f6fb;
+  --text-muted: #a7b0c2;
+  --text-dim: #7d879b;
+  --accent: #ff8a3d;
+  --accent-strong: #ff6a00;
+  --accent-soft: rgba(255, 138, 61, 0.16);
+  --shadow: 0 20px 50px rgba(5, 8, 14, 0.45);
+  --radius-lg: 22px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --max-width: 1160px;
+}
+
+* { box-sizing: border-box; }
+
+    header {
+      padding: 32px 24px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .top-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .top-links a {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 12px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .top-links a:hover {
+      color: var(--text);
+      border-color: var(--accent);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 44px);
+      color: var(--accent);
+    }
+
+    p {
+      color: var(--text-muted);
+      margin: 8px 0 0;
+    }
+
+    main {
+      padding: 24px;
+    }
+
+    .demo-section {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      align-items: start;
+      margin-bottom: 20px;
+    }
+
+    .panel {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+    }
+
+    .panel h2 {
+      margin: 0 0 8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-bottom: 8px;
+    }
+
+    button {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(120deg, var(--accent), #ff6a00);
+      color: #111;
+      cursor: pointer;
+      font-weight: 600;
+      margin: 4px 6px 4px 0;
+    }
+
+    .output {
+      margin-top: 12px;
+      background: #0b0f1a;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.85rem;
+      max-height: 240px;
+      overflow-y: auto;
+    }
+
+    .log-entry { border-bottom: 1px solid #1f2537; padding: 4px 0; }
+    .log-entry:last-child { border-bottom: none; }
+
+    .code-block {
+      background: #0b0f1a;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.85rem;
+      color: #d6d9e6;
+      white-space: pre-wrap;
+    }
+  
+
+:root {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+:root.light {
+  --bg: #f5f5f7;
+  --bg-2: #ffffff;
+  --bg-spot-1: #f8e9d0;
+  --bg-spot-2: #e8eef8;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #ffb000;
+  --accent-2: #00a7d6;
+  --surface: #f3f4f6;
+  --code-bg: #111827;
+  --code-text: #f9fafb;
+}
+
+:root.dark {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+h1 {
+  color: var(--accent) !important;
+}
+
+.top-links a,
+.topbar a {
+  color: var(--muted) !important;
+  border-color: var(--line) !important;
+}
+
+.top-links a:hover,
+.topbar a:hover {
+  color: var(--text) !important;
+}
+
+.card,
+.section,
+.demo-section,
+.panel {
+  background: var(--card) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+.code-block,
+pre,
+code,
+.output,
+.current-url,
+.event-log,
+.result-card,
+.log {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  border-color: var(--line) !important;
+}
+
+input,
+select,
+textarea {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+button {
+  background: linear-gradient(120deg, var(--accent), #ff6a00) !important;
+  color: #111 !important;
+}
+
+footer {
+  color: var(--muted) !important;
+}
+
+footer a {
+  color: var(--text) !important;
+}</code></pre> </div> <div> <div class="code-label">JS (js)</div> <pre class="code-panel"><code>import { EventEmitter } from &quot;https://esm.sh/@manufosela/event-emitter&quot;;
+
+    const emitterBasic = new EventEmitter({ wildcard: true });
+    const emitterWild = new EventEmitter({ wildcard: true });
+
+    const outputBasic = document.getElementById(&quot;output-basic&quot;);
+    const outputWild = document.getElementById(&quot;output-wildcards&quot;);
+
+    const log = (container, message) =&gt; {
+      const entry = document.createElement(&quot;div&quot;);
+      entry.className = &quot;log-entry&quot;;
+      entry.textContent = message;
+      container.prepend(entry);
+    };
+
+    emitterBasic.on(&quot;message&quot;, (data) =&gt; log(outputBasic, `message: ${JSON.stringify(data)}`));
+    emitterBasic.on(&quot;user:login&quot;, (user) =&gt; log(outputBasic, `user:login: ${user.name}`));
+    emitterBasic.on(&quot;user:logout&quot;, (user) =&gt; log(outputBasic, `user:logout: ${user.name}`));
+    emitterBasic.once(&quot;init&quot;, () =&gt; log(outputBasic, &quot;init received (once)&quot;));
+
+    document.getElementById(&quot;emit-message&quot;).addEventListener(&quot;click&quot;, () =&gt; {
+      emitterBasic.emit(&quot;message&quot;, { text: &quot;Hello World!&quot;, timestamp: Date.now() });
+    });
+    document.getElementById(&quot;emit-login&quot;).addEventListener(&quot;click&quot;, () =&gt; {
+      emitterBasic.emit(&quot;user:login&quot;, { id: 1, name: &quot;John Doe&quot; });
+    });
+    document.getElementById(&quot;emit-logout&quot;).addEventListener(&quot;click&quot;, () =&gt; {
+      emitterBasic.emit(&quot;user:logout&quot;, { id: 1, name: &quot;John Doe&quot; });
+    });
+    document.getElementById(&quot;emit-once&quot;).addEventListener(&quot;click&quot;, () =&gt; {
+      emitterBasic.emit(&quot;init&quot;);
+      log(outputBasic, &quot;init emitted&quot;);
+    });
+
+    emitterWild.on(&quot;user:*&quot;, () =&gt; log(outputWild, &quot;Matched user:*&quot;));
+    emitterWild.on(&quot;user:**&quot;, () =&gt; log(outputWild, &quot;Matched user:**&quot;));
+    emitterWild.on(&quot;**&quot;, () =&gt; log(outputWild, &quot;Matched ** (any event)&quot;));
+
+    document.getElementById(&quot;emit-login-w&quot;).addEventListener(&quot;click&quot;, () =&gt; {
+      emitterWild.emit(&quot;user:login&quot;, { id: 1 });
+    });
+    document.getElementById(&quot;emit-logout-w&quot;).addEventListener(&quot;click&quot;, () =&gt; {
+      emitterWild.emit(&quot;user:logout&quot;, { id: 1 });
+    });
+    document.getElementById(&quot;emit-admin-w&quot;).addEventListener(&quot;click&quot;, () =&gt; {
+      emitterWild.emit(&quot;user:admin:login&quot;, { id: 2 });
+    });
+    document.getElementById(&quot;emit-system-w&quot;).addEventListener(&quot;click&quot;, () =&gt; {
+      emitterWild.emit(&quot;system:ready&quot;, { ok: true });
+    });
+
+    const snippets = {
+      basic: document.getElementById(&quot;snippet-basic&quot;),
+      wildcards: document.getElementById(&quot;snippet-wildcards&quot;),
+    };
+
+    document.querySelectorAll(&quot;[data-code]&quot;).forEach((block) =&gt; {
+      const key = block.dataset.code;
+      if (snippets[key]) {
+        block.textContent = snippets[key].innerHTML.trim();
+      }
+    });
+  
+
+class DemoThemeToggle extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: &#39;open&#39; });
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  connectedCallback() {
+    const saved = localStorage.getItem(&#39;utils-demo-theme&#39;);
+    document.documentElement.classList.remove(&#39;dark&#39;);
+    document.documentElement.classList.toggle(&#39;light&#39;, saved === &#39;light&#39;);
+
+    this.render();
+  }
+
+  render() {
+    const isLight = document.documentElement.classList.contains(&#39;light&#39;);
+    this.shadowRoot.innerHTML = `
+      &lt;style&gt;
+        :host {
+          display: inline-flex;
+        }
+        .toggle {
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid var(--line);
+          border-radius: 999px;
+          overflow: hidden;
+          background: var(--surface);
+        }
+        button {
+          border: none;
+          background: transparent;
+          color: var(--muted);
+          padding: 6px 12px;
+          font-size: 0.8rem;
+          cursor: pointer;
+          font-family: &quot;Space Grotesk&quot;, &quot;Trebuchet MS&quot;, Arial, sans-serif;
+        }
+        button.active {
+          background: linear-gradient(120deg, var(--accent), #ff6a00);
+          color: #111;
+          font-weight: 600;
+        }
+      &lt;/style&gt;
+      &lt;div class=&quot;toggle&quot; role=&quot;group&quot; aria-label=&quot;Theme toggle&quot;&gt;
+        &lt;button class=&quot;${isLight ? &#39;active&#39; : &#39;&#39;}&quot; data-theme=&quot;light&quot;&gt;Light&lt;/button&gt;
+        &lt;button class=&quot;${isLight ? &#39;&#39; : &#39;active&#39;}&quot; data-theme=&quot;dark&quot;&gt;Dark&lt;/button&gt;
+      &lt;/div&gt;
+    `;
+
+    this.shadowRoot.querySelectorAll(&#39;button&#39;).forEach((btn) =&gt; {
+      btn.addEventListener(&#39;click&#39;, this.handleClick);
+    });
+  }
+
+  handleClick(event) {
+    const theme = event.currentTarget.dataset.theme;
+    const isLight = theme === &#39;light&#39;;
+    document.documentElement.classList.toggle(&#39;light&#39;, isLight);
+    document.documentElement.classList.remove(&#39;dark&#39;);
+    localStorage.setItem(&#39;utils-demo-theme&#39;, isLight ? &#39;light&#39; : &#39;dark&#39;);
+    this.render();
+  }
+}
+
+customElements.define(&#39;demo-theme-toggle&#39;, DemoThemeToggle);</code></pre> </div> </details> </div>  </div> </main> <footer> <div class="container"> <p>Built by manufosela. Lightweight, accessible, and standards-first web components.</p> </div> </footer> </body></html>

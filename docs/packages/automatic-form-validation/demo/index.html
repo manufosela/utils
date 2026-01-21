@@ -1,0 +1,1713 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>@manufosela/automatic-form-validation</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><style>@import"https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap";.astro-route-announcer{position:absolute;left:0;top:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}:root{color-scheme:dark;--bg: #0c0f14;--bg-elevated: #141923;--bg-panel: #171d28;--border: #262f3f;--text: #f4f6fb;--text-muted: #a7b0c2;--text-dim: #7d879b;--accent: #ff8a3d;--accent-strong: #ff6a00;--accent-soft: rgba(255, 138, 61, .16);--shadow: 0 20px 50px rgba(5, 8, 14, .45);--radius-lg: 22px;--radius-md: 14px;--radius-sm: 10px;--max-width: 1160px;--font-sans: "Space Grotesk", "Manrope", "IBM Plex Sans", system-ui, sans-serif;--font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace}html.light{color-scheme:light;--bg: #f7f6f2;--bg-elevated: #ffffff;--bg-panel: #fffaf2;--border: #e4dfd6;--text: #1a1c22;--text-muted: #5b6170;--text-dim: #8c92a1;--accent: #ff7a1a;--accent-strong: #ff5c00;--accent-soft: rgba(255, 122, 26, .15);--shadow: 0 16px 40px rgba(19, 20, 26, .15)}*{box-sizing:border-box}body{margin:0;font-family:var(--font-sans);background:radial-gradient(circle at 15% 20%,rgba(255,138,61,.12),transparent 40%),radial-gradient(circle at 85% 0%,rgba(255,106,0,.16),transparent 30%),var(--bg);color:var(--text);min-height:100vh}a{color:inherit;text-decoration:none}a:hover{color:var(--accent)}main{padding:40px 24px 80px}.container{width:100%;max-width:var(--max-width);margin:0 auto}.page-title{font-size:clamp(2.2rem,1.2rem + 3vw,3.4rem);margin:0;color:var(--accent)}.page-subtitle{margin-top:10px;color:var(--text-muted);font-size:1.1rem;max-width:720px}.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;margin-top:34px}.card{background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;min-height:220px;box-shadow:var(--shadow);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}.card:hover{transform:translateY(-4px);border-color:#ff8a3d66;box-shadow:0 28px 60px #07090f80}.card h3{margin:0 0 8px;font-size:1.3rem}.card p{margin:0;color:var(--text-muted);line-height:1.5}.tag{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:.75rem;letter-spacing:.02em}.header-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}.header-links a{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg-panel);color:var(--text-muted);font-size:.9rem}.header-links a:hover{border-color:var(--accent);color:var(--text)}.demo-surface{margin-top:28px;background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;box-shadow:var(--shadow)}.demo-embed{display:grid;gap:24px}.code-panel{background:#0b0f16;border-radius:var(--radius-md);padding:16px;border:1px solid rgba(255,138,61,.2);color:#e5e9f2;font-family:var(--font-mono);font-size:.85rem;overflow:auto}footer{border-top:1px solid var(--border);color:var(--text-dim);padding:40px 24px 60px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:24px}.topbar a{font-weight:600}.theme-toggle{border:1px solid var(--border);background:var(--bg-panel);color:var(--text);border-radius:999px;padding:8px 14px;cursor:pointer;font-size:.85rem}.code-label{margin:24px 0 10px;color:var(--text-muted);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase}.code-details{margin-top:24px;border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;background:var(--bg-elevated)}.code-details summary{cursor:pointer;color:var(--accent);font-weight:600;letter-spacing:.02em}.code-details[open] summary{margin-bottom:12px}
+</style><script type="module" src="/utils/_astro/hoisted.BScVxmeO.js"></script></head> <body> <header class="topbar"> <a href="/">@manufosela/automatic-form-validation</a> <div class="header-links">  <button class="theme-toggle" type="button" data-theme-toggle>Light mode</button> <script type="module">
+  const root = document.documentElement;
+  const toggle = document.querySelector('[data-theme-toggle]');
+  const stored = localStorage.getItem('theme');
+
+  if (stored === 'light') {
+    root.classList.add('light');
+  }
+
+  const updateLabel = () => {
+    const isLight = root.classList.contains('light');
+    toggle.textContent = isLight ? 'Dark mode' : 'Light mode';
+  };
+
+  updateLabel();
+
+  toggle.addEventListener('click', () => {
+    root.classList.toggle('light');
+    localStorage.setItem('theme', root.classList.contains('light') ? 'light' : 'dark');
+    updateLabel();
+  });
+</script> </div> </header> <main> <div class="container">  <div> <h1 class="page-title">@manufosela/automatic-form-validation</h1> <p class="page-subtitle">Automatic HTML form validation using data-* attributes, dependency-free and browser-focused.</p> <div class="header-links"> <a href="/utils/">← Back to components</a><a href="https://github.com/manufosela/utils">GitHub Repo</a><a href="../../automatic-form-validation/playground/">Playground</a> </div> </div> <div class="demo-surface"> <div><link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    /></div><div>* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+header {
+  padding: 32px 24px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.top-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.top-links a {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 12px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.top-links a:hover {
+  color: var(--text);
+  border-color: var(--accent-2);
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 44px);
+  letter-spacing: -0.02em;
+}
+
+.hero p {
+  margin: 8px 0 0;
+  color: var(--muted);
+}
+
+main {
+  padding: 24px 24px 64px;
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px;
+  display: grid;
+  gap: 10px;
+}
+
+.card h3 {
+  margin: 0;
+}
+
+.card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.badge {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  margin: 28px 0 14px;
+}
+
+.demo-shell {
+  display: grid;
+  gap: 20px;
+}
+
+.demo-section {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: start;
+}
+
+.demo-card {
+  background: color-mix(in srgb, var(--card) 85%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.demo-card h2 {
+  margin: 0 0 10px;
+}
+
+.demo-form {
+  display: grid;
+  gap: 12px;
+}
+
+.demo-form label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.demo-form input[type="text"],
+.demo-form input[type="email"] {
+  width: min(360px, 100%);
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.demo-form button {
+  width: fit-content;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(120deg, var(--accent), #ff6a00);
+  color: #111;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  overflow: auto;
+  font-size: 0.85rem;
+  color: var(--code-text);
+}
+
+.code-block pre {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.code-details {
+  display: grid;
+  gap: 12px;
+}
+
+.code-details summary {
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.code-details[open] summary {
+  color: var(--text);
+}
+
+.playground {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.playground textarea {
+  width: 100%;
+  min-height: 240px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 12px;
+  font-family: "JetBrains Mono", "Courier New", monospace;
+  font-size: 0.85rem;
+}
+
+.playground iframe {
+  width: 100%;
+  min-height: 320px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.playground-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.playground-actions button {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.playground-actions button.primary {
+  border: none;
+  background: linear-gradient(120deg, var(--accent), #ff6a00);
+  color: #111;
+}
+
+.note {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+:root {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+:root.light {
+  --bg: #f5f5f7;
+  --bg-2: #ffffff;
+  --bg-spot-1: #f8e9d0;
+  --bg-spot-2: #e8eef8;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #ffb000;
+  --accent-2: #00a7d6;
+  --surface: #f3f4f6;
+  --code-bg: #111827;
+  --code-text: #f9fafb;
+}
+
+:root.dark {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+h1 {
+  color: var(--accent) !important;
+}
+
+.top-links a,
+.topbar a {
+  color: var(--muted) !important;
+  border-color: var(--line) !important;
+}
+
+.top-links a:hover,
+.topbar a:hover {
+  color: var(--text) !important;
+}
+
+.card,
+.section,
+.demo-section,
+.panel {
+  background: var(--card) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+.code-block,
+pre,
+code,
+.output,
+.current-url,
+.event-log,
+.result-card,
+.log {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  border-color: var(--line) !important;
+}
+
+input,
+select,
+textarea {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+button {
+  background: linear-gradient(120deg, var(--accent), #ff6a00) !important;
+  color: #111 !important;
+}
+
+footer {
+  color: var(--muted) !important;
+}
+
+footer a {
+  color: var(--text) !important;
+}</div><div class="demo-embed"><main>
+      <div class="container demo-shell">
+        <section class="demo-section">
+          <div class="demo-card">
+            <span class="badge">Basics</span>
+            <h2>Basic form</h2>
+            <p class="note">Required fields, email validation, and submit checks.</p>
+            <form id="basicForm" class="demo-form" data-validate="true" data-checkrealtime="true">
+              <div>
+                <label for="basic-name">Name</label>
+                <input
+                  id="basic-name"
+                  name="basic-name"
+                  type="text"
+                  placeholder="Jane Doe"
+                  data-required="true"
+                  data-tovalidate="alpha"
+                />
+              </div>
+              <div>
+                <label for="basic-email">Email</label>
+                <input
+                  id="basic-email"
+                  name="basic-email"
+                  type="text"
+                  placeholder="jane@example.com"
+                  data-required="true"
+                  data-tovalidate="email"
+                />
+              </div>
+              <label>
+                <input id="basic-accept" name="basic-accept" type="checkbox" data-required="true" />
+                Accept terms
+              </label>
+              <button id="basic-submit" type="submit" data-checkform="true">Submit</button>
+            </form>
+          </div>
+          <div class="demo-card">
+            <h3>Code</h3>
+            <details class="code-details">
+              <summary>Show HTML + JS</summary>
+              <div class="code-block"><pre><code data-code="basic"></code></pre></div>
+            </details>
+          </div>
+        </section>
+
+        <section class="demo-section">
+          <div class="demo-card">
+            <span class="badge">Realtime</span>
+            <h2>Realtime validation</h2>
+            <p class="note">Fields validate on blur for quick feedback.</p>
+            <form id="realtimeForm" class="demo-form" data-validate="true" data-checkrealtime="true">
+              <div>
+                <label for="realtime-username">Username</label>
+                <input
+                  id="realtime-username"
+                  name="realtime-username"
+                  type="text"
+                  placeholder="alpha only"
+                  data-required="true"
+                  data-tovalidate="alpha"
+                />
+              </div>
+              <div>
+                <label for="realtime-phone">Telephone</label>
+                <input
+                  id="realtime-phone"
+                  name="realtime-phone"
+                  type="text"
+                  placeholder="6xx xxx xxx"
+                  data-required="true"
+                  data-tovalidate="telephone"
+                />
+              </div>
+              <button id="realtime-submit" type="submit" data-checkform="true">Submit</button>
+            </form>
+          </div>
+          <div class="demo-card">
+            <h3>Code</h3>
+            <details class="code-details">
+              <summary>Show HTML + JS</summary>
+              <div class="code-block"><pre><code data-code="realtime"></code></pre></div>
+            </details>
+          </div>
+        </section>
+
+        <section class="demo-section">
+          <div class="demo-card">
+            <span class="badge">Custom</span>
+            <h2>Custom validators</h2>
+            <p class="note">Combine fn: callbacks with runtime validators.</p>
+            <form id="customForm" class="demo-form" data-validate="true">
+              <div>
+                <label for="custom-even">Even number</label>
+                <input
+                  id="custom-even"
+                  name="custom-even"
+                  type="text"
+                  data-required="true"
+                  data-tovalidate="fn:isEven"
+                  placeholder="Only even numbers"
+                />
+              </div>
+              <div>
+                <label for="custom-starts">Starts with M</label>
+                <input
+                  id="custom-starts"
+                  name="custom-starts"
+                  type="text"
+                  data-required="true"
+                  data-tovalidate="startsWithM"
+                  placeholder="Type a value"
+                />
+              </div>
+              <button id="custom-submit" type="submit" data-checkform="true">Submit</button>
+            </form>
+          </div>
+          <div class="demo-card">
+            <h3>Code</h3>
+            <details class="code-details">
+              <summary>Show HTML + JS</summary>
+              <div class="code-block"><pre><code data-code="custom"></code></pre></div>
+            </details>
+          </div>
+        </section>
+
+        <section class="demo-section">
+          <div class="demo-card">
+            <span class="badge">Logic</span>
+            <h2>Conditional fields</h2>
+            <p class="note">Show and validate sections based on selections.</p>
+            <form id="conditionalForm" class="demo-form" data-validate="true">
+              <div>
+                <label id="label_hasphone" data-name="hasphone">Do you have a phone?</label>
+                <label>
+                  <input
+                    id="conditional-no"
+                    name="hasphone"
+                    type="radio"
+                    data-required="true"
+                    value="no"
+                  />
+                  No
+                </label>
+                <label>
+                  <input
+                    id="conditional-yes"
+                    name="hasphone"
+                    type="radio"
+                    data-required="true"
+                    value="yes"
+                  />
+                  Yes
+                </label>
+              </div>
+
+              <fieldset data-activate="conditional-yes" data-deactivate="conditional-no">
+                <label for="conditional-phone">Phone number</label>
+                <input
+                  id="conditional-phone"
+                  name="conditional-phone"
+                  data-type="hiddenON"
+                  type="text"
+                  data-required="true"
+                  data-tovalidate="telephone"
+                  placeholder="Your phone"
+                />
+              </fieldset>
+
+              <button id="conditional-submit" type="submit" data-checkform="true">Submit</button>
+            </form>
+          </div>
+          <div class="demo-card">
+            <h3>Code</h3>
+            <details class="code-details">
+              <summary>Show HTML + JS</summary>
+              <div class="code-block"><pre><code data-code="conditional"></code></pre></div>
+            </details>
+          </div>
+        </section>
+
+        <section class="demo-section">
+          <div class="demo-card">
+            <span class="badge">Groups</span>
+            <h2>Checkbox groups</h2>
+            <p class="note">Validate min and max selections for grouped checkboxes.</p>
+            <form id="groupForm" class="demo-form" data-validate="true">
+              <label data-type="checkbox-group" data-min="2" data-max="3" data-error-msg="Pick 2 or 3 options">
+                Select 2 or 3 options
+              </label>
+              <label><input type="checkbox" name="group-opt" value="a" /> Option A</label>
+              <label><input type="checkbox" name="group-opt" value="b" /> Option B</label>
+              <label><input type="checkbox" name="group-opt" value="c" /> Option C</label>
+              <label><input type="checkbox" name="group-opt" value="d" /> Option D</label>
+              <button id="group-submit" type="submit" data-checkform="true">Submit</button>
+            </form>
+          </div>
+          <div class="demo-card">
+            <h3>Code</h3>
+            <details class="code-details">
+              <summary>Show HTML + JS</summary>
+              <div class="code-block"><pre><code data-code="group"></code></pre></div>
+            </details>
+          </div>
+        </section>
+
+        <section class="demo-section">
+          <div class="demo-card">
+            <span class="badge">Advanced</span>
+            <h2>Advanced form</h2>
+            <p class="note">Combine radio groups, conditional fields, and fn validators.</p>
+            <form id="advancedForm" class="demo-form" data-validate="true" data-checkrealtime="true">
+              <div>
+                <label for="advanced-name">Your name</label>
+                <input
+                  id="advanced-name"
+                  name="advanced-name"
+                  type="text"
+                  placeholder="type your name"
+                  data-required="true"
+                  data-tovalidate="alfa"
+                />
+              </div>
+              <div>
+                <label for="advanced-mobile">Mobile number</label>
+                <input
+                  id="advanced-mobile"
+                  name="advanced-mobile"
+                  maxlength="9"
+                  type="text"
+                  placeholder="type your mobile number"
+                  data-required="true"
+                  data-tovalidate="movil"
+                />
+              </div>
+              <div>
+                <label for="advanced-email">Email</label>
+                <input
+                  id="advanced-email"
+                  name="advanced-email"
+                  type="text"
+                  placeholder="type your email"
+                  data-required="true"
+                  data-tovalidate="email"
+                />
+              </div>
+              <div>
+                <input id="advanced-accept" name="advanced-accept" type="checkbox" data-required="true" />
+                <span>Accept conditions</span>
+              </div>
+              <div>
+                <label for="advanced-odd">Type an odd value:</label>
+                <input
+                  id="advanced-odd"
+                  name="advanced-odd"
+                  type="text"
+                  data-required="true"
+                  data-tovalidate="fn:checkOdd"
+                />
+              </div>
+              <div>
+                <label id="label_hasphone_advanced" data-name="hasphone-advanced">Do you have a phone number?</label>
+                <label>
+                  <input
+                    id="advanced-no"
+                    name="hasphone-advanced"
+                    type="radio"
+                    data-required="true"
+                    value="nophone"
+                  />
+                  No
+                </label>
+                <label>
+                  <input
+                    id="advanced-yes"
+                    name="hasphone-advanced"
+                    type="radio"
+                    data-required="true"
+                    value="yesphone"
+                  />
+                  Yes
+                </label>
+              </div>
+
+              <fieldset data-activate="advanced-yes" data-deactivate="advanced-no">
+                <label for="advanced-phone">Phone number</label>
+                <input
+                  id="advanced-phone"
+                  name="advanced-phone"
+                  data-type="hiddenON"
+                  type="text"
+                  data-required="true"
+                  data-tovalidate="telephone"
+                  placeholder="Your telephone number"
+                />
+              </fieldset>
+
+              <button id="advanced-submit" type="submit" data-checkform="true">Submit</button>
+            </form>
+          </div>
+          <div class="demo-card">
+            <h3>Code</h3>
+            <details class="code-details">
+              <summary>Show HTML + JS</summary>
+              <div class="code-block"><pre><code data-code="advanced"></code></pre></div>
+            </details>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <template id="snippet-basic">
+<form data-validate="true" data-checkrealtime="true">
+  <input data-required="true" data-tovalidate="alpha" />
+  <input data-required="true" data-tovalidate="email" />
+  <input type="checkbox" data-required="true" />
+  <button type="submit" data-checkform="true">Submit</button>
+</form>
+
+
+    </template>
+
+    <template id="snippet-realtime">
+<form data-validate="true" data-checkrealtime="true">
+  <input data-required="true" data-tovalidate="alpha" />
+  <input data-required="true" data-tovalidate="telephone" />
+</form>
+
+
+    </template>
+
+    <template id="snippet-custom">
+<input data-tovalidate="fn:isEven" />
+<input data-tovalidate="startsWithM" />
+
+
+
+
+    </template>
+
+    <template id="snippet-conditional">
+<label data-name="hasphone">Do you have a phone?</label>
+<input id="hasphoneYES" name="hasphone" type="radio" />
+
+<fieldset data-activate="hasphoneYES" data-deactivate="hasphoneNO">
+  <input data-type="hiddenON" data-required="true" data-tovalidate="telephone" />
+</fieldset>
+
+
+    </template>
+
+    <template id="snippet-group">
+<label data-type="checkbox-group" data-min="2" data-max="3">
+  Select 2 or 3 options
+</label>
+
+
+    </template>
+
+    <template id="snippet-advanced">
+<form data-validate="true" data-checkrealtime="true">
+  <input data-required="true" data-tovalidate="email" />
+  <input data-tovalidate="fn:checkOdd" />
+</form>
+
+
+
+
+    </template></div> <div><script type="module">
+  import { ValidateForm } from "https://esm.sh/@manufosela/automatic-form-validation";
+  new ValidateForm();
+</script>
+<script type="module">
+  import { ValidateForm } from "https://esm.sh/@manufosela/automatic-form-validation";
+  new ValidateForm();
+</script>
+<script>
+  function isEven(value) {
+    return Number(value) % 2 === 0;
+  }
+</script>
+<script type="module">
+  import { ValidateForm } from "https://esm.sh/@manufosela/automatic-form-validation";
+  const validator = new ValidateForm();
+  validator.addValidator("startsWithM", (value) => value.toLowerCase().startsWith("m"));
+</script>
+<script type="module">
+  import { ValidateForm } from "https://esm.sh/@manufosela/automatic-form-validation";
+  new ValidateForm();
+</script>
+<script type="module">
+  import { ValidateForm } from "https://esm.sh/@manufosela/automatic-form-validation";
+  new ValidateForm();
+</script>
+<script>
+  function checkOdd(value) {
+    return Number(value) % 2 === 1;
+  }
+</script>
+<script type="module">
+  import { ValidateForm } from "https://esm.sh/@manufosela/automatic-form-validation";
+  new ValidateForm();
+</script>
+<script type="module">
+      import { ValidateForm } from "https://esm.sh/@manufosela/automatic-form-validation";
+
+      const validator = new ValidateForm();
+
+      const isEven = (value) => Number(value) % 2 === 0;
+      globalThis.isEven = isEven;
+      globalThis.checkOdd = (value) => Number(value) % 2 === 1;
+
+      validator.addValidator("startsWithM", (value) => value.toLowerCase().startsWith("m"));
+
+      const snippets = {
+        basic: document.getElementById("snippet-basic"),
+        realtime: document.getElementById("snippet-realtime"),
+        custom: document.getElementById("snippet-custom"),
+        conditional: document.getElementById("snippet-conditional"),
+        group: document.getElementById("snippet-group"),
+        advanced: document.getElementById("snippet-advanced"),
+      };
+
+      document.querySelectorAll("[data-code]").forEach((block) => {
+        const key = block.dataset.code;
+        if (snippets[key]) {
+          block.textContent = snippets[key].innerHTML.trim();
+        }
+      });
+    </script>
+<script type="module">
+class DemoThemeToggle extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  connectedCallback() {
+    const saved = localStorage.getItem('utils-demo-theme');
+    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.toggle('light', saved === 'light');
+
+    this.render();
+  }
+
+  render() {
+    const isLight = document.documentElement.classList.contains('light');
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host {
+          display: inline-flex;
+        }
+        .toggle {
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid var(--line);
+          border-radius: 999px;
+          overflow: hidden;
+          background: var(--surface);
+        }
+        button {
+          border: none;
+          background: transparent;
+          color: var(--muted);
+          padding: 6px 12px;
+          font-size: 0.8rem;
+          cursor: pointer;
+          font-family: "Space Grotesk", "Trebuchet MS", Arial, sans-serif;
+        }
+        button.active {
+          background: linear-gradient(120deg, var(--accent), #ff6a00);
+          color: #111;
+          font-weight: 600;
+        }
+      </style>
+      <div class="toggle" role="group" aria-label="Theme toggle">
+        <button class="${isLight ? 'active' : ''}" data-theme="light">Light</button>
+        <button class="${isLight ? '' : 'active'}" data-theme="dark">Dark</button>
+      </div>
+    `;
+
+    this.shadowRoot.querySelectorAll('button').forEach((btn) => {
+      btn.addEventListener('click', this.handleClick);
+    });
+  }
+
+  handleClick(event) {
+    const theme = event.currentTarget.dataset.theme;
+    const isLight = theme === 'light';
+    document.documentElement.classList.toggle('light', isLight);
+    document.documentElement.classList.remove('dark');
+    localStorage.setItem('utils-demo-theme', isLight ? 'light' : 'dark');
+    this.render();
+  }
+}
+
+customElements.define('demo-theme-toggle', DemoThemeToggle);
+
+</script></div><details class="code-details"> <summary>Demo code (CodePen-ready HTML, CSS, JS)</summary> <div> <div class="code-label">HTML (html)</div> <pre class="code-panel"><code>&lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot; /&gt;
+&lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; crossorigin /&gt;
+&lt;link
+      href=&quot;https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&amp;display=swap&quot;
+      rel=&quot;stylesheet&quot;
+    /&gt;
+&lt;main&gt;
+      &lt;div class=&quot;container demo-shell&quot;&gt;
+        &lt;section class=&quot;demo-section&quot;&gt;
+          &lt;div class=&quot;demo-card&quot;&gt;
+            &lt;span class=&quot;badge&quot;&gt;Basics&lt;/span&gt;
+            &lt;h2&gt;Basic form&lt;/h2&gt;
+            &lt;p class=&quot;note&quot;&gt;Required fields, email validation, and submit checks.&lt;/p&gt;
+            &lt;form id=&quot;basicForm&quot; class=&quot;demo-form&quot; data-validate=&quot;true&quot; data-checkrealtime=&quot;true&quot;&gt;
+              &lt;div&gt;
+                &lt;label for=&quot;basic-name&quot;&gt;Name&lt;/label&gt;
+                &lt;input
+                  id=&quot;basic-name&quot;
+                  name=&quot;basic-name&quot;
+                  type=&quot;text&quot;
+                  placeholder=&quot;Jane Doe&quot;
+                  data-required=&quot;true&quot;
+                  data-tovalidate=&quot;alpha&quot;
+                /&gt;
+              &lt;/div&gt;
+              &lt;div&gt;
+                &lt;label for=&quot;basic-email&quot;&gt;Email&lt;/label&gt;
+                &lt;input
+                  id=&quot;basic-email&quot;
+                  name=&quot;basic-email&quot;
+                  type=&quot;text&quot;
+                  placeholder=&quot;jane@example.com&quot;
+                  data-required=&quot;true&quot;
+                  data-tovalidate=&quot;email&quot;
+                /&gt;
+              &lt;/div&gt;
+              &lt;label&gt;
+                &lt;input id=&quot;basic-accept&quot; name=&quot;basic-accept&quot; type=&quot;checkbox&quot; data-required=&quot;true&quot; /&gt;
+                Accept terms
+              &lt;/label&gt;
+              &lt;button id=&quot;basic-submit&quot; type=&quot;submit&quot; data-checkform=&quot;true&quot;&gt;Submit&lt;/button&gt;
+            &lt;/form&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;demo-card&quot;&gt;
+            &lt;h3&gt;Code&lt;/h3&gt;
+            &lt;details class=&quot;code-details&quot;&gt;
+              &lt;summary&gt;Show HTML + JS&lt;/summary&gt;
+              &lt;div class=&quot;code-block&quot;&gt;&lt;pre&gt;&lt;code data-code=&quot;basic&quot;&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;section class=&quot;demo-section&quot;&gt;
+          &lt;div class=&quot;demo-card&quot;&gt;
+            &lt;span class=&quot;badge&quot;&gt;Realtime&lt;/span&gt;
+            &lt;h2&gt;Realtime validation&lt;/h2&gt;
+            &lt;p class=&quot;note&quot;&gt;Fields validate on blur for quick feedback.&lt;/p&gt;
+            &lt;form id=&quot;realtimeForm&quot; class=&quot;demo-form&quot; data-validate=&quot;true&quot; data-checkrealtime=&quot;true&quot;&gt;
+              &lt;div&gt;
+                &lt;label for=&quot;realtime-username&quot;&gt;Username&lt;/label&gt;
+                &lt;input
+                  id=&quot;realtime-username&quot;
+                  name=&quot;realtime-username&quot;
+                  type=&quot;text&quot;
+                  placeholder=&quot;alpha only&quot;
+                  data-required=&quot;true&quot;
+                  data-tovalidate=&quot;alpha&quot;
+                /&gt;
+              &lt;/div&gt;
+              &lt;div&gt;
+                &lt;label for=&quot;realtime-phone&quot;&gt;Telephone&lt;/label&gt;
+                &lt;input
+                  id=&quot;realtime-phone&quot;
+                  name=&quot;realtime-phone&quot;
+                  type=&quot;text&quot;
+                  placeholder=&quot;6xx xxx xxx&quot;
+                  data-required=&quot;true&quot;
+                  data-tovalidate=&quot;telephone&quot;
+                /&gt;
+              &lt;/div&gt;
+              &lt;button id=&quot;realtime-submit&quot; type=&quot;submit&quot; data-checkform=&quot;true&quot;&gt;Submit&lt;/button&gt;
+            &lt;/form&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;demo-card&quot;&gt;
+            &lt;h3&gt;Code&lt;/h3&gt;
+            &lt;details class=&quot;code-details&quot;&gt;
+              &lt;summary&gt;Show HTML + JS&lt;/summary&gt;
+              &lt;div class=&quot;code-block&quot;&gt;&lt;pre&gt;&lt;code data-code=&quot;realtime&quot;&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;section class=&quot;demo-section&quot;&gt;
+          &lt;div class=&quot;demo-card&quot;&gt;
+            &lt;span class=&quot;badge&quot;&gt;Custom&lt;/span&gt;
+            &lt;h2&gt;Custom validators&lt;/h2&gt;
+            &lt;p class=&quot;note&quot;&gt;Combine fn: callbacks with runtime validators.&lt;/p&gt;
+            &lt;form id=&quot;customForm&quot; class=&quot;demo-form&quot; data-validate=&quot;true&quot;&gt;
+              &lt;div&gt;
+                &lt;label for=&quot;custom-even&quot;&gt;Even number&lt;/label&gt;
+                &lt;input
+                  id=&quot;custom-even&quot;
+                  name=&quot;custom-even&quot;
+                  type=&quot;text&quot;
+                  data-required=&quot;true&quot;
+                  data-tovalidate=&quot;fn:isEven&quot;
+                  placeholder=&quot;Only even numbers&quot;
+                /&gt;
+              &lt;/div&gt;
+              &lt;div&gt;
+                &lt;label for=&quot;custom-starts&quot;&gt;Starts with M&lt;/label&gt;
+                &lt;input
+                  id=&quot;custom-starts&quot;
+                  name=&quot;custom-starts&quot;
+                  type=&quot;text&quot;
+                  data-required=&quot;true&quot;
+                  data-tovalidate=&quot;startsWithM&quot;
+                  placeholder=&quot;Type a value&quot;
+                /&gt;
+              &lt;/div&gt;
+              &lt;button id=&quot;custom-submit&quot; type=&quot;submit&quot; data-checkform=&quot;true&quot;&gt;Submit&lt;/button&gt;
+            &lt;/form&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;demo-card&quot;&gt;
+            &lt;h3&gt;Code&lt;/h3&gt;
+            &lt;details class=&quot;code-details&quot;&gt;
+              &lt;summary&gt;Show HTML + JS&lt;/summary&gt;
+              &lt;div class=&quot;code-block&quot;&gt;&lt;pre&gt;&lt;code data-code=&quot;custom&quot;&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;section class=&quot;demo-section&quot;&gt;
+          &lt;div class=&quot;demo-card&quot;&gt;
+            &lt;span class=&quot;badge&quot;&gt;Logic&lt;/span&gt;
+            &lt;h2&gt;Conditional fields&lt;/h2&gt;
+            &lt;p class=&quot;note&quot;&gt;Show and validate sections based on selections.&lt;/p&gt;
+            &lt;form id=&quot;conditionalForm&quot; class=&quot;demo-form&quot; data-validate=&quot;true&quot;&gt;
+              &lt;div&gt;
+                &lt;label id=&quot;label_hasphone&quot; data-name=&quot;hasphone&quot;&gt;Do you have a phone?&lt;/label&gt;
+                &lt;label&gt;
+                  &lt;input
+                    id=&quot;conditional-no&quot;
+                    name=&quot;hasphone&quot;
+                    type=&quot;radio&quot;
+                    data-required=&quot;true&quot;
+                    value=&quot;no&quot;
+                  /&gt;
+                  No
+                &lt;/label&gt;
+                &lt;label&gt;
+                  &lt;input
+                    id=&quot;conditional-yes&quot;
+                    name=&quot;hasphone&quot;
+                    type=&quot;radio&quot;
+                    data-required=&quot;true&quot;
+                    value=&quot;yes&quot;
+                  /&gt;
+                  Yes
+                &lt;/label&gt;
+              &lt;/div&gt;
+
+              &lt;fieldset data-activate=&quot;conditional-yes&quot; data-deactivate=&quot;conditional-no&quot;&gt;
+                &lt;label for=&quot;conditional-phone&quot;&gt;Phone number&lt;/label&gt;
+                &lt;input
+                  id=&quot;conditional-phone&quot;
+                  name=&quot;conditional-phone&quot;
+                  data-type=&quot;hiddenON&quot;
+                  type=&quot;text&quot;
+                  data-required=&quot;true&quot;
+                  data-tovalidate=&quot;telephone&quot;
+                  placeholder=&quot;Your phone&quot;
+                /&gt;
+              &lt;/fieldset&gt;
+
+              &lt;button id=&quot;conditional-submit&quot; type=&quot;submit&quot; data-checkform=&quot;true&quot;&gt;Submit&lt;/button&gt;
+            &lt;/form&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;demo-card&quot;&gt;
+            &lt;h3&gt;Code&lt;/h3&gt;
+            &lt;details class=&quot;code-details&quot;&gt;
+              &lt;summary&gt;Show HTML + JS&lt;/summary&gt;
+              &lt;div class=&quot;code-block&quot;&gt;&lt;pre&gt;&lt;code data-code=&quot;conditional&quot;&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;section class=&quot;demo-section&quot;&gt;
+          &lt;div class=&quot;demo-card&quot;&gt;
+            &lt;span class=&quot;badge&quot;&gt;Groups&lt;/span&gt;
+            &lt;h2&gt;Checkbox groups&lt;/h2&gt;
+            &lt;p class=&quot;note&quot;&gt;Validate min and max selections for grouped checkboxes.&lt;/p&gt;
+            &lt;form id=&quot;groupForm&quot; class=&quot;demo-form&quot; data-validate=&quot;true&quot;&gt;
+              &lt;label data-type=&quot;checkbox-group&quot; data-min=&quot;2&quot; data-max=&quot;3&quot; data-error-msg=&quot;Pick 2 or 3 options&quot;&gt;
+                Select 2 or 3 options
+              &lt;/label&gt;
+              &lt;label&gt;&lt;input type=&quot;checkbox&quot; name=&quot;group-opt&quot; value=&quot;a&quot; /&gt; Option A&lt;/label&gt;
+              &lt;label&gt;&lt;input type=&quot;checkbox&quot; name=&quot;group-opt&quot; value=&quot;b&quot; /&gt; Option B&lt;/label&gt;
+              &lt;label&gt;&lt;input type=&quot;checkbox&quot; name=&quot;group-opt&quot; value=&quot;c&quot; /&gt; Option C&lt;/label&gt;
+              &lt;label&gt;&lt;input type=&quot;checkbox&quot; name=&quot;group-opt&quot; value=&quot;d&quot; /&gt; Option D&lt;/label&gt;
+              &lt;button id=&quot;group-submit&quot; type=&quot;submit&quot; data-checkform=&quot;true&quot;&gt;Submit&lt;/button&gt;
+            &lt;/form&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;demo-card&quot;&gt;
+            &lt;h3&gt;Code&lt;/h3&gt;
+            &lt;details class=&quot;code-details&quot;&gt;
+              &lt;summary&gt;Show HTML + JS&lt;/summary&gt;
+              &lt;div class=&quot;code-block&quot;&gt;&lt;pre&gt;&lt;code data-code=&quot;group&quot;&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/section&gt;
+
+        &lt;section class=&quot;demo-section&quot;&gt;
+          &lt;div class=&quot;demo-card&quot;&gt;
+            &lt;span class=&quot;badge&quot;&gt;Advanced&lt;/span&gt;
+            &lt;h2&gt;Advanced form&lt;/h2&gt;
+            &lt;p class=&quot;note&quot;&gt;Combine radio groups, conditional fields, and fn validators.&lt;/p&gt;
+            &lt;form id=&quot;advancedForm&quot; class=&quot;demo-form&quot; data-validate=&quot;true&quot; data-checkrealtime=&quot;true&quot;&gt;
+              &lt;div&gt;
+                &lt;label for=&quot;advanced-name&quot;&gt;Your name&lt;/label&gt;
+                &lt;input
+                  id=&quot;advanced-name&quot;
+                  name=&quot;advanced-name&quot;
+                  type=&quot;text&quot;
+                  placeholder=&quot;type your name&quot;
+                  data-required=&quot;true&quot;
+                  data-tovalidate=&quot;alfa&quot;
+                /&gt;
+              &lt;/div&gt;
+              &lt;div&gt;
+                &lt;label for=&quot;advanced-mobile&quot;&gt;Mobile number&lt;/label&gt;
+                &lt;input
+                  id=&quot;advanced-mobile&quot;
+                  name=&quot;advanced-mobile&quot;
+                  maxlength=&quot;9&quot;
+                  type=&quot;text&quot;
+                  placeholder=&quot;type your mobile number&quot;
+                  data-required=&quot;true&quot;
+                  data-tovalidate=&quot;movil&quot;
+                /&gt;
+              &lt;/div&gt;
+              &lt;div&gt;
+                &lt;label for=&quot;advanced-email&quot;&gt;Email&lt;/label&gt;
+                &lt;input
+                  id=&quot;advanced-email&quot;
+                  name=&quot;advanced-email&quot;
+                  type=&quot;text&quot;
+                  placeholder=&quot;type your email&quot;
+                  data-required=&quot;true&quot;
+                  data-tovalidate=&quot;email&quot;
+                /&gt;
+              &lt;/div&gt;
+              &lt;div&gt;
+                &lt;input id=&quot;advanced-accept&quot; name=&quot;advanced-accept&quot; type=&quot;checkbox&quot; data-required=&quot;true&quot; /&gt;
+                &lt;span&gt;Accept conditions&lt;/span&gt;
+              &lt;/div&gt;
+              &lt;div&gt;
+                &lt;label for=&quot;advanced-odd&quot;&gt;Type an odd value:&lt;/label&gt;
+                &lt;input
+                  id=&quot;advanced-odd&quot;
+                  name=&quot;advanced-odd&quot;
+                  type=&quot;text&quot;
+                  data-required=&quot;true&quot;
+                  data-tovalidate=&quot;fn:checkOdd&quot;
+                /&gt;
+              &lt;/div&gt;
+              &lt;div&gt;
+                &lt;label id=&quot;label_hasphone_advanced&quot; data-name=&quot;hasphone-advanced&quot;&gt;Do you have a phone number?&lt;/label&gt;
+                &lt;label&gt;
+                  &lt;input
+                    id=&quot;advanced-no&quot;
+                    name=&quot;hasphone-advanced&quot;
+                    type=&quot;radio&quot;
+                    data-required=&quot;true&quot;
+                    value=&quot;nophone&quot;
+                  /&gt;
+                  No
+                &lt;/label&gt;
+                &lt;label&gt;
+                  &lt;input
+                    id=&quot;advanced-yes&quot;
+                    name=&quot;hasphone-advanced&quot;
+                    type=&quot;radio&quot;
+                    data-required=&quot;true&quot;
+                    value=&quot;yesphone&quot;
+                  /&gt;
+                  Yes
+                &lt;/label&gt;
+              &lt;/div&gt;
+
+              &lt;fieldset data-activate=&quot;advanced-yes&quot; data-deactivate=&quot;advanced-no&quot;&gt;
+                &lt;label for=&quot;advanced-phone&quot;&gt;Phone number&lt;/label&gt;
+                &lt;input
+                  id=&quot;advanced-phone&quot;
+                  name=&quot;advanced-phone&quot;
+                  data-type=&quot;hiddenON&quot;
+                  type=&quot;text&quot;
+                  data-required=&quot;true&quot;
+                  data-tovalidate=&quot;telephone&quot;
+                  placeholder=&quot;Your telephone number&quot;
+                /&gt;
+              &lt;/fieldset&gt;
+
+              &lt;button id=&quot;advanced-submit&quot; type=&quot;submit&quot; data-checkform=&quot;true&quot;&gt;Submit&lt;/button&gt;
+            &lt;/form&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;demo-card&quot;&gt;
+            &lt;h3&gt;Code&lt;/h3&gt;
+            &lt;details class=&quot;code-details&quot;&gt;
+              &lt;summary&gt;Show HTML + JS&lt;/summary&gt;
+              &lt;div class=&quot;code-block&quot;&gt;&lt;pre&gt;&lt;code data-code=&quot;advanced&quot;&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/section&gt;
+      &lt;/div&gt;
+    &lt;/main&gt;
+
+    &lt;template id=&quot;snippet-basic&quot;&gt;
+&lt;form data-validate=&quot;true&quot; data-checkrealtime=&quot;true&quot;&gt;
+  &lt;input data-required=&quot;true&quot; data-tovalidate=&quot;alpha&quot; /&gt;
+  &lt;input data-required=&quot;true&quot; data-tovalidate=&quot;email&quot; /&gt;
+  &lt;input type=&quot;checkbox&quot; data-required=&quot;true&quot; /&gt;
+  &lt;button type=&quot;submit&quot; data-checkform=&quot;true&quot;&gt;Submit&lt;/button&gt;
+&lt;/form&gt;
+
+
+    &lt;/template&gt;
+
+    &lt;template id=&quot;snippet-realtime&quot;&gt;
+&lt;form data-validate=&quot;true&quot; data-checkrealtime=&quot;true&quot;&gt;
+  &lt;input data-required=&quot;true&quot; data-tovalidate=&quot;alpha&quot; /&gt;
+  &lt;input data-required=&quot;true&quot; data-tovalidate=&quot;telephone&quot; /&gt;
+&lt;/form&gt;
+
+
+    &lt;/template&gt;
+
+    &lt;template id=&quot;snippet-custom&quot;&gt;
+&lt;input data-tovalidate=&quot;fn:isEven&quot; /&gt;
+&lt;input data-tovalidate=&quot;startsWithM&quot; /&gt;
+
+
+
+
+    &lt;/template&gt;
+
+    &lt;template id=&quot;snippet-conditional&quot;&gt;
+&lt;label data-name=&quot;hasphone&quot;&gt;Do you have a phone?&lt;/label&gt;
+&lt;input id=&quot;hasphoneYES&quot; name=&quot;hasphone&quot; type=&quot;radio&quot; /&gt;
+
+&lt;fieldset data-activate=&quot;hasphoneYES&quot; data-deactivate=&quot;hasphoneNO&quot;&gt;
+  &lt;input data-type=&quot;hiddenON&quot; data-required=&quot;true&quot; data-tovalidate=&quot;telephone&quot; /&gt;
+&lt;/fieldset&gt;
+
+
+    &lt;/template&gt;
+
+    &lt;template id=&quot;snippet-group&quot;&gt;
+&lt;label data-type=&quot;checkbox-group&quot; data-min=&quot;2&quot; data-max=&quot;3&quot;&gt;
+  Select 2 or 3 options
+&lt;/label&gt;
+
+
+    &lt;/template&gt;
+
+    &lt;template id=&quot;snippet-advanced&quot;&gt;
+&lt;form data-validate=&quot;true&quot; data-checkrealtime=&quot;true&quot;&gt;
+  &lt;input data-required=&quot;true&quot; data-tovalidate=&quot;email&quot; /&gt;
+  &lt;input data-tovalidate=&quot;fn:checkOdd&quot; /&gt;
+&lt;/form&gt;
+
+
+
+
+    &lt;/template&gt;</code></pre> </div> <div> <div class="code-label">CSS (css)</div> <pre class="code-panel"><code>:root {
+  --bg: #0c0f14;
+  --bg-elevated: #141923;
+  --bg-panel: #171d28;
+  --border: #262f3f;
+  --text: #f4f6fb;
+  --text-muted: #a7b0c2;
+  --text-dim: #7d879b;
+  --accent: #ff8a3d;
+  --accent-strong: #ff6a00;
+  --accent-soft: rgba(255, 138, 61, 0.16);
+  --shadow: 0 20px 50px rgba(5, 8, 14, 0.45);
+  --radius-lg: 22px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --max-width: 1160px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+header {
+  padding: 32px 24px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.top-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.top-links a {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 12px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.top-links a:hover {
+  color: var(--text);
+  border-color: var(--accent-2);
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(28px, 4vw, 44px);
+  letter-spacing: -0.02em;
+}
+
+.hero p {
+  margin: 8px 0 0;
+  color: var(--muted);
+}
+
+main {
+  padding: 24px 24px 64px;
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px;
+  display: grid;
+  gap: 10px;
+}
+
+.card h3 {
+  margin: 0;
+}
+
+.card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.badge {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  margin: 28px 0 14px;
+}
+
+.demo-shell {
+  display: grid;
+  gap: 20px;
+}
+
+.demo-section {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: start;
+}
+
+.demo-card {
+  background: color-mix(in srgb, var(--card) 85%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.demo-card h2 {
+  margin: 0 0 10px;
+}
+
+.demo-form {
+  display: grid;
+  gap: 12px;
+}
+
+.demo-form label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.demo-form input[type=&quot;text&quot;],
+.demo-form input[type=&quot;email&quot;] {
+  width: min(360px, 100%);
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.demo-form button {
+  width: fit-content;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(120deg, var(--accent), #ff6a00);
+  color: #111;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  overflow: auto;
+  font-size: 0.85rem;
+  color: var(--code-text);
+}
+
+.code-block pre {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.code-details {
+  display: grid;
+  gap: 12px;
+}
+
+.code-details summary {
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.code-details[open] summary {
+  color: var(--text);
+}
+
+.playground {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.playground textarea {
+  width: 100%;
+  min-height: 240px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--code-bg);
+  color: var(--code-text);
+  padding: 12px;
+  font-family: &quot;JetBrains Mono&quot;, &quot;Courier New&quot;, monospace;
+  font-size: 0.85rem;
+}
+
+.playground iframe {
+  width: 100%;
+  min-height: 320px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.playground-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.playground-actions button {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.playground-actions button.primary {
+  border: none;
+  background: linear-gradient(120deg, var(--accent), #ff6a00);
+  color: #111;
+}
+
+.note {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+:root {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+:root.light {
+  --bg: #f5f5f7;
+  --bg-2: #ffffff;
+  --bg-spot-1: #f8e9d0;
+  --bg-spot-2: #e8eef8;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #ffb000;
+  --accent-2: #00a7d6;
+  --surface: #f3f4f6;
+  --code-bg: #111827;
+  --code-text: #f9fafb;
+}
+
+:root.dark {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+h1 {
+  color: var(--accent) !important;
+}
+
+.top-links a,
+.topbar a {
+  color: var(--muted) !important;
+  border-color: var(--line) !important;
+}
+
+.top-links a:hover,
+.topbar a:hover {
+  color: var(--text) !important;
+}
+
+.card,
+.section,
+.demo-section,
+.panel {
+  background: var(--card) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+.code-block,
+pre,
+code,
+.output,
+.current-url,
+.event-log,
+.result-card,
+.log {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  border-color: var(--line) !important;
+}
+
+input,
+select,
+textarea {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+button {
+  background: linear-gradient(120deg, var(--accent), #ff6a00) !important;
+  color: #111 !important;
+}
+
+footer {
+  color: var(--muted) !important;
+}
+
+footer a {
+  color: var(--text) !important;
+}</code></pre> </div> <div> <div class="code-label">JS (js)</div> <pre class="code-panel"><code>import { ValidateForm } from &quot;https://esm.sh/@manufosela/automatic-form-validation&quot;;
+  new ValidateForm();
+
+
+  import { ValidateForm } from &quot;https://esm.sh/@manufosela/automatic-form-validation&quot;;
+  new ValidateForm();
+
+
+  function isEven(value) {
+    return Number(value) % 2 === 0;
+  }
+
+
+  import { ValidateForm } from &quot;https://esm.sh/@manufosela/automatic-form-validation&quot;;
+  const validator = new ValidateForm();
+  validator.addValidator(&quot;startsWithM&quot;, (value) =&gt; value.toLowerCase().startsWith(&quot;m&quot;));
+
+
+  import { ValidateForm } from &quot;https://esm.sh/@manufosela/automatic-form-validation&quot;;
+  new ValidateForm();
+
+
+  import { ValidateForm } from &quot;https://esm.sh/@manufosela/automatic-form-validation&quot;;
+  new ValidateForm();
+
+
+  function checkOdd(value) {
+    return Number(value) % 2 === 1;
+  }
+
+
+  import { ValidateForm } from &quot;https://esm.sh/@manufosela/automatic-form-validation&quot;;
+  new ValidateForm();
+
+
+      import { ValidateForm } from &quot;https://esm.sh/@manufosela/automatic-form-validation&quot;;
+
+      const validator = new ValidateForm();
+
+      const isEven = (value) =&gt; Number(value) % 2 === 0;
+      globalThis.isEven = isEven;
+      globalThis.checkOdd = (value) =&gt; Number(value) % 2 === 1;
+
+      validator.addValidator(&quot;startsWithM&quot;, (value) =&gt; value.toLowerCase().startsWith(&quot;m&quot;));
+
+      const snippets = {
+        basic: document.getElementById(&quot;snippet-basic&quot;),
+        realtime: document.getElementById(&quot;snippet-realtime&quot;),
+        custom: document.getElementById(&quot;snippet-custom&quot;),
+        conditional: document.getElementById(&quot;snippet-conditional&quot;),
+        group: document.getElementById(&quot;snippet-group&quot;),
+        advanced: document.getElementById(&quot;snippet-advanced&quot;),
+      };
+
+      document.querySelectorAll(&quot;[data-code]&quot;).forEach((block) =&gt; {
+        const key = block.dataset.code;
+        if (snippets[key]) {
+          block.textContent = snippets[key].innerHTML.trim();
+        }
+      });
+    
+
+class DemoThemeToggle extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: &#39;open&#39; });
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  connectedCallback() {
+    const saved = localStorage.getItem(&#39;utils-demo-theme&#39;);
+    document.documentElement.classList.remove(&#39;dark&#39;);
+    document.documentElement.classList.toggle(&#39;light&#39;, saved === &#39;light&#39;);
+
+    this.render();
+  }
+
+  render() {
+    const isLight = document.documentElement.classList.contains(&#39;light&#39;);
+    this.shadowRoot.innerHTML = `
+      &lt;style&gt;
+        :host {
+          display: inline-flex;
+        }
+        .toggle {
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid var(--line);
+          border-radius: 999px;
+          overflow: hidden;
+          background: var(--surface);
+        }
+        button {
+          border: none;
+          background: transparent;
+          color: var(--muted);
+          padding: 6px 12px;
+          font-size: 0.8rem;
+          cursor: pointer;
+          font-family: &quot;Space Grotesk&quot;, &quot;Trebuchet MS&quot;, Arial, sans-serif;
+        }
+        button.active {
+          background: linear-gradient(120deg, var(--accent), #ff6a00);
+          color: #111;
+          font-weight: 600;
+        }
+      &lt;/style&gt;
+      &lt;div class=&quot;toggle&quot; role=&quot;group&quot; aria-label=&quot;Theme toggle&quot;&gt;
+        &lt;button class=&quot;${isLight ? &#39;active&#39; : &#39;&#39;}&quot; data-theme=&quot;light&quot;&gt;Light&lt;/button&gt;
+        &lt;button class=&quot;${isLight ? &#39;&#39; : &#39;active&#39;}&quot; data-theme=&quot;dark&quot;&gt;Dark&lt;/button&gt;
+      &lt;/div&gt;
+    `;
+
+    this.shadowRoot.querySelectorAll(&#39;button&#39;).forEach((btn) =&gt; {
+      btn.addEventListener(&#39;click&#39;, this.handleClick);
+    });
+  }
+
+  handleClick(event) {
+    const theme = event.currentTarget.dataset.theme;
+    const isLight = theme === &#39;light&#39;;
+    document.documentElement.classList.toggle(&#39;light&#39;, isLight);
+    document.documentElement.classList.remove(&#39;dark&#39;);
+    localStorage.setItem(&#39;utils-demo-theme&#39;, isLight ? &#39;light&#39; : &#39;dark&#39;);
+    this.render();
+  }
+}
+
+customElements.define(&#39;demo-theme-toggle&#39;, DemoThemeToggle);</code></pre> </div> </details> </div>  </div> </main> <footer> <div class="container"> <p>Built by manufosela. Lightweight, accessible, and standards-first web components.</p> </div> </footer> </body></html>

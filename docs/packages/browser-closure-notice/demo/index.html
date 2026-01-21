@@ -1,0 +1,924 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>@manufosela/browser-closure-notice</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><style>@import"https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap";.astro-route-announcer{position:absolute;left:0;top:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}:root{color-scheme:dark;--bg: #0c0f14;--bg-elevated: #141923;--bg-panel: #171d28;--border: #262f3f;--text: #f4f6fb;--text-muted: #a7b0c2;--text-dim: #7d879b;--accent: #ff8a3d;--accent-strong: #ff6a00;--accent-soft: rgba(255, 138, 61, .16);--shadow: 0 20px 50px rgba(5, 8, 14, .45);--radius-lg: 22px;--radius-md: 14px;--radius-sm: 10px;--max-width: 1160px;--font-sans: "Space Grotesk", "Manrope", "IBM Plex Sans", system-ui, sans-serif;--font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace}html.light{color-scheme:light;--bg: #f7f6f2;--bg-elevated: #ffffff;--bg-panel: #fffaf2;--border: #e4dfd6;--text: #1a1c22;--text-muted: #5b6170;--text-dim: #8c92a1;--accent: #ff7a1a;--accent-strong: #ff5c00;--accent-soft: rgba(255, 122, 26, .15);--shadow: 0 16px 40px rgba(19, 20, 26, .15)}*{box-sizing:border-box}body{margin:0;font-family:var(--font-sans);background:radial-gradient(circle at 15% 20%,rgba(255,138,61,.12),transparent 40%),radial-gradient(circle at 85% 0%,rgba(255,106,0,.16),transparent 30%),var(--bg);color:var(--text);min-height:100vh}a{color:inherit;text-decoration:none}a:hover{color:var(--accent)}main{padding:40px 24px 80px}.container{width:100%;max-width:var(--max-width);margin:0 auto}.page-title{font-size:clamp(2.2rem,1.2rem + 3vw,3.4rem);margin:0;color:var(--accent)}.page-subtitle{margin-top:10px;color:var(--text-muted);font-size:1.1rem;max-width:720px}.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;margin-top:34px}.card{background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;min-height:220px;box-shadow:var(--shadow);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}.card:hover{transform:translateY(-4px);border-color:#ff8a3d66;box-shadow:0 28px 60px #07090f80}.card h3{margin:0 0 8px;font-size:1.3rem}.card p{margin:0;color:var(--text-muted);line-height:1.5}.tag{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:.75rem;letter-spacing:.02em}.header-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}.header-links a{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg-panel);color:var(--text-muted);font-size:.9rem}.header-links a:hover{border-color:var(--accent);color:var(--text)}.demo-surface{margin-top:28px;background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;box-shadow:var(--shadow)}.demo-embed{display:grid;gap:24px}.code-panel{background:#0b0f16;border-radius:var(--radius-md);padding:16px;border:1px solid rgba(255,138,61,.2);color:#e5e9f2;font-family:var(--font-mono);font-size:.85rem;overflow:auto}footer{border-top:1px solid var(--border);color:var(--text-dim);padding:40px 24px 60px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:24px}.topbar a{font-weight:600}.theme-toggle{border:1px solid var(--border);background:var(--bg-panel);color:var(--text);border-radius:999px;padding:8px 14px;cursor:pointer;font-size:.85rem}.code-label{margin:24px 0 10px;color:var(--text-muted);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase}.code-details{margin-top:24px;border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;background:var(--bg-elevated)}.code-details summary{cursor:pointer;color:var(--accent);font-weight:600;letter-spacing:.02em}.code-details[open] summary{margin-bottom:12px}
+</style><script type="module" src="/utils/_astro/hoisted.BScVxmeO.js"></script></head> <body> <header class="topbar"> <a href="/">@manufosela/browser-closure-notice</a> <div class="header-links">  <button class="theme-toggle" type="button" data-theme-toggle>Light mode</button> <script type="module">
+  const root = document.documentElement;
+  const toggle = document.querySelector('[data-theme-toggle]');
+  const stored = localStorage.getItem('theme');
+
+  if (stored === 'light') {
+    root.classList.add('light');
+  }
+
+  const updateLabel = () => {
+    const isLight = root.classList.contains('light');
+    toggle.textContent = isLight ? 'Dark mode' : 'Light mode';
+  };
+
+  updateLabel();
+
+  toggle.addEventListener('click', () => {
+    root.classList.toggle('light');
+    localStorage.setItem('theme', root.classList.contains('light') ? 'light' : 'dark');
+    updateLabel();
+  });
+</script> </div> </header> <main> <div class="container">  <div> <h1 class="page-title">@manufosela/browser-closure-notice</h1> <p class="page-subtitle">Detects mouse movement toward browser close controls and triggers callbacks.</p> <div class="header-links"> <a href="/utils/">← Back to components</a><a href="https://github.com/manufosela/utils">GitHub Repo</a> </div> </div> <div class="demo-surface"> <div><link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  /></div><div><style>
+
+
+* { box-sizing: border-box; }
+    header {
+      padding: 32px 24px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .top-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .top-links a {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 12px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-decoration: none;
+    }
+    h1 { margin: 0; font-size: clamp(28px, 4vw, 44px); 
+      color: var(--accent);
+    }
+    p { margin: 8px 0 0; color: var(--text-muted); }
+    main { padding: 24px; }
+    .grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      align-items: start;
+    }
+    .card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+    }
+    .card h2 { margin: 0; font-size: 1.2rem; }
+    .hint { color: var(--text-muted); font-size: 0.9rem; }
+    .code {
+      background: #0b0f1a;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .log {
+      background: #0b0f1a;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.85rem;
+      min-height: 120px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    label { display: grid; gap: 6px; font-size: 0.9rem; }
+    input, textarea {
+      background: #101624;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 0.9rem;
+    }
+    textarea { min-height: 70px; resize: vertical; }
+    .row {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    button {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(120deg, var(--accent), #ff6a00);
+      color: #111;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button.secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .status {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .status strong { color: var(--text); }
+  
+
+
+
+
+
+</style>
+
+:root {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+:root.light {
+  --bg: #f5f5f7;
+  --bg-2: #ffffff;
+  --bg-spot-1: #f8e9d0;
+  --bg-spot-2: #e8eef8;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #ffb000;
+  --accent-2: #00a7d6;
+  --surface: #f3f4f6;
+  --code-bg: #111827;
+  --code-text: #f9fafb;
+}
+
+:root.dark {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+h1 {
+  color: var(--accent) !important;
+}
+
+.top-links a,
+.topbar a {
+  color: var(--muted) !important;
+  border-color: var(--line) !important;
+}
+
+.top-links a:hover,
+.topbar a:hover {
+  color: var(--text) !important;
+}
+
+.card,
+.section,
+.demo-section,
+.panel {
+  background: var(--card) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+.code-block,
+pre,
+code,
+.output,
+.current-url,
+.event-log,
+.result-card,
+.log {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  border-color: var(--line) !important;
+}
+
+input,
+select,
+textarea {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+button {
+  background: linear-gradient(120deg, var(--accent), #ff6a00) !important;
+  color: #111 !important;
+}
+
+footer {
+  color: var(--muted) !important;
+}
+
+footer a {
+  color: var(--text) !important;
+}</div><div class="demo-embed"><main>
+    <div class="container grid">
+      <section class="card">
+        <h2>Live demo</h2>
+        <p class="hint">Try moving the cursor to the top-right corner. If you are on macOS, aim at the top-left.</p>
+        <div class="status">
+          <div>State: <strong id="stateLabel">idle</strong></div>
+          <div>Triggers: <strong id="triggerCount">0</strong></div>
+        </div>
+        <div class="actions">
+          <button id="startBtn">Start detection</button>
+          <button class="secondary" id="stopBtn">Stop detection</button>
+          <button class="secondary" id="clearBtn">Clear log</button>
+        </div>
+        <div class="log" id="logPanel">No events yet.</div>
+      </section>
+
+      <section class="card" id="playground">
+        <h2>Playground</h2>
+        <p class="hint">Customize behavior and re-apply the configuration.</p>
+        <form id="playgroundForm">
+          <div class="row">
+            <label>
+              Steps to close
+              <input type="number" id="stepsInput" min="1" value="20" />
+            </label>
+            <label>
+              Distance near close (px)
+              <input type="number" id="distanceInput" min="20" value="250" />
+            </label>
+            <label>
+              Max times (0 = unlimited)
+              <input type="number" id="maxTimesInput" min="0" value="0" />
+            </label>
+          </div>
+          <label>
+            Dialog message
+            <textarea id="messageInput">Are you sure you want to leave?</textarea>
+          </label>
+          <label>
+            <input type="checkbox" id="defaultDialog" checked /> Use default dialog
+          </label>
+          <div class="actions">
+            <button type="button" id="applyBtn">Apply &amp; start</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Code example</h2>
+        <p class="hint">This snippet updates based on the playground settings.</p>
+        <pre class="code" id="codeBlock"></pre>
+      </section>
+    </div>
+  </main></div> <div><script type="module">
+    import { BrowserClosureNotice } from "https://esm.sh/@manufosela/browser-closure-notice";
+
+    const logPanel = document.getElementById('logPanel');
+    const triggerCount = document.getElementById('triggerCount');
+    const stateLabel = document.getElementById('stateLabel');
+    const codeBlock = document.getElementById('codeBlock');
+
+    const stepsInput = document.getElementById('stepsInput');
+    const distanceInput = document.getElementById('distanceInput');
+    const maxTimesInput = document.getElementById('maxTimesInput');
+    const messageInput = document.getElementById('messageInput');
+    const defaultDialog = document.getElementById('defaultDialog');
+
+    let instance;
+    let count = 0;
+
+    const appendLog = (message) => {
+      const item = document.createElement('div');
+      item.textContent = message;
+      logPanel.prepend(item);
+    };
+
+    const updateStatus = (state) => {
+      stateLabel.textContent = state;
+      triggerCount.textContent = String(count);
+    };
+
+    const buildConfig = () => ({
+      stepsTakenToClose: Number(stepsInput.value),
+      distanceNearClose: Number(distanceInput.value),
+      maxTimes: Number(maxTimesInput.value),
+      dialogMessage: messageInput.value.trim(),
+    });
+
+    const renderCode = () => {
+      const config = buildConfig();
+      const callbackBlock = defaultDialog.checked
+        ? ''
+        : "  callback: () => {\n    console.log('Triggered');\n  },\n";
+
+      codeBlock.textContent = `import { BrowserClosureNotice } from '@manufosela/browser-closure-notice';\n\nconst notice = new BrowserClosureNotice({\n${callbackBlock}  dialogMessage: '${config.dialogMessage.replace(/'/g, "\\'")}',\n  maxTimes: ${config.maxTimes},\n  stepsTakenToClose: ${config.stepsTakenToClose},\n  distanceNearClose: ${config.distanceNearClose}\n});\n\nnotice.detect();`;
+    };
+
+    const setup = () => {
+      if (instance) {
+        instance.unDetect();
+      }
+
+      count = 0;
+      updateStatus('listening');
+
+      const config = buildConfig();
+
+      if (!defaultDialog.checked) {
+        config.callback = () => {
+          count += 1;
+          updateStatus('listening');
+          appendLog(`Triggered at ${new Date().toLocaleTimeString()}`);
+        };
+      }
+
+      instance = new BrowserClosureNotice(config);
+      instance.detect();
+
+      if (count === 0 && logPanel.textContent === 'No events yet.') {
+        appendLog('Listening for mouse movement...');
+      }
+
+      renderCode();
+    };
+
+    document.getElementById('applyBtn').addEventListener('click', setup);
+    document.getElementById('startBtn').addEventListener('click', () => {
+      if (instance) {
+        instance.detect();
+      } else {
+        setup();
+      }
+      updateStatus('listening');
+    });
+    document.getElementById('stopBtn').addEventListener('click', () => {
+      if (instance) {
+        instance.unDetect();
+        updateStatus('stopped');
+      }
+    });
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      logPanel.textContent = 'No events yet.';
+      count = 0;
+      updateStatus(stateLabel.textContent);
+    });
+
+    document.getElementById('playgroundForm').addEventListener('input', renderCode);
+
+    renderCode();
+    setup();
+  </script>
+<script type="module">
+class DemoThemeToggle extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  connectedCallback() {
+    const saved = localStorage.getItem('utils-demo-theme');
+    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.toggle('light', saved === 'light');
+
+    this.render();
+  }
+
+  render() {
+    const isLight = document.documentElement.classList.contains('light');
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host {
+          display: inline-flex;
+        }
+        .toggle {
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid var(--line);
+          border-radius: 999px;
+          overflow: hidden;
+          background: var(--surface);
+        }
+        button {
+          border: none;
+          background: transparent;
+          color: var(--muted);
+          padding: 6px 12px;
+          font-size: 0.8rem;
+          cursor: pointer;
+          font-family: "Space Grotesk", "Trebuchet MS", Arial, sans-serif;
+        }
+        button.active {
+          background: linear-gradient(120deg, var(--accent), #ff6a00);
+          color: #111;
+          font-weight: 600;
+        }
+      </style>
+      <div class="toggle" role="group" aria-label="Theme toggle">
+        <button class="${isLight ? 'active' : ''}" data-theme="light">Light</button>
+        <button class="${isLight ? '' : 'active'}" data-theme="dark">Dark</button>
+      </div>
+    `;
+
+    this.shadowRoot.querySelectorAll('button').forEach((btn) => {
+      btn.addEventListener('click', this.handleClick);
+    });
+  }
+
+  handleClick(event) {
+    const theme = event.currentTarget.dataset.theme;
+    const isLight = theme === 'light';
+    document.documentElement.classList.toggle('light', isLight);
+    document.documentElement.classList.remove('dark');
+    localStorage.setItem('utils-demo-theme', isLight ? 'light' : 'dark');
+    this.render();
+  }
+}
+
+customElements.define('demo-theme-toggle', DemoThemeToggle);
+
+</script></div><details class="code-details"> <summary>Demo code (CodePen-ready HTML, CSS, JS)</summary> <div> <div class="code-label">HTML (html)</div> <pre class="code-panel"><code>&lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot; /&gt;
+&lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; crossorigin /&gt;
+&lt;link
+    href=&quot;https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&amp;display=swap&quot;
+    rel=&quot;stylesheet&quot;
+  /&gt;
+&lt;main&gt;
+    &lt;div class=&quot;container grid&quot;&gt;
+      &lt;section class=&quot;card&quot;&gt;
+        &lt;h2&gt;Live demo&lt;/h2&gt;
+        &lt;p class=&quot;hint&quot;&gt;Try moving the cursor to the top-right corner. If you are on macOS, aim at the top-left.&lt;/p&gt;
+        &lt;div class=&quot;status&quot;&gt;
+          &lt;div&gt;State: &lt;strong id=&quot;stateLabel&quot;&gt;idle&lt;/strong&gt;&lt;/div&gt;
+          &lt;div&gt;Triggers: &lt;strong id=&quot;triggerCount&quot;&gt;0&lt;/strong&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;actions&quot;&gt;
+          &lt;button id=&quot;startBtn&quot;&gt;Start detection&lt;/button&gt;
+          &lt;button class=&quot;secondary&quot; id=&quot;stopBtn&quot;&gt;Stop detection&lt;/button&gt;
+          &lt;button class=&quot;secondary&quot; id=&quot;clearBtn&quot;&gt;Clear log&lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;log&quot; id=&quot;logPanel&quot;&gt;No events yet.&lt;/div&gt;
+      &lt;/section&gt;
+
+      &lt;section class=&quot;card&quot; id=&quot;playground&quot;&gt;
+        &lt;h2&gt;Playground&lt;/h2&gt;
+        &lt;p class=&quot;hint&quot;&gt;Customize behavior and re-apply the configuration.&lt;/p&gt;
+        &lt;form id=&quot;playgroundForm&quot;&gt;
+          &lt;div class=&quot;row&quot;&gt;
+            &lt;label&gt;
+              Steps to close
+              &lt;input type=&quot;number&quot; id=&quot;stepsInput&quot; min=&quot;1&quot; value=&quot;20&quot; /&gt;
+            &lt;/label&gt;
+            &lt;label&gt;
+              Distance near close (px)
+              &lt;input type=&quot;number&quot; id=&quot;distanceInput&quot; min=&quot;20&quot; value=&quot;250&quot; /&gt;
+            &lt;/label&gt;
+            &lt;label&gt;
+              Max times (0 = unlimited)
+              &lt;input type=&quot;number&quot; id=&quot;maxTimesInput&quot; min=&quot;0&quot; value=&quot;0&quot; /&gt;
+            &lt;/label&gt;
+          &lt;/div&gt;
+          &lt;label&gt;
+            Dialog message
+            &lt;textarea id=&quot;messageInput&quot;&gt;Are you sure you want to leave?&lt;/textarea&gt;
+          &lt;/label&gt;
+          &lt;label&gt;
+            &lt;input type=&quot;checkbox&quot; id=&quot;defaultDialog&quot; checked /&gt; Use default dialog
+          &lt;/label&gt;
+          &lt;div class=&quot;actions&quot;&gt;
+            &lt;button type=&quot;button&quot; id=&quot;applyBtn&quot;&gt;Apply &amp;amp; start&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/section&gt;
+
+      &lt;section class=&quot;card&quot;&gt;
+        &lt;h2&gt;Code example&lt;/h2&gt;
+        &lt;p class=&quot;hint&quot;&gt;This snippet updates based on the playground settings.&lt;/p&gt;
+        &lt;pre class=&quot;code&quot; id=&quot;codeBlock&quot;&gt;&lt;/pre&gt;
+      &lt;/section&gt;
+    &lt;/div&gt;
+  &lt;/main&gt;</code></pre> </div> <div> <div class="code-label">CSS (css)</div> <pre class="code-panel"><code>:root {
+  --bg: #0c0f14;
+  --bg-elevated: #141923;
+  --bg-panel: #171d28;
+  --border: #262f3f;
+  --text: #f4f6fb;
+  --text-muted: #a7b0c2;
+  --text-dim: #7d879b;
+  --accent: #ff8a3d;
+  --accent-strong: #ff6a00;
+  --accent-soft: rgba(255, 138, 61, 0.16);
+  --shadow: 0 20px 50px rgba(5, 8, 14, 0.45);
+  --radius-lg: 22px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --max-width: 1160px;
+}
+
+* { box-sizing: border-box; }
+    header {
+      padding: 32px 24px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .top-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .top-links a {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 12px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-decoration: none;
+    }
+    h1 { margin: 0; font-size: clamp(28px, 4vw, 44px); 
+      color: var(--accent);
+    }
+    p { margin: 8px 0 0; color: var(--text-muted); }
+    main { padding: 24px; }
+    .grid {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      align-items: start;
+    }
+    .card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+    }
+    .card h2 { margin: 0; font-size: 1.2rem; }
+    .hint { color: var(--text-muted); font-size: 0.9rem; }
+    .code {
+      background: #0b0f1a;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .log {
+      background: #0b0f1a;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 0.85rem;
+      min-height: 120px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    label { display: grid; gap: 6px; font-size: 0.9rem; }
+    input, textarea {
+      background: #101624;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 0.9rem;
+    }
+    textarea { min-height: 70px; resize: vertical; }
+    .row {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    button {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(120deg, var(--accent), #ff6a00);
+      color: #111;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button.secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .status {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .status strong { color: var(--text); }
+  
+
+
+
+
+
+
+
+:root {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+:root.light {
+  --bg: #f5f5f7;
+  --bg-2: #ffffff;
+  --bg-spot-1: #f8e9d0;
+  --bg-spot-2: #e8eef8;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #ffb000;
+  --accent-2: #00a7d6;
+  --surface: #f3f4f6;
+  --code-bg: #111827;
+  --code-text: #f9fafb;
+}
+
+:root.dark {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+h1 {
+  color: var(--accent) !important;
+}
+
+.top-links a,
+.topbar a {
+  color: var(--muted) !important;
+  border-color: var(--line) !important;
+}
+
+.top-links a:hover,
+.topbar a:hover {
+  color: var(--text) !important;
+}
+
+.card,
+.section,
+.demo-section,
+.panel {
+  background: var(--card) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+.code-block,
+pre,
+code,
+.output,
+.current-url,
+.event-log,
+.result-card,
+.log {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  border-color: var(--line) !important;
+}
+
+input,
+select,
+textarea {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+button {
+  background: linear-gradient(120deg, var(--accent), #ff6a00) !important;
+  color: #111 !important;
+}
+
+footer {
+  color: var(--muted) !important;
+}
+
+footer a {
+  color: var(--text) !important;
+}</code></pre> </div> <div> <div class="code-label">JS (js)</div> <pre class="code-panel"><code>import { BrowserClosureNotice } from &quot;https://esm.sh/@manufosela/browser-closure-notice&quot;;
+
+    const logPanel = document.getElementById(&#39;logPanel&#39;);
+    const triggerCount = document.getElementById(&#39;triggerCount&#39;);
+    const stateLabel = document.getElementById(&#39;stateLabel&#39;);
+    const codeBlock = document.getElementById(&#39;codeBlock&#39;);
+
+    const stepsInput = document.getElementById(&#39;stepsInput&#39;);
+    const distanceInput = document.getElementById(&#39;distanceInput&#39;);
+    const maxTimesInput = document.getElementById(&#39;maxTimesInput&#39;);
+    const messageInput = document.getElementById(&#39;messageInput&#39;);
+    const defaultDialog = document.getElementById(&#39;defaultDialog&#39;);
+
+    let instance;
+    let count = 0;
+
+    const appendLog = (message) =&gt; {
+      const item = document.createElement(&#39;div&#39;);
+      item.textContent = message;
+      logPanel.prepend(item);
+    };
+
+    const updateStatus = (state) =&gt; {
+      stateLabel.textContent = state;
+      triggerCount.textContent = String(count);
+    };
+
+    const buildConfig = () =&gt; ({
+      stepsTakenToClose: Number(stepsInput.value),
+      distanceNearClose: Number(distanceInput.value),
+      maxTimes: Number(maxTimesInput.value),
+      dialogMessage: messageInput.value.trim(),
+    });
+
+    const renderCode = () =&gt; {
+      const config = buildConfig();
+      const callbackBlock = defaultDialog.checked
+        ? &#39;&#39;
+        : &quot;  callback: () =&gt; {\n    console.log(&#39;Triggered&#39;);\n  },\n&quot;;
+
+      codeBlock.textContent = `import { BrowserClosureNotice } from &#39;@manufosela/browser-closure-notice&#39;;\n\nconst notice = new BrowserClosureNotice({\n${callbackBlock}  dialogMessage: &#39;${config.dialogMessage.replace(/&#39;/g, &quot;\\&#39;&quot;)}&#39;,\n  maxTimes: ${config.maxTimes},\n  stepsTakenToClose: ${config.stepsTakenToClose},\n  distanceNearClose: ${config.distanceNearClose}\n});\n\nnotice.detect();`;
+    };
+
+    const setup = () =&gt; {
+      if (instance) {
+        instance.unDetect();
+      }
+
+      count = 0;
+      updateStatus(&#39;listening&#39;);
+
+      const config = buildConfig();
+
+      if (!defaultDialog.checked) {
+        config.callback = () =&gt; {
+          count += 1;
+          updateStatus(&#39;listening&#39;);
+          appendLog(`Triggered at ${new Date().toLocaleTimeString()}`);
+        };
+      }
+
+      instance = new BrowserClosureNotice(config);
+      instance.detect();
+
+      if (count === 0 &amp;&amp; logPanel.textContent === &#39;No events yet.&#39;) {
+        appendLog(&#39;Listening for mouse movement...&#39;);
+      }
+
+      renderCode();
+    };
+
+    document.getElementById(&#39;applyBtn&#39;).addEventListener(&#39;click&#39;, setup);
+    document.getElementById(&#39;startBtn&#39;).addEventListener(&#39;click&#39;, () =&gt; {
+      if (instance) {
+        instance.detect();
+      } else {
+        setup();
+      }
+      updateStatus(&#39;listening&#39;);
+    });
+    document.getElementById(&#39;stopBtn&#39;).addEventListener(&#39;click&#39;, () =&gt; {
+      if (instance) {
+        instance.unDetect();
+        updateStatus(&#39;stopped&#39;);
+      }
+    });
+    document.getElementById(&#39;clearBtn&#39;).addEventListener(&#39;click&#39;, () =&gt; {
+      logPanel.textContent = &#39;No events yet.&#39;;
+      count = 0;
+      updateStatus(stateLabel.textContent);
+    });
+
+    document.getElementById(&#39;playgroundForm&#39;).addEventListener(&#39;input&#39;, renderCode);
+
+    renderCode();
+    setup();
+  
+
+class DemoThemeToggle extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: &#39;open&#39; });
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  connectedCallback() {
+    const saved = localStorage.getItem(&#39;utils-demo-theme&#39;);
+    document.documentElement.classList.remove(&#39;dark&#39;);
+    document.documentElement.classList.toggle(&#39;light&#39;, saved === &#39;light&#39;);
+
+    this.render();
+  }
+
+  render() {
+    const isLight = document.documentElement.classList.contains(&#39;light&#39;);
+    this.shadowRoot.innerHTML = `
+      &lt;style&gt;
+        :host {
+          display: inline-flex;
+        }
+        .toggle {
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid var(--line);
+          border-radius: 999px;
+          overflow: hidden;
+          background: var(--surface);
+        }
+        button {
+          border: none;
+          background: transparent;
+          color: var(--muted);
+          padding: 6px 12px;
+          font-size: 0.8rem;
+          cursor: pointer;
+          font-family: &quot;Space Grotesk&quot;, &quot;Trebuchet MS&quot;, Arial, sans-serif;
+        }
+        button.active {
+          background: linear-gradient(120deg, var(--accent), #ff6a00);
+          color: #111;
+          font-weight: 600;
+        }
+      &lt;/style&gt;
+      &lt;div class=&quot;toggle&quot; role=&quot;group&quot; aria-label=&quot;Theme toggle&quot;&gt;
+        &lt;button class=&quot;${isLight ? &#39;active&#39; : &#39;&#39;}&quot; data-theme=&quot;light&quot;&gt;Light&lt;/button&gt;
+        &lt;button class=&quot;${isLight ? &#39;&#39; : &#39;active&#39;}&quot; data-theme=&quot;dark&quot;&gt;Dark&lt;/button&gt;
+      &lt;/div&gt;
+    `;
+
+    this.shadowRoot.querySelectorAll(&#39;button&#39;).forEach((btn) =&gt; {
+      btn.addEventListener(&#39;click&#39;, this.handleClick);
+    });
+  }
+
+  handleClick(event) {
+    const theme = event.currentTarget.dataset.theme;
+    const isLight = theme === &#39;light&#39;;
+    document.documentElement.classList.toggle(&#39;light&#39;, isLight);
+    document.documentElement.classList.remove(&#39;dark&#39;);
+    localStorage.setItem(&#39;utils-demo-theme&#39;, isLight ? &#39;light&#39; : &#39;dark&#39;);
+    this.render();
+  }
+}
+
+customElements.define(&#39;demo-theme-toggle&#39;, DemoThemeToggle);</code></pre> </div> </details> </div>  </div> </main> <footer> <div class="container"> <p>Built by manufosela. Lightweight, accessible, and standards-first web components.</p> </div> </footer> </body></html>

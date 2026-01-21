@@ -1,0 +1,1103 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>@manufosela/convert2webp</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><style>@import"https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap";.astro-route-announcer{position:absolute;left:0;top:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}:root{color-scheme:dark;--bg: #0c0f14;--bg-elevated: #141923;--bg-panel: #171d28;--border: #262f3f;--text: #f4f6fb;--text-muted: #a7b0c2;--text-dim: #7d879b;--accent: #ff8a3d;--accent-strong: #ff6a00;--accent-soft: rgba(255, 138, 61, .16);--shadow: 0 20px 50px rgba(5, 8, 14, .45);--radius-lg: 22px;--radius-md: 14px;--radius-sm: 10px;--max-width: 1160px;--font-sans: "Space Grotesk", "Manrope", "IBM Plex Sans", system-ui, sans-serif;--font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace}html.light{color-scheme:light;--bg: #f7f6f2;--bg-elevated: #ffffff;--bg-panel: #fffaf2;--border: #e4dfd6;--text: #1a1c22;--text-muted: #5b6170;--text-dim: #8c92a1;--accent: #ff7a1a;--accent-strong: #ff5c00;--accent-soft: rgba(255, 122, 26, .15);--shadow: 0 16px 40px rgba(19, 20, 26, .15)}*{box-sizing:border-box}body{margin:0;font-family:var(--font-sans);background:radial-gradient(circle at 15% 20%,rgba(255,138,61,.12),transparent 40%),radial-gradient(circle at 85% 0%,rgba(255,106,0,.16),transparent 30%),var(--bg);color:var(--text);min-height:100vh}a{color:inherit;text-decoration:none}a:hover{color:var(--accent)}main{padding:40px 24px 80px}.container{width:100%;max-width:var(--max-width);margin:0 auto}.page-title{font-size:clamp(2.2rem,1.2rem + 3vw,3.4rem);margin:0;color:var(--accent)}.page-subtitle{margin-top:10px;color:var(--text-muted);font-size:1.1rem;max-width:720px}.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;margin-top:34px}.card{background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;min-height:220px;box-shadow:var(--shadow);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}.card:hover{transform:translateY(-4px);border-color:#ff8a3d66;box-shadow:0 28px 60px #07090f80}.card h3{margin:0 0 8px;font-size:1.3rem}.card p{margin:0;color:var(--text-muted);line-height:1.5}.tag{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:.75rem;letter-spacing:.02em}.header-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}.header-links a{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg-panel);color:var(--text-muted);font-size:.9rem}.header-links a:hover{border-color:var(--accent);color:var(--text)}.demo-surface{margin-top:28px;background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;box-shadow:var(--shadow)}.demo-embed{display:grid;gap:24px}.code-panel{background:#0b0f16;border-radius:var(--radius-md);padding:16px;border:1px solid rgba(255,138,61,.2);color:#e5e9f2;font-family:var(--font-mono);font-size:.85rem;overflow:auto}footer{border-top:1px solid var(--border);color:var(--text-dim);padding:40px 24px 60px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:24px}.topbar a{font-weight:600}.theme-toggle{border:1px solid var(--border);background:var(--bg-panel);color:var(--text);border-radius:999px;padding:8px 14px;cursor:pointer;font-size:.85rem}.code-label{margin:24px 0 10px;color:var(--text-muted);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase}.code-details{margin-top:24px;border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;background:var(--bg-elevated)}.code-details summary{cursor:pointer;color:var(--accent);font-weight:600;letter-spacing:.02em}.code-details[open] summary{margin-bottom:12px}
+</style><script type="module" src="/utils/_astro/hoisted.BScVxmeO.js"></script></head> <body> <header class="topbar"> <a href="/">@manufosela/convert2webp</a> <div class="header-links">  <button class="theme-toggle" type="button" data-theme-toggle>Light mode</button> <script type="module">
+  const root = document.documentElement;
+  const toggle = document.querySelector('[data-theme-toggle]');
+  const stored = localStorage.getItem('theme');
+
+  if (stored === 'light') {
+    root.classList.add('light');
+  }
+
+  const updateLabel = () => {
+    const isLight = root.classList.contains('light');
+    toggle.textContent = isLight ? 'Dark mode' : 'Light mode';
+  };
+
+  updateLabel();
+
+  toggle.addEventListener('click', () => {
+    root.classList.toggle('light');
+    localStorage.setItem('theme', root.classList.contains('light') ? 'light' : 'dark');
+    updateLabel();
+  });
+</script> </div> </header> <main> <div class="container">  <div> <h1 class="page-title">@manufosela/convert2webp</h1> <p class="page-subtitle">Image to WebP conversion utility using Canvas API</p> <div class="header-links"> <a href="/utils/">← Back to components</a><a href="https://github.com/manufosela/utils">GitHub Repo</a> </div> </div> <div class="demo-surface"> <div><style>
+
+
+
+
+    * {
+      box-sizing: border-box;
+    }
+
+    h1 {
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+
+    .upload-area {
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+      text-align: center;
+      background: var(--bg-elevated);
+      transition: border-color 0.2s, background-color 0.2s;
+      cursor: pointer;
+    }
+
+    .upload-area:hover,
+    .upload-area.dragover {
+      border-color: var(--accent);
+      background: #f8f9ff;
+    }
+
+    .upload-area input {
+      display: none;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background: var(--bg-elevated);
+      border-radius: 8px;
+    }
+
+    .option-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .option-group label {
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .option-group input {
+      padding: 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+
+    .results {
+      margin-top: 2rem;
+    }
+
+    .result-card {
+      background: var(--bg-elevated);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .result-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .image-container {
+      text-align: center;
+    }
+
+    .image-container img {
+      max-width: 100%;
+      max-height: 200px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    .image-container p {
+      margin: 0.5rem 0 0;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .top-links {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .top-links a {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+    }
+
+    .stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--text);
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .savings {
+      color: #28a745;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+
+    button:hover {
+      background: var(--accent-strong);
+    }
+
+    .download-btn {
+      background: #28a745;
+    }
+
+    .download-btn:hover {
+      background: #1e7e34;
+    }
+
+    .code-block {
+      background: #0b0f1a;
+      border: 1px solid #2b3247;
+      border-radius: 8px;
+      padding: 12px;
+      color: #d6d9e6;
+      font-family: "JetBrains Mono", "Courier New", monospace;
+      font-size: 0.85rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  
+
+
+
+</style>
+
+:root {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+:root.light {
+  --bg: #f5f5f7;
+  --bg-2: #ffffff;
+  --bg-spot-1: #f8e9d0;
+  --bg-spot-2: #e8eef8;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #ffb000;
+  --accent-2: #00a7d6;
+  --surface: #f3f4f6;
+  --code-bg: #111827;
+  --code-text: #f9fafb;
+}
+
+:root.dark {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+h1 {
+  color: var(--accent) !important;
+}
+
+.top-links a,
+.topbar a {
+  color: var(--muted) !important;
+  border-color: var(--line) !important;
+}
+
+.top-links a:hover,
+.topbar a:hover {
+  color: var(--text) !important;
+}
+
+.card,
+.section,
+.demo-section,
+.panel {
+  background: var(--card) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+.code-block,
+pre,
+code,
+.output,
+.current-url,
+.event-log,
+.result-card,
+.log {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  border-color: var(--line) !important;
+}
+
+input,
+select,
+textarea {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+button {
+  background: linear-gradient(120deg, var(--accent), #ff6a00) !important;
+  color: #111 !important;
+}
+
+footer {
+  color: var(--muted) !important;
+}
+
+footer a {
+  color: var(--text) !important;
+}</div><div class="demo-embed"><div class="top-links">
+    <a href="https://manufosela.github.io/utils/">Utils catalog</a>
+    <a href="https://manufosela.github.io/">Main catalog</a>
+    <a href="https://github.com/manufosela/utils/tree/main/packages/convert2webp">Source</a>
+  </div>
+        <demo-theme-toggle></demo-theme-toggle>
+  <h1>convert2webp</h1>
+  <p class="subtitle">Image to WebP conversion utility using Canvas API</p>
+
+  <div class="options" style="margin-top: 0;">
+    <div class="option-group">
+      <label>Quick usage</label>
+      <pre class="code-block"><code>import { convertToWebP } from '@manufosela/convert2webp';
+
+const result = await convertToWebP(file, 0.8);
+</code></pre>
+    </div>
+  </div>
+
+  <div class="upload-area" id="uploadArea">
+    <p>Drop images here or click to select</p>
+    <p style="font-size: 0.875rem; color: #999;">Supports PNG, JPEG, GIF, BMP</p>
+    <input type="file" id="fileInput" accept="image/*" multiple>
+  </div>
+
+  <div class="options">
+    <div class="option-group">
+      <label for="quality">Quality (0-100%)</label>
+      <input type="range" id="quality" min="1" max="100" value="80">
+      <span id="qualityValue">80%</span>
+    </div>
+    <div class="option-group">
+      <label for="maxWidth">Max Width (px)</label>
+      <input type="number" id="maxWidth" placeholder="No limit" min="1">
+    </div>
+    <div class="option-group">
+      <label for="maxHeight">Max Height (px)</label>
+      <input type="number" id="maxHeight" placeholder="No limit" min="1">
+    </div>
+  </div>
+
+  <div class="results" id="results"></div></div> <div><script type="module">
+    import {
+      convertToWebP,
+      isWebPSupported,
+      createDownloadUrl
+    } from "https://esm.sh/@manufosela/convert2webp";
+
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const qualityInput = document.getElementById('quality');
+    const qualityValue = document.getElementById('qualityValue');
+    const maxWidthInput = document.getElementById('maxWidth');
+    const maxHeightInput = document.getElementById('maxHeight');
+    const results = document.getElementById('results');
+
+    // Check WebP support
+    isWebPSupported().then(supported => {
+      if (!supported) {
+        alert('Your browser does not support WebP conversion');
+      }
+    });
+
+    // Quality slider
+    qualityInput.addEventListener('input', () => {
+      qualityValue.textContent = `${qualityInput.value}%`;
+    });
+
+    // Drag and drop
+    uploadArea.addEventListener('click', () => fileInput.click());
+
+    uploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadArea.classList.add('dragover');
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+      uploadArea.classList.remove('dragover');
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadArea.classList.remove('dragover');
+      handleFiles(e.dataTransfer.files);
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      handleFiles(e.target.files);
+    });
+
+    async function handleFiles(files) {
+      const options = {
+        quality: qualityInput.value / 100,
+        maxWidth: maxWidthInput.value ? parseInt(maxWidthInput.value) : undefined,
+        maxHeight: maxHeightInput.value ? parseInt(maxHeightInput.value) : undefined
+      };
+
+      for (const file of files) {
+        if (!file.type.startsWith('image/')) {
+          continue;
+        }
+
+        try {
+          const result = await convertToWebP(file, options);
+          displayResult(file, result);
+        } catch (error) {
+          console.error('Conversion failed:', error);
+          alert(`Failed to convert ${file.name}: ${error.message}`);
+        }
+      }
+    }
+
+    function formatBytes(bytes) {
+      if (bytes < 1024) return `${bytes} B`;
+      if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+      return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+    }
+
+    function displayResult(originalFile, result) {
+      const originalUrl = URL.createObjectURL(originalFile);
+      const webpUrl = createDownloadUrl(result.blob);
+
+      const savings = ((1 - result.size / originalFile.size) * 100).toFixed(1);
+
+      const card = document.createElement('div');
+      card.className = 'result-card';
+      card.innerHTML = `
+        <div class="result-header">
+          <strong>${originalFile.name}</strong>
+          <button class="download-btn" onclick="downloadFile('${webpUrl}', '${originalFile.name.replace(/\.[^.]+$/, '.webp')}')">
+            Download WebP
+          </button>
+        </div>
+        <div class="result-images">
+          <div class="image-container">
+            <img src="${originalUrl}" alt="Original">
+            <p>Original (${formatBytes(originalFile.size)})</p>
+          </div>
+          <div class="image-container">
+            <img src="${webpUrl}" alt="WebP">
+            <p>WebP (${formatBytes(result.size)})</p>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-value">${result.width} x ${result.height}</div>
+            <div class="stat-label">Dimensions</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value savings">${savings}%</div>
+            <div class="stat-label">Size Reduction</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">${(qualityInput.value)}%</div>
+            <div class="stat-label">Quality</div>
+          </div>
+        </div>
+      `;
+
+      results.insertBefore(card, results.firstChild);
+    }
+
+    // Global download function
+    window.downloadFile = function(url, filename) {
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+    };
+  </script>
+<script type="module">
+class DemoThemeToggle extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  connectedCallback() {
+    const saved = localStorage.getItem('utils-demo-theme');
+    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.toggle('light', saved === 'light');
+
+    this.render();
+  }
+
+  render() {
+    const isLight = document.documentElement.classList.contains('light');
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host {
+          display: inline-flex;
+        }
+        .toggle {
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid var(--line);
+          border-radius: 999px;
+          overflow: hidden;
+          background: var(--surface);
+        }
+        button {
+          border: none;
+          background: transparent;
+          color: var(--muted);
+          padding: 6px 12px;
+          font-size: 0.8rem;
+          cursor: pointer;
+          font-family: "Space Grotesk", "Trebuchet MS", Arial, sans-serif;
+        }
+        button.active {
+          background: linear-gradient(120deg, var(--accent), #ff6a00);
+          color: #111;
+          font-weight: 600;
+        }
+      </style>
+      <div class="toggle" role="group" aria-label="Theme toggle">
+        <button class="${isLight ? 'active' : ''}" data-theme="light">Light</button>
+        <button class="${isLight ? '' : 'active'}" data-theme="dark">Dark</button>
+      </div>
+    `;
+
+    this.shadowRoot.querySelectorAll('button').forEach((btn) => {
+      btn.addEventListener('click', this.handleClick);
+    });
+  }
+
+  handleClick(event) {
+    const theme = event.currentTarget.dataset.theme;
+    const isLight = theme === 'light';
+    document.documentElement.classList.toggle('light', isLight);
+    document.documentElement.classList.remove('dark');
+    localStorage.setItem('utils-demo-theme', isLight ? 'light' : 'dark');
+    this.render();
+  }
+}
+
+customElements.define('demo-theme-toggle', DemoThemeToggle);
+
+</script></div><details class="code-details"> <summary>Demo code (CodePen-ready HTML, CSS, JS)</summary> <div> <div class="code-label">HTML (html)</div> <pre class="code-panel"><code>&lt;div class=&quot;top-links&quot;&gt;
+    &lt;a href=&quot;https://manufosela.github.io/utils/&quot;&gt;Utils catalog&lt;/a&gt;
+    &lt;a href=&quot;https://manufosela.github.io/&quot;&gt;Main catalog&lt;/a&gt;
+    &lt;a href=&quot;https://github.com/manufosela/utils/tree/main/packages/convert2webp&quot;&gt;Source&lt;/a&gt;
+  &lt;/div&gt;
+        &lt;demo-theme-toggle&gt;&lt;/demo-theme-toggle&gt;
+  &lt;h1&gt;convert2webp&lt;/h1&gt;
+  &lt;p class=&quot;subtitle&quot;&gt;Image to WebP conversion utility using Canvas API&lt;/p&gt;
+
+  &lt;div class=&quot;options&quot; style=&quot;margin-top: 0;&quot;&gt;
+    &lt;div class=&quot;option-group&quot;&gt;
+      &lt;label&gt;Quick usage&lt;/label&gt;
+      &lt;pre class=&quot;code-block&quot;&gt;&lt;code&gt;import { convertToWebP } from &#39;@manufosela/convert2webp&#39;;
+
+const result = await convertToWebP(file, 0.8);
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;upload-area&quot; id=&quot;uploadArea&quot;&gt;
+    &lt;p&gt;Drop images here or click to select&lt;/p&gt;
+    &lt;p style=&quot;font-size: 0.875rem; color: #999;&quot;&gt;Supports PNG, JPEG, GIF, BMP&lt;/p&gt;
+    &lt;input type=&quot;file&quot; id=&quot;fileInput&quot; accept=&quot;image/*&quot; multiple&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;options&quot;&gt;
+    &lt;div class=&quot;option-group&quot;&gt;
+      &lt;label for=&quot;quality&quot;&gt;Quality (0-100%)&lt;/label&gt;
+      &lt;input type=&quot;range&quot; id=&quot;quality&quot; min=&quot;1&quot; max=&quot;100&quot; value=&quot;80&quot;&gt;
+      &lt;span id=&quot;qualityValue&quot;&gt;80%&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;option-group&quot;&gt;
+      &lt;label for=&quot;maxWidth&quot;&gt;Max Width (px)&lt;/label&gt;
+      &lt;input type=&quot;number&quot; id=&quot;maxWidth&quot; placeholder=&quot;No limit&quot; min=&quot;1&quot;&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;option-group&quot;&gt;
+      &lt;label for=&quot;maxHeight&quot;&gt;Max Height (px)&lt;/label&gt;
+      &lt;input type=&quot;number&quot; id=&quot;maxHeight&quot; placeholder=&quot;No limit&quot; min=&quot;1&quot;&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;results&quot; id=&quot;results&quot;&gt;&lt;/div&gt;</code></pre> </div> <div> <div class="code-label">CSS (css)</div> <pre class="code-panel"><code>:root {
+  --bg: #0c0f14;
+  --bg-elevated: #141923;
+  --bg-panel: #171d28;
+  --border: #262f3f;
+  --text: #f4f6fb;
+  --text-muted: #a7b0c2;
+  --text-dim: #7d879b;
+  --accent: #ff8a3d;
+  --accent-strong: #ff6a00;
+  --accent-soft: rgba(255, 138, 61, 0.16);
+  --shadow: 0 20px 50px rgba(5, 8, 14, 0.45);
+  --radius-lg: 22px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --max-width: 1160px;
+}
+
+* {
+      box-sizing: border-box;
+    }
+
+    h1 {
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+
+    .upload-area {
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+      text-align: center;
+      background: var(--bg-elevated);
+      transition: border-color 0.2s, background-color 0.2s;
+      cursor: pointer;
+    }
+
+    .upload-area:hover,
+    .upload-area.dragover {
+      border-color: var(--accent);
+      background: #f8f9ff;
+    }
+
+    .upload-area input {
+      display: none;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background: var(--bg-elevated);
+      border-radius: 8px;
+    }
+
+    .option-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .option-group label {
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .option-group input {
+      padding: 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+
+    .results {
+      margin-top: 2rem;
+    }
+
+    .result-card {
+      background: var(--bg-elevated);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .result-images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .image-container {
+      text-align: center;
+    }
+
+    .image-container img {
+      max-width: 100%;
+      max-height: 200px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+
+    .image-container p {
+      margin: 0.5rem 0 0;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .top-links {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .top-links a {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+    }
+
+    .stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--text);
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .savings {
+      color: #28a745;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+
+    button:hover {
+      background: var(--accent-strong);
+    }
+
+    .download-btn {
+      background: #28a745;
+    }
+
+    .download-btn:hover {
+      background: #1e7e34;
+    }
+
+    .code-block {
+      background: #0b0f1a;
+      border: 1px solid #2b3247;
+      border-radius: 8px;
+      padding: 12px;
+      color: #d6d9e6;
+      font-family: &quot;JetBrains Mono&quot;, &quot;Courier New&quot;, monospace;
+      font-size: 0.85rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  
+
+
+
+
+
+:root {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+:root.light {
+  --bg: #f5f5f7;
+  --bg-2: #ffffff;
+  --bg-spot-1: #f8e9d0;
+  --bg-spot-2: #e8eef8;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #ffb000;
+  --accent-2: #00a7d6;
+  --surface: #f3f4f6;
+  --code-bg: #111827;
+  --code-text: #f9fafb;
+}
+
+:root.dark {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+h1 {
+  color: var(--accent) !important;
+}
+
+.top-links a,
+.topbar a {
+  color: var(--muted) !important;
+  border-color: var(--line) !important;
+}
+
+.top-links a:hover,
+.topbar a:hover {
+  color: var(--text) !important;
+}
+
+.card,
+.section,
+.demo-section,
+.panel {
+  background: var(--card) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+.code-block,
+pre,
+code,
+.output,
+.current-url,
+.event-log,
+.result-card,
+.log {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  border-color: var(--line) !important;
+}
+
+input,
+select,
+textarea {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+button {
+  background: linear-gradient(120deg, var(--accent), #ff6a00) !important;
+  color: #111 !important;
+}
+
+footer {
+  color: var(--muted) !important;
+}
+
+footer a {
+  color: var(--text) !important;
+}</code></pre> </div> <div> <div class="code-label">JS (js)</div> <pre class="code-panel"><code>import {
+      convertToWebP,
+      isWebPSupported,
+      createDownloadUrl
+    } from &quot;https://esm.sh/@manufosela/convert2webp&quot;;
+
+    const uploadArea = document.getElementById(&#39;uploadArea&#39;);
+    const fileInput = document.getElementById(&#39;fileInput&#39;);
+    const qualityInput = document.getElementById(&#39;quality&#39;);
+    const qualityValue = document.getElementById(&#39;qualityValue&#39;);
+    const maxWidthInput = document.getElementById(&#39;maxWidth&#39;);
+    const maxHeightInput = document.getElementById(&#39;maxHeight&#39;);
+    const results = document.getElementById(&#39;results&#39;);
+
+    // Check WebP support
+    isWebPSupported().then(supported =&gt; {
+      if (!supported) {
+        alert(&#39;Your browser does not support WebP conversion&#39;);
+      }
+    });
+
+    // Quality slider
+    qualityInput.addEventListener(&#39;input&#39;, () =&gt; {
+      qualityValue.textContent = `${qualityInput.value}%`;
+    });
+
+    // Drag and drop
+    uploadArea.addEventListener(&#39;click&#39;, () =&gt; fileInput.click());
+
+    uploadArea.addEventListener(&#39;dragover&#39;, (e) =&gt; {
+      e.preventDefault();
+      uploadArea.classList.add(&#39;dragover&#39;);
+    });
+
+    uploadArea.addEventListener(&#39;dragleave&#39;, () =&gt; {
+      uploadArea.classList.remove(&#39;dragover&#39;);
+    });
+
+    uploadArea.addEventListener(&#39;drop&#39;, (e) =&gt; {
+      e.preventDefault();
+      uploadArea.classList.remove(&#39;dragover&#39;);
+      handleFiles(e.dataTransfer.files);
+    });
+
+    fileInput.addEventListener(&#39;change&#39;, (e) =&gt; {
+      handleFiles(e.target.files);
+    });
+
+    async function handleFiles(files) {
+      const options = {
+        quality: qualityInput.value / 100,
+        maxWidth: maxWidthInput.value ? parseInt(maxWidthInput.value) : undefined,
+        maxHeight: maxHeightInput.value ? parseInt(maxHeightInput.value) : undefined
+      };
+
+      for (const file of files) {
+        if (!file.type.startsWith(&#39;image/&#39;)) {
+          continue;
+        }
+
+        try {
+          const result = await convertToWebP(file, options);
+          displayResult(file, result);
+        } catch (error) {
+          console.error(&#39;Conversion failed:&#39;, error);
+          alert(`Failed to convert ${file.name}: ${error.message}`);
+        }
+      }
+    }
+
+    function formatBytes(bytes) {
+      if (bytes &lt; 1024) return `${bytes} B`;
+      if (bytes &lt; 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+      return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+    }
+
+    function displayResult(originalFile, result) {
+      const originalUrl = URL.createObjectURL(originalFile);
+      const webpUrl = createDownloadUrl(result.blob);
+
+      const savings = ((1 - result.size / originalFile.size) * 100).toFixed(1);
+
+      const card = document.createElement(&#39;div&#39;);
+      card.className = &#39;result-card&#39;;
+      card.innerHTML = `
+        &lt;div class=&quot;result-header&quot;&gt;
+          &lt;strong&gt;${originalFile.name}&lt;/strong&gt;
+          &lt;button class=&quot;download-btn&quot; onclick=&quot;downloadFile(&#39;${webpUrl}&#39;, &#39;${originalFile.name.replace(/\.[^.]+$/, &#39;.webp&#39;)}&#39;)&quot;&gt;
+            Download WebP
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;result-images&quot;&gt;
+          &lt;div class=&quot;image-container&quot;&gt;
+            &lt;img src=&quot;${originalUrl}&quot; alt=&quot;Original&quot;&gt;
+            &lt;p&gt;Original (${formatBytes(originalFile.size)})&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;image-container&quot;&gt;
+            &lt;img src=&quot;${webpUrl}&quot; alt=&quot;WebP&quot;&gt;
+            &lt;p&gt;WebP (${formatBytes(result.size)})&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;stats&quot;&gt;
+          &lt;div class=&quot;stat&quot;&gt;
+            &lt;div class=&quot;stat-value&quot;&gt;${result.width} x ${result.height}&lt;/div&gt;
+            &lt;div class=&quot;stat-label&quot;&gt;Dimensions&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;stat&quot;&gt;
+            &lt;div class=&quot;stat-value savings&quot;&gt;${savings}%&lt;/div&gt;
+            &lt;div class=&quot;stat-label&quot;&gt;Size Reduction&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;stat&quot;&gt;
+            &lt;div class=&quot;stat-value&quot;&gt;${(qualityInput.value)}%&lt;/div&gt;
+            &lt;div class=&quot;stat-label&quot;&gt;Quality&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      `;
+
+      results.insertBefore(card, results.firstChild);
+    }
+
+    // Global download function
+    window.downloadFile = function(url, filename) {
+      const a = document.createElement(&#39;a&#39;);
+      a.href = url;
+      a.download = filename;
+      a.click();
+    };
+  
+
+class DemoThemeToggle extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: &#39;open&#39; });
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  connectedCallback() {
+    const saved = localStorage.getItem(&#39;utils-demo-theme&#39;);
+    document.documentElement.classList.remove(&#39;dark&#39;);
+    document.documentElement.classList.toggle(&#39;light&#39;, saved === &#39;light&#39;);
+
+    this.render();
+  }
+
+  render() {
+    const isLight = document.documentElement.classList.contains(&#39;light&#39;);
+    this.shadowRoot.innerHTML = `
+      &lt;style&gt;
+        :host {
+          display: inline-flex;
+        }
+        .toggle {
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid var(--line);
+          border-radius: 999px;
+          overflow: hidden;
+          background: var(--surface);
+        }
+        button {
+          border: none;
+          background: transparent;
+          color: var(--muted);
+          padding: 6px 12px;
+          font-size: 0.8rem;
+          cursor: pointer;
+          font-family: &quot;Space Grotesk&quot;, &quot;Trebuchet MS&quot;, Arial, sans-serif;
+        }
+        button.active {
+          background: linear-gradient(120deg, var(--accent), #ff6a00);
+          color: #111;
+          font-weight: 600;
+        }
+      &lt;/style&gt;
+      &lt;div class=&quot;toggle&quot; role=&quot;group&quot; aria-label=&quot;Theme toggle&quot;&gt;
+        &lt;button class=&quot;${isLight ? &#39;active&#39; : &#39;&#39;}&quot; data-theme=&quot;light&quot;&gt;Light&lt;/button&gt;
+        &lt;button class=&quot;${isLight ? &#39;&#39; : &#39;active&#39;}&quot; data-theme=&quot;dark&quot;&gt;Dark&lt;/button&gt;
+      &lt;/div&gt;
+    `;
+
+    this.shadowRoot.querySelectorAll(&#39;button&#39;).forEach((btn) =&gt; {
+      btn.addEventListener(&#39;click&#39;, this.handleClick);
+    });
+  }
+
+  handleClick(event) {
+    const theme = event.currentTarget.dataset.theme;
+    const isLight = theme === &#39;light&#39;;
+    document.documentElement.classList.toggle(&#39;light&#39;, isLight);
+    document.documentElement.classList.remove(&#39;dark&#39;);
+    localStorage.setItem(&#39;utils-demo-theme&#39;, isLight ? &#39;light&#39; : &#39;dark&#39;);
+    this.render();
+  }
+}
+
+customElements.define(&#39;demo-theme-toggle&#39;, DemoThemeToggle);</code></pre> </div> </details> </div>  </div> </main> <footer> <div class="container"> <p>Built by manufosela. Lightweight, accessible, and standards-first web components.</p> </div> </footer> </body></html>

@@ -1,0 +1,914 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>@manufosela/url-params</title><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><style>@import"https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap";.astro-route-announcer{position:absolute;left:0;top:0;clip:rect(0 0 0 0);clip-path:inset(50%);overflow:hidden;white-space:nowrap;width:1px;height:1px}:root{color-scheme:dark;--bg: #0c0f14;--bg-elevated: #141923;--bg-panel: #171d28;--border: #262f3f;--text: #f4f6fb;--text-muted: #a7b0c2;--text-dim: #7d879b;--accent: #ff8a3d;--accent-strong: #ff6a00;--accent-soft: rgba(255, 138, 61, .16);--shadow: 0 20px 50px rgba(5, 8, 14, .45);--radius-lg: 22px;--radius-md: 14px;--radius-sm: 10px;--max-width: 1160px;--font-sans: "Space Grotesk", "Manrope", "IBM Plex Sans", system-ui, sans-serif;--font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace}html.light{color-scheme:light;--bg: #f7f6f2;--bg-elevated: #ffffff;--bg-panel: #fffaf2;--border: #e4dfd6;--text: #1a1c22;--text-muted: #5b6170;--text-dim: #8c92a1;--accent: #ff7a1a;--accent-strong: #ff5c00;--accent-soft: rgba(255, 122, 26, .15);--shadow: 0 16px 40px rgba(19, 20, 26, .15)}*{box-sizing:border-box}body{margin:0;font-family:var(--font-sans);background:radial-gradient(circle at 15% 20%,rgba(255,138,61,.12),transparent 40%),radial-gradient(circle at 85% 0%,rgba(255,106,0,.16),transparent 30%),var(--bg);color:var(--text);min-height:100vh}a{color:inherit;text-decoration:none}a:hover{color:var(--accent)}main{padding:40px 24px 80px}.container{width:100%;max-width:var(--max-width);margin:0 auto}.page-title{font-size:clamp(2.2rem,1.2rem + 3vw,3.4rem);margin:0;color:var(--accent)}.page-subtitle{margin-top:10px;color:var(--text-muted);font-size:1.1rem;max-width:720px}.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;margin-top:34px}.card{background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-lg);padding:22px;min-height:220px;box-shadow:var(--shadow);transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}.card:hover{transform:translateY(-4px);border-color:#ff8a3d66;box-shadow:0 28px 60px #07090f80}.card h3{margin:0 0 8px;font-size:1.3rem}.card p{margin:0;color:var(--text-muted);line-height:1.5}.tag{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:.75rem;letter-spacing:.02em}.header-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}.header-links a{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:var(--bg-panel);color:var(--text-muted);font-size:.9rem}.header-links a:hover{border-color:var(--accent);color:var(--text)}.demo-surface{margin-top:28px;background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px;box-shadow:var(--shadow)}.demo-embed{display:grid;gap:24px}.code-panel{background:#0b0f16;border-radius:var(--radius-md);padding:16px;border:1px solid rgba(255,138,61,.2);color:#e5e9f2;font-family:var(--font-mono);font-size:.85rem;overflow:auto}footer{border-top:1px solid var(--border);color:var(--text-dim);padding:40px 24px 60px}.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:24px}.topbar a{font-weight:600}.theme-toggle{border:1px solid var(--border);background:var(--bg-panel);color:var(--text);border-radius:999px;padding:8px 14px;cursor:pointer;font-size:.85rem}.code-label{margin:24px 0 10px;color:var(--text-muted);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase}.code-details{margin-top:24px;border:1px solid var(--border);border-radius:var(--radius-md);padding:10px 14px;background:var(--bg-elevated)}.code-details summary{cursor:pointer;color:var(--accent);font-weight:600;letter-spacing:.02em}.code-details[open] summary{margin-bottom:12px}
+</style><script type="module" src="/utils/_astro/hoisted.BScVxmeO.js"></script></head> <body> <header class="topbar"> <a href="/">@manufosela/url-params</a> <div class="header-links">  <button class="theme-toggle" type="button" data-theme-toggle>Light mode</button> <script type="module">
+  const root = document.documentElement;
+  const toggle = document.querySelector('[data-theme-toggle]');
+  const stored = localStorage.getItem('theme');
+
+  if (stored === 'light') {
+    root.classList.add('light');
+  }
+
+  const updateLabel = () => {
+    const isLight = root.classList.contains('light');
+    toggle.textContent = isLight ? 'Dark mode' : 'Light mode';
+  };
+
+  updateLabel();
+
+  toggle.addEventListener('click', () => {
+    root.classList.toggle('light');
+    localStorage.setItem('theme', root.classList.contains('light') ? 'light' : 'dark');
+    updateLabel();
+  });
+</script> </div> </header> <main> <div class="container">  <div> <h1 class="page-title">@manufosela/url-params</h1> <p class="page-subtitle">URL parameter management utility for getting, setting, and manipulating URL query strings</p> <div class="header-links"> <a href="/utils/">← Back to components</a><a href="https://github.com/manufosela/utils">GitHub Repo</a> </div> </div> <div class="demo-surface"> <div>h1 { color: var(--accent); }
+    .demo-section {
+      background: var(--bg-elevated);
+      padding: 2rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .demo-section h2 {
+      margin-top: 0;
+      color: var(--text-muted);
+    }
+    button {
+      padding: 0.5rem 1rem;
+      margin: 0.25rem;
+      border: none;
+      border-radius: 4px;
+      background: var(--accent);
+      color: white;
+      cursor: pointer;
+    }
+    button:hover { background: var(--accent-strong); }
+    button.danger { background: #dc3545; }
+    button.danger:hover { background: #c82333; }
+    input {
+      padding: 0.5rem;
+      margin: 0.25rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--bg-panel);
+      color: var(--text);
+      width: 150px;
+    }
+    .output {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: var(--code-bg, #0b0f1a);
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.875rem;
+      white-space: pre-wrap;
+      word-break: break-all;
+      color: var(--code-text, #d6d9e6);
+      border: 1px solid var(--border);
+    }
+    .row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .top-links {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .top-links a {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+    }
+
+    .code-block {
+      background: #0b0f1a;
+      border: 1px solid #2b3247;
+      border-radius: 8px;
+      padding: 12px;
+      color: #d6d9e6;
+      font-family: "JetBrains Mono", "Courier New", monospace;
+      font-size: 0.85rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  
+
+
+
+</style>
+
+:root {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+:root.light {
+  --bg: #f5f5f7;
+  --bg-2: #ffffff;
+  --bg-spot-1: #f8e9d0;
+  --bg-spot-2: #e8eef8;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #ffb000;
+  --accent-2: #00a7d6;
+  --surface: #f3f4f6;
+  --code-bg: #111827;
+  --code-text: #f9fafb;
+}
+
+:root.dark {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+h1 {
+  color: var(--accent) !important;
+}
+
+.top-links a,
+.topbar a {
+  color: var(--muted) !important;
+  border-color: var(--line) !important;
+}
+
+.top-links a:hover,
+.topbar a:hover {
+  color: var(--text) !important;
+}
+
+.card,
+.section,
+.demo-section,
+.panel {
+  background: var(--card) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+.code-block,
+pre,
+code,
+.output,
+.current-url,
+.event-log,
+.result-card,
+.log {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  border-color: var(--line) !important;
+}
+
+input,
+select,
+textarea {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+button {
+  background: linear-gradient(120deg, var(--accent), #ff6a00) !important;
+  color: #111 !important;
+}
+
+footer {
+  color: var(--muted) !important;
+}
+
+footer a {
+  color: var(--text) !important;
+}</div><div class="demo-embed"><div class="top-links">
+    <a href="https://manufosela.github.io/utils/">Utils catalog</a>
+    <a href="https://manufosela.github.io/">Main catalog</a>
+    <a href="https://github.com/manufosela/utils/tree/main/packages/url-params">Source</a>
+  </div>
+        <demo-theme-toggle></demo-theme-toggle>
+  <h1>url-params Demo</h1>
+
+  <div class="demo-section">
+    <h2>Quick usage</h2>
+    <pre class="code-block"><code>import { getParam, setParam } from '@manufosela/url-params';
+
+const page = getParam('page', '1');
+setParam('page', Number(page) + 1);
+</code></pre>
+  </div>
+
+  <div class="demo-section">
+    <h2>Current URL</h2>
+    <div class="current-url" id="current-url"></div>
+    <button id="refresh-url">Refresh Display</button>
+    <pre class="code-block"><code>const url = new URL(window.location.href);
+url.searchParams.set('page', '1');
+url.searchParams.set('sort', 'name');
+history.replaceState({}, '', url);
+</code></pre>
+  </div>
+
+  <div class="demo-section">
+    <h2>Get Parameters</h2>
+    <div class="row">
+      <input type="text" id="get-key" placeholder="Key" value="page">
+      <button id="get-param">Get Param</button>
+      <button id="get-all">Get All Params</button>
+    </div>
+    <div class="output" id="get-output">Click a button to get params...</div>
+    <pre class="code-block"><code>import { getParam, getParams } from '@manufosela/url-params';
+
+getParam('page');
+getParams();
+</code></pre>
+  </div>
+
+  <div class="demo-section">
+    <h2>Set Parameters</h2>
+    <div class="row">
+      <input type="text" id="set-key" placeholder="Key" value="page">
+      <input type="text" id="set-value" placeholder="Value" value="1">
+      <button id="set-param">Set Param</button>
+    </div>
+    <div class="row">
+      <button id="set-example">Set Example: page=2&sort=name&filter=active</button>
+    </div>
+    <div class="output" id="set-output">Set a parameter to update the URL...</div>
+    <pre class="code-block"><code>import { setParam, setParams } from '@manufosela/url-params';
+
+setParam('page', 2);
+setParams({ sort: 'name', filter: 'active' });
+</code></pre>
+  </div>
+
+  <div class="demo-section">
+    <h2>Remove Parameters</h2>
+    <div class="row">
+      <input type="text" id="remove-key" placeholder="Key" value="page">
+      <button id="remove-param">Remove Param</button>
+      <button id="clear-all" class="danger">Clear All</button>
+    </div>
+    <pre class="code-block"><code>import { removeParam } from '@manufosela/url-params';
+
+removeParam('page');
+</code></pre>
+  </div>
+
+  <div class="demo-section">
+    <h2>Parse/Build Query Strings</h2>
+    <div class="row">
+      <input type="text" id="parse-input" placeholder="Query string" value="?a=1&b=2&tags=x&tags=y" style="width: 300px;">
+      <button id="parse">Parse</button>
+    </div>
+    <div class="row">
+      <button id="build">Build from Object</button>
+    </div>
+    <div class="output" id="parse-output">Parse or build query strings...</div>
+    <pre class="code-block"><code>import { parseQueryString, toQueryString } from '@manufosela/url-params';
+
+parseQueryString('?tags=a&tags=b');
+toQueryString({ tags: ['a', 'b'] });
+</code></pre>
+  </div></div> <div><script type="module">
+    import {
+      UrlParams,
+      getParam,
+      getParams,
+      setParam,
+      setParams,
+      removeParam,
+      toQueryString,
+      parseQueryString
+    } from "https://esm.sh/@manufosela/url-params";
+
+    const currentUrlEl = document.getElementById('current-url');
+    const getOutput = document.getElementById('get-output');
+    const setOutput = document.getElementById('set-output');
+    const parseOutput = document.getElementById('parse-output');
+
+    function ensureDemoParams() {
+      const url = new URL(window.location.href);
+      if (!url.searchParams.has('demo')) {
+        url.searchParams.set('demo', 'true');
+        url.searchParams.set('page', '1');
+        url.searchParams.set('sort', 'name');
+        url.searchParams.set('filter', 'active');
+        url.searchParams.set('tags', 'js');
+        url.searchParams.append('tags', 'css');
+        history.replaceState({}, '', url);
+      }
+    }
+
+    function updateCurrentUrl() {
+      currentUrlEl.textContent = window.location.href;
+    }
+    currentUrlEl.style.background = 'var(--code-bg, #0b0f1a)';
+    currentUrlEl.style.color = 'var(--code-text, #d6d9e6)';
+    ensureDemoParams();
+    updateCurrentUrl();
+
+    document.getElementById('refresh-url').addEventListener('click', updateCurrentUrl);
+
+    // Get operations
+    document.getElementById('get-param').addEventListener('click', () => {
+      const key = document.getElementById('get-key').value;
+      const value = getParam(key);
+      getOutput.textContent = `getParam("${key}") = ${JSON.stringify(value)}`;
+    });
+
+    document.getElementById('get-all').addEventListener('click', () => {
+      const params = getParams();
+      getOutput.textContent = `getParams() = ${JSON.stringify(params, null, 2)}`;
+    });
+
+    // Set operations
+    document.getElementById('set-param').addEventListener('click', () => {
+      const key = document.getElementById('set-key').value;
+      const value = document.getElementById('set-value').value;
+      setParam(key, value);
+      updateCurrentUrl();
+      setOutput.textContent = `Set "${key}" = "${value}"`;
+    });
+
+    document.getElementById('set-example').addEventListener('click', () => {
+      setParams({ page: 2, sort: 'name', filter: 'active' });
+      updateCurrentUrl();
+      setOutput.textContent = 'Set multiple params: page=2, sort=name, filter=active';
+    });
+
+    // Remove operations
+    document.getElementById('remove-param').addEventListener('click', () => {
+      const key = document.getElementById('remove-key').value;
+      removeParam(key);
+      updateCurrentUrl();
+    });
+
+    document.getElementById('clear-all').addEventListener('click', () => {
+      new UrlParams(undefined, { autoUpdate: true }).clear();
+      updateCurrentUrl();
+    });
+
+    // Parse/build operations
+    document.getElementById('parse').addEventListener('click', () => {
+      const input = document.getElementById('parse-input').value;
+      const result = parseQueryString(input);
+      parseOutput.textContent = `parseQueryString("${input}"):\n${JSON.stringify(result, null, 2)}`;
+    });
+
+    document.getElementById('build').addEventListener('click', () => {
+      const obj = { page: 1, limit: 10, tags: ['js', 'ts', 'css'] };
+      const qs = toQueryString(obj);
+      parseOutput.textContent = `toQueryString(${JSON.stringify(obj)}):\n${qs}`;
+    });
+  </script>
+<script type="module">
+class DemoThemeToggle extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  connectedCallback() {
+    const saved = localStorage.getItem('utils-demo-theme');
+    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.toggle('light', saved === 'light');
+
+    this.render();
+  }
+
+  render() {
+    const isLight = document.documentElement.classList.contains('light');
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host {
+          display: inline-flex;
+        }
+        .toggle {
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid var(--line);
+          border-radius: 999px;
+          overflow: hidden;
+          background: var(--surface);
+        }
+        button {
+          border: none;
+          background: transparent;
+          color: var(--muted);
+          padding: 6px 12px;
+          font-size: 0.8rem;
+          cursor: pointer;
+          font-family: "Space Grotesk", "Trebuchet MS", Arial, sans-serif;
+        }
+        button.active {
+          background: linear-gradient(120deg, var(--accent), #ff6a00);
+          color: #111;
+          font-weight: 600;
+        }
+      </style>
+      <div class="toggle" role="group" aria-label="Theme toggle">
+        <button class="${isLight ? 'active' : ''}" data-theme="light">Light</button>
+        <button class="${isLight ? '' : 'active'}" data-theme="dark">Dark</button>
+      </div>
+    `;
+
+    this.shadowRoot.querySelectorAll('button').forEach((btn) => {
+      btn.addEventListener('click', this.handleClick);
+    });
+  }
+
+  handleClick(event) {
+    const theme = event.currentTarget.dataset.theme;
+    const isLight = theme === 'light';
+    document.documentElement.classList.toggle('light', isLight);
+    document.documentElement.classList.remove('dark');
+    localStorage.setItem('utils-demo-theme', isLight ? 'light' : 'dark');
+    this.render();
+  }
+}
+
+customElements.define('demo-theme-toggle', DemoThemeToggle);
+
+</script></div><details class="code-details"> <summary>Demo code (CodePen-ready HTML, CSS, JS)</summary> <div> <div class="code-label">HTML (html)</div> <pre class="code-panel"><code>&lt;div class=&quot;top-links&quot;&gt;
+    &lt;a href=&quot;https://manufosela.github.io/utils/&quot;&gt;Utils catalog&lt;/a&gt;
+    &lt;a href=&quot;https://manufosela.github.io/&quot;&gt;Main catalog&lt;/a&gt;
+    &lt;a href=&quot;https://github.com/manufosela/utils/tree/main/packages/url-params&quot;&gt;Source&lt;/a&gt;
+  &lt;/div&gt;
+        &lt;demo-theme-toggle&gt;&lt;/demo-theme-toggle&gt;
+  &lt;h1&gt;url-params Demo&lt;/h1&gt;
+
+  &lt;div class=&quot;demo-section&quot;&gt;
+    &lt;h2&gt;Quick usage&lt;/h2&gt;
+    &lt;pre class=&quot;code-block&quot;&gt;&lt;code&gt;import { getParam, setParam } from &#39;@manufosela/url-params&#39;;
+
+const page = getParam(&#39;page&#39;, &#39;1&#39;);
+setParam(&#39;page&#39;, Number(page) + 1);
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;demo-section&quot;&gt;
+    &lt;h2&gt;Current URL&lt;/h2&gt;
+    &lt;div class=&quot;current-url&quot; id=&quot;current-url&quot;&gt;&lt;/div&gt;
+    &lt;button id=&quot;refresh-url&quot;&gt;Refresh Display&lt;/button&gt;
+    &lt;pre class=&quot;code-block&quot;&gt;&lt;code&gt;const url = new URL(window.location.href);
+url.searchParams.set(&#39;page&#39;, &#39;1&#39;);
+url.searchParams.set(&#39;sort&#39;, &#39;name&#39;);
+history.replaceState({}, &#39;&#39;, url);
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;demo-section&quot;&gt;
+    &lt;h2&gt;Get Parameters&lt;/h2&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;input type=&quot;text&quot; id=&quot;get-key&quot; placeholder=&quot;Key&quot; value=&quot;page&quot;&gt;
+      &lt;button id=&quot;get-param&quot;&gt;Get Param&lt;/button&gt;
+      &lt;button id=&quot;get-all&quot;&gt;Get All Params&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;output&quot; id=&quot;get-output&quot;&gt;Click a button to get params...&lt;/div&gt;
+    &lt;pre class=&quot;code-block&quot;&gt;&lt;code&gt;import { getParam, getParams } from &#39;@manufosela/url-params&#39;;
+
+getParam(&#39;page&#39;);
+getParams();
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;demo-section&quot;&gt;
+    &lt;h2&gt;Set Parameters&lt;/h2&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;input type=&quot;text&quot; id=&quot;set-key&quot; placeholder=&quot;Key&quot; value=&quot;page&quot;&gt;
+      &lt;input type=&quot;text&quot; id=&quot;set-value&quot; placeholder=&quot;Value&quot; value=&quot;1&quot;&gt;
+      &lt;button id=&quot;set-param&quot;&gt;Set Param&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;button id=&quot;set-example&quot;&gt;Set Example: page=2&amp;sort=name&amp;filter=active&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;output&quot; id=&quot;set-output&quot;&gt;Set a parameter to update the URL...&lt;/div&gt;
+    &lt;pre class=&quot;code-block&quot;&gt;&lt;code&gt;import { setParam, setParams } from &#39;@manufosela/url-params&#39;;
+
+setParam(&#39;page&#39;, 2);
+setParams({ sort: &#39;name&#39;, filter: &#39;active&#39; });
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;demo-section&quot;&gt;
+    &lt;h2&gt;Remove Parameters&lt;/h2&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;input type=&quot;text&quot; id=&quot;remove-key&quot; placeholder=&quot;Key&quot; value=&quot;page&quot;&gt;
+      &lt;button id=&quot;remove-param&quot;&gt;Remove Param&lt;/button&gt;
+      &lt;button id=&quot;clear-all&quot; class=&quot;danger&quot;&gt;Clear All&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;pre class=&quot;code-block&quot;&gt;&lt;code&gt;import { removeParam } from &#39;@manufosela/url-params&#39;;
+
+removeParam(&#39;page&#39;);
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;demo-section&quot;&gt;
+    &lt;h2&gt;Parse/Build Query Strings&lt;/h2&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;input type=&quot;text&quot; id=&quot;parse-input&quot; placeholder=&quot;Query string&quot; value=&quot;?a=1&amp;b=2&amp;tags=x&amp;tags=y&quot; style=&quot;width: 300px;&quot;&gt;
+      &lt;button id=&quot;parse&quot;&gt;Parse&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;button id=&quot;build&quot;&gt;Build from Object&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;output&quot; id=&quot;parse-output&quot;&gt;Parse or build query strings...&lt;/div&gt;
+    &lt;pre class=&quot;code-block&quot;&gt;&lt;code&gt;import { parseQueryString, toQueryString } from &#39;@manufosela/url-params&#39;;
+
+parseQueryString(&#39;?tags=a&amp;tags=b&#39;);
+toQueryString({ tags: [&#39;a&#39;, &#39;b&#39;] });
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;</code></pre> </div> <div> <div class="code-label">CSS (css)</div> <pre class="code-panel"><code>:root {
+  --bg: #0c0f14;
+  --bg-elevated: #141923;
+  --bg-panel: #171d28;
+  --border: #262f3f;
+  --text: #f4f6fb;
+  --text-muted: #a7b0c2;
+  --text-dim: #7d879b;
+  --accent: #ff8a3d;
+  --accent-strong: #ff6a00;
+  --accent-soft: rgba(255, 138, 61, 0.16);
+  --shadow: 0 20px 50px rgba(5, 8, 14, 0.45);
+  --radius-lg: 22px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --max-width: 1160px;
+}
+
+h1 { color: var(--accent); }
+    .demo-section {
+      background: var(--bg-elevated);
+      padding: 2rem;
+      border-radius: 8px;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .demo-section h2 {
+      margin-top: 0;
+      color: var(--text-muted);
+    }
+    button {
+      padding: 0.5rem 1rem;
+      margin: 0.25rem;
+      border: none;
+      border-radius: 4px;
+      background: var(--accent);
+      color: white;
+      cursor: pointer;
+    }
+    button:hover { background: var(--accent-strong); }
+    button.danger { background: #dc3545; }
+    button.danger:hover { background: #c82333; }
+    input {
+      padding: 0.5rem;
+      margin: 0.25rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--bg-panel);
+      color: var(--text);
+      width: 150px;
+    }
+    .output {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: var(--code-bg, #0b0f1a);
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.875rem;
+      white-space: pre-wrap;
+      word-break: break-all;
+      color: var(--code-text, #d6d9e6);
+      border: 1px solid var(--border);
+    }
+    .row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .top-links {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .top-links a {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+    }
+
+    .code-block {
+      background: #0b0f1a;
+      border: 1px solid #2b3247;
+      border-radius: 8px;
+      padding: 12px;
+      color: #d6d9e6;
+      font-family: &quot;JetBrains Mono&quot;, &quot;Courier New&quot;, monospace;
+      font-size: 0.85rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  
+
+
+
+
+
+:root {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+:root.light {
+  --bg: #f5f5f7;
+  --bg-2: #ffffff;
+  --bg-spot-1: #f8e9d0;
+  --bg-spot-2: #e8eef8;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #ffb000;
+  --accent-2: #00a7d6;
+  --surface: #f3f4f6;
+  --code-bg: #111827;
+  --code-text: #f9fafb;
+}
+
+:root.dark {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+h1 {
+  color: var(--accent) !important;
+}
+
+.top-links a,
+.topbar a {
+  color: var(--muted) !important;
+  border-color: var(--line) !important;
+}
+
+.top-links a:hover,
+.topbar a:hover {
+  color: var(--text) !important;
+}
+
+.card,
+.section,
+.demo-section,
+.panel {
+  background: var(--card) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+.code-block,
+pre,
+code,
+.output,
+.current-url,
+.event-log,
+.result-card,
+.log {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  border-color: var(--line) !important;
+}
+
+input,
+select,
+textarea {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+button {
+  background: linear-gradient(120deg, var(--accent), #ff6a00) !important;
+  color: #111 !important;
+}
+
+footer {
+  color: var(--muted) !important;
+}
+
+footer a {
+  color: var(--text) !important;
+}</code></pre> </div> <div> <div class="code-label">JS (js)</div> <pre class="code-panel"><code>import {
+      UrlParams,
+      getParam,
+      getParams,
+      setParam,
+      setParams,
+      removeParam,
+      toQueryString,
+      parseQueryString
+    } from &quot;https://esm.sh/@manufosela/url-params&quot;;
+
+    const currentUrlEl = document.getElementById(&#39;current-url&#39;);
+    const getOutput = document.getElementById(&#39;get-output&#39;);
+    const setOutput = document.getElementById(&#39;set-output&#39;);
+    const parseOutput = document.getElementById(&#39;parse-output&#39;);
+
+    function ensureDemoParams() {
+      const url = new URL(window.location.href);
+      if (!url.searchParams.has(&#39;demo&#39;)) {
+        url.searchParams.set(&#39;demo&#39;, &#39;true&#39;);
+        url.searchParams.set(&#39;page&#39;, &#39;1&#39;);
+        url.searchParams.set(&#39;sort&#39;, &#39;name&#39;);
+        url.searchParams.set(&#39;filter&#39;, &#39;active&#39;);
+        url.searchParams.set(&#39;tags&#39;, &#39;js&#39;);
+        url.searchParams.append(&#39;tags&#39;, &#39;css&#39;);
+        history.replaceState({}, &#39;&#39;, url);
+      }
+    }
+
+    function updateCurrentUrl() {
+      currentUrlEl.textContent = window.location.href;
+    }
+    currentUrlEl.style.background = &#39;var(--code-bg, #0b0f1a)&#39;;
+    currentUrlEl.style.color = &#39;var(--code-text, #d6d9e6)&#39;;
+    ensureDemoParams();
+    updateCurrentUrl();
+
+    document.getElementById(&#39;refresh-url&#39;).addEventListener(&#39;click&#39;, updateCurrentUrl);
+
+    // Get operations
+    document.getElementById(&#39;get-param&#39;).addEventListener(&#39;click&#39;, () =&gt; {
+      const key = document.getElementById(&#39;get-key&#39;).value;
+      const value = getParam(key);
+      getOutput.textContent = `getParam(&quot;${key}&quot;) = ${JSON.stringify(value)}`;
+    });
+
+    document.getElementById(&#39;get-all&#39;).addEventListener(&#39;click&#39;, () =&gt; {
+      const params = getParams();
+      getOutput.textContent = `getParams() = ${JSON.stringify(params, null, 2)}`;
+    });
+
+    // Set operations
+    document.getElementById(&#39;set-param&#39;).addEventListener(&#39;click&#39;, () =&gt; {
+      const key = document.getElementById(&#39;set-key&#39;).value;
+      const value = document.getElementById(&#39;set-value&#39;).value;
+      setParam(key, value);
+      updateCurrentUrl();
+      setOutput.textContent = `Set &quot;${key}&quot; = &quot;${value}&quot;`;
+    });
+
+    document.getElementById(&#39;set-example&#39;).addEventListener(&#39;click&#39;, () =&gt; {
+      setParams({ page: 2, sort: &#39;name&#39;, filter: &#39;active&#39; });
+      updateCurrentUrl();
+      setOutput.textContent = &#39;Set multiple params: page=2, sort=name, filter=active&#39;;
+    });
+
+    // Remove operations
+    document.getElementById(&#39;remove-param&#39;).addEventListener(&#39;click&#39;, () =&gt; {
+      const key = document.getElementById(&#39;remove-key&#39;).value;
+      removeParam(key);
+      updateCurrentUrl();
+    });
+
+    document.getElementById(&#39;clear-all&#39;).addEventListener(&#39;click&#39;, () =&gt; {
+      new UrlParams(undefined, { autoUpdate: true }).clear();
+      updateCurrentUrl();
+    });
+
+    // Parse/build operations
+    document.getElementById(&#39;parse&#39;).addEventListener(&#39;click&#39;, () =&gt; {
+      const input = document.getElementById(&#39;parse-input&#39;).value;
+      const result = parseQueryString(input);
+      parseOutput.textContent = `parseQueryString(&quot;${input}&quot;):\n${JSON.stringify(result, null, 2)}`;
+    });
+
+    document.getElementById(&#39;build&#39;).addEventListener(&#39;click&#39;, () =&gt; {
+      const obj = { page: 1, limit: 10, tags: [&#39;js&#39;, &#39;ts&#39;, &#39;css&#39;] };
+      const qs = toQueryString(obj);
+      parseOutput.textContent = `toQueryString(${JSON.stringify(obj)}):\n${qs}`;
+    });
+  
+
+class DemoThemeToggle extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: &#39;open&#39; });
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  connectedCallback() {
+    const saved = localStorage.getItem(&#39;utils-demo-theme&#39;);
+    document.documentElement.classList.remove(&#39;dark&#39;);
+    document.documentElement.classList.toggle(&#39;light&#39;, saved === &#39;light&#39;);
+
+    this.render();
+  }
+
+  render() {
+    const isLight = document.documentElement.classList.contains(&#39;light&#39;);
+    this.shadowRoot.innerHTML = `
+      &lt;style&gt;
+        :host {
+          display: inline-flex;
+        }
+        .toggle {
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid var(--line);
+          border-radius: 999px;
+          overflow: hidden;
+          background: var(--surface);
+        }
+        button {
+          border: none;
+          background: transparent;
+          color: var(--muted);
+          padding: 6px 12px;
+          font-size: 0.8rem;
+          cursor: pointer;
+          font-family: &quot;Space Grotesk&quot;, &quot;Trebuchet MS&quot;, Arial, sans-serif;
+        }
+        button.active {
+          background: linear-gradient(120deg, var(--accent), #ff6a00);
+          color: #111;
+          font-weight: 600;
+        }
+      &lt;/style&gt;
+      &lt;div class=&quot;toggle&quot; role=&quot;group&quot; aria-label=&quot;Theme toggle&quot;&gt;
+        &lt;button class=&quot;${isLight ? &#39;active&#39; : &#39;&#39;}&quot; data-theme=&quot;light&quot;&gt;Light&lt;/button&gt;
+        &lt;button class=&quot;${isLight ? &#39;&#39; : &#39;active&#39;}&quot; data-theme=&quot;dark&quot;&gt;Dark&lt;/button&gt;
+      &lt;/div&gt;
+    `;
+
+    this.shadowRoot.querySelectorAll(&#39;button&#39;).forEach((btn) =&gt; {
+      btn.addEventListener(&#39;click&#39;, this.handleClick);
+    });
+  }
+
+  handleClick(event) {
+    const theme = event.currentTarget.dataset.theme;
+    const isLight = theme === &#39;light&#39;;
+    document.documentElement.classList.toggle(&#39;light&#39;, isLight);
+    document.documentElement.classList.remove(&#39;dark&#39;);
+    localStorage.setItem(&#39;utils-demo-theme&#39;, isLight ? &#39;light&#39; : &#39;dark&#39;);
+    this.render();
+  }
+}
+
+customElements.define(&#39;demo-theme-toggle&#39;, DemoThemeToggle);</code></pre> </div> </details> </div>  </div> </main> <footer> <div class="container"> <p>Built by manufosela. Lightweight, accessible, and standards-first web components.</p> </div> </footer> </body></html>
