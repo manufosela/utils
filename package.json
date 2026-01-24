@@ -11,6 +11,7 @@
     "site:dev": "pnpm --dir apps/site dev",
     "site:build": "SITE_URL=https://manufosela.github.io/utils/ BASE_PATH=/utils/ pnpm --dir apps/site build",
     "site:preview": "pnpm --dir apps/site preview",
+    "site:deploy": "bash scripts/deploy-site.sh",
     "changeset": "changeset",
     "version": "changeset version",
     "publish": "pnpm build && changeset publish"
