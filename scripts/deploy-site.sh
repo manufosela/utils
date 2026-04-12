@@ -8,6 +8,7 @@ DOCS_DIR="$ROOT_DIR/docs"
 
 pnpm install
 pnpm site:build
+node scripts/copy-package-sources.mjs
 
 rm -rf "$DOCS_DIR"
 mkdir -p "$DOCS_DIR"
