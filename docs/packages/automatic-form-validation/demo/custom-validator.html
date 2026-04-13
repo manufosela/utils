@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Autoform - Custom Validators</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="../../demo-theme.css" />
+</head>
+  <body>
+    <header>
+      <div class="container hero">
+        <div class="top-links">
+          <a href="./index.html">All demos</a>
+          <a href="./playground.html">Playground</a>
+          <a href="https://github.com/manufosela/utils/tree/main/packages/automatic-form-validation">Source</a>
+        </div>
+        <demo-theme-toggle></demo-theme-toggle>
+        <h1>Custom validators</h1>
+        <p>Use fn: callbacks and runtime validators via API.</p>
+      </div>
+    </header>
+
+    <main>
+      <div class="container demo-shell">
+        <div class="demo-card">
+          <h2>Live demo</h2>
+          <form id="customForm" class="demo-form" data-validate="true">
+            <div>
+              <label for="even">Even number</label>
+              <input
+                id="even"
+                name="even"
+                type="text"
+                data-required="true"
+                data-tovalidate="fn:isEven"
+                placeholder="Only even numbers"
+              />
+            </div>
+            <div>
+              <label for="starts">Starts with M</label>
+              <input
+                id="starts"
+                name="starts"
+                type="text"
+                data-required="true"
+                data-tovalidate="startsWithM"
+                placeholder="Type a value"
+              />
+            </div>
+            <button id="submitCustom" type="submit" data-checkform="true">Submit</button>
+          </form>
+          <p class="note">Mix fn: validators with runtime validators.</p>
+        </div>
+
+        <div class="demo-card">
+          <h2>Implementation</h2>
+          <div class="code-block"><pre><code id="codeBlock"></code></pre></div>
+        </div>
+      </div>
+    </main>
+
+    <template id="codeTemplate">
+<input data-tovalidate="fn:isEven" />
+<input data-tovalidate="startsWithM" />
+
+<script>
+  function isEven(value) {
+    return Number(value) % 2 === 0;
+  }
+</script>
+
+<script type="module">
+  import { ValidateForm } from "./src/ValidateForm.js";
+  const validator = new ValidateForm();
+  validator.addValidator("startsWithM", (value) => value.toLowerCase().startsWith("m"));
+</script>
+    </template>
+
+    <script type="module">
+      import { ValidateForm } from "../src/ValidateForm.js";
+
+      function isEven(value) {
+        return Number(value) % 2 === 0;
+      }
+      window.isEven = isEven;
+
+      const validator = new ValidateForm();
+      validator.addValidator("startsWithM", (value) => value.toLowerCase().startsWith("m"));
+
+      document.getElementById("codeBlock").textContent =
+        document.getElementById("codeTemplate").innerHTML.trim();
+    </script>
+    <script type="module" src="../../demo-theme-toggle.js"></script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Autoform - Basic Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="../../demo-theme.css" />
+</head>
+  <body>
+    <header>
+      <div class="container hero">
+        <div class="top-links">
+          <a href="./index.html">All demos</a>
+          <a href="./playground.html">Playground</a>
+          <a href="https://github.com/manufosela/utils/tree/main/packages/automatic-form-validation">Source</a>
+        </div>
+        <demo-theme-toggle></demo-theme-toggle>
+        <h1>Basic form validation</h1>
+        <p>Required fields, email validation, and submit checks.</p>
+      </div>
+    </header>
+
+    <main>
+      <div class="container demo-shell">
+        <div class="demo-card">
+          <h2>Live demo</h2>
+          <form id="basicForm" class="demo-form" data-validate="true" data-checkrealtime="true">
+            <div>
+              <label for="name">Name</label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Jane Doe"
+                data-required="true"
+                data-tovalidate="alpha"
+              />
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input
+                id="email"
+                name="email"
+                type="text"
+                placeholder="jane@example.com"
+                data-required="true"
+                data-tovalidate="email"
+              />
+            </div>
+            <label>
+              <input id="accept" name="accept" type="checkbox" data-required="true" />
+              Accept terms
+            </label>
+            <button id="submitBtn" type="submit" data-checkform="true">Submit</button>
+          </form>
+          <p class="note">Try leaving fields empty or entering an invalid email.</p>
+        </div>
+
+        <div class="demo-card">
+          <h2>Implementation</h2>
+          <div class="code-block"><pre><code id="codeBlock"></code></pre></div>
+        </div>
+      </div>
+    </main>
+
+    <template id="codeTemplate">
+<form data-validate="true" data-checkrealtime="true">
+  <label for="email">Email</label>
+  <input id="email" data-required="true" data-tovalidate="email" />
+</form>
+
+<script type="module">
+  import { ValidateForm } from "./src/ValidateForm.js";
+  new ValidateForm();
+</script>
+    </template>
+
+    <script type="module">
+      import { ValidateForm } from "../src/ValidateForm.js";
+      new ValidateForm();
+
+      const template = document.getElementById("codeTemplate");
+      const codeBlock = document.getElementById("codeBlock");
+      codeBlock.textContent = template.innerHTML.trim();
+    </script>
+    <script type="module" src="../../demo-theme-toggle.js"></script>
+</body>
+</html>

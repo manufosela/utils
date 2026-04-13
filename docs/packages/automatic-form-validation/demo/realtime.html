@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Autoform - Realtime Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="../../demo-theme.css" />
+</head>
+  <body>
+    <header>
+      <div class="container hero">
+        <div class="top-links">
+          <a href="./index.html">All demos</a>
+          <a href="./playground.html">Playground</a>
+          <a href="https://github.com/manufosela/utils/tree/main/packages/automatic-form-validation">Source</a>
+        </div>
+        <demo-theme-toggle></demo-theme-toggle>
+        <h1>Realtime validation</h1>
+        <p>Fields validate on blur, ideal for quick feedback.</p>
+      </div>
+    </header>
+
+    <main>
+      <div class="container demo-shell">
+        <div class="demo-card">
+          <h2>Live demo</h2>
+          <form id="realtimeForm" class="demo-form" data-validate="true" data-checkrealtime="true">
+            <div>
+              <label for="username">Username</label>
+              <input
+                id="username"
+                name="username"
+                type="text"
+                placeholder="alpha only"
+                data-required="true"
+                data-tovalidate="alpha"
+              />
+            </div>
+            <div>
+              <label for="phone">Telephone</label>
+              <input
+                id="phone"
+                name="phone"
+                type="text"
+                placeholder="6xx xxx xxx"
+                data-required="true"
+                data-tovalidate="telephone"
+              />
+            </div>
+            <button id="submitRealtime" type="submit" data-checkform="true">Submit</button>
+          </form>
+          <p class="note">Blur fields to trigger validation in real time.</p>
+        </div>
+
+        <div class="demo-card">
+          <h2>Implementation</h2>
+          <div class="code-block"><pre><code id="codeBlock"></code></pre></div>
+        </div>
+      </div>
+    </main>
+
+    <template id="codeTemplate">
+<form data-validate="true" data-checkrealtime="true">
+  <input data-required="true" data-tovalidate="alpha" />
+  <input data-required="true" data-tovalidate="telephone" />
+</form>
+    </template>
+
+    <script type="module">
+      import { ValidateForm } from "../src/ValidateForm.js";
+      new ValidateForm();
+
+      const template = document.getElementById("codeTemplate");
+      document.getElementById("codeBlock").textContent = template.innerHTML.trim();
+    </script>
+    <script type="module" src="../../demo-theme-toggle.js"></script>
+</body>
+</html>
