@@ -5,28 +5,7 @@
           "lit/": "https://esm.sh/lit@3/"
         }
       }
-    </script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><link rel="stylesheet" href="/utils/_astro/index.DCnPdVTU.css"><script type="module" src="/utils/_astro/hoisted.BScVxmeO.js"></script></head> <body> <header class="topbar"> <a href="/">@manufosela/rich-markdown-to-html</a> <div class="header-links">  <button class="theme-toggle" type="button" data-theme-toggle>Light mode</button> <script type="module">
-  const root = document.documentElement;
-  const toggle = document.querySelector('[data-theme-toggle]');
-  const stored = localStorage.getItem('theme');
-
-  if (stored === 'light') {
-    root.classList.add('light');
-  }
-
-  const updateLabel = () => {
-    const isLight = root.classList.contains('light');
-    toggle.textContent = isLight ? 'Dark mode' : 'Light mode';
-  };
-
-  updateLabel();
-
-  toggle.addEventListener('click', () => {
-    root.classList.toggle('light');
-    localStorage.setItem('theme', root.classList.contains('light') ? 'light' : 'dark');
-    updateLabel();
-  });
-</script> </div> </header> <main> <div class="container">  <div> <h1 class="page-title">@manufosela/rich-markdown-to-html</h1> <p class="page-subtitle">Markdown to HTML converter with support for tables, code blocks, and task lists</p> <div class="header-links"> <a href="/utils/">← Back to components</a><a href="https://github.com/manufosela/utils">GitHub Repo</a> </div> </div> <div class="demo-surface"> <div><style>
+    </script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><style>
 
 
 
@@ -380,7 +359,28 @@ footer a {
   color: var(--text) !important;
 }
 
-</style></div><div class="demo-embed"><div class="topbar">
+</style><link rel="stylesheet" href="/utils/_astro/index.DCnPdVTU.css"><script type="module" src="/utils/_astro/hoisted.BScVxmeO.js"></script></head> <body> <header class="topbar"> <a href="/">@manufosela/rich-markdown-to-html</a> <div class="header-links">  <button class="theme-toggle" type="button" data-theme-toggle>Light mode</button> <script type="module">
+  const root = document.documentElement;
+  const toggle = document.querySelector('[data-theme-toggle]');
+  const stored = localStorage.getItem('theme');
+
+  if (stored === 'light') {
+    root.classList.add('light');
+  }
+
+  const updateLabel = () => {
+    const isLight = root.classList.contains('light');
+    toggle.textContent = isLight ? 'Dark mode' : 'Light mode';
+  };
+
+  updateLabel();
+
+  toggle.addEventListener('click', () => {
+    root.classList.toggle('light');
+    localStorage.setItem('theme', root.classList.contains('light') ? 'light' : 'dark');
+    updateLabel();
+  });
+</script> </div> </header> <main> <div class="container">  <div> <h1 class="page-title">@manufosela/rich-markdown-to-html</h1> <p class="page-subtitle">Markdown to HTML converter with support for tables, code blocks, and task lists</p> <div class="header-links"> <a href="/utils/">← Back to components</a><a href="https://github.com/manufosela/utils">GitHub Repo</a> </div> </div> <div class="demo-surface">  <div class="demo-embed"><div class="topbar">
     <demo-theme-toggle></demo-theme-toggle>
     <div class="topbar-links">
       <a href="https://manufosela.dev/utils/">Utils catalog</a>
