@@ -138,7 +138,8 @@ export function loadDemo(slug, kind = "demo") {
     linkTags,
     baseDir
   );
-  const styles = collectTags(head, "style") + "\n" + collectTags(body, "style") + "\n" + inlineStyles;
+  const wrappedInline = inlineStyles ? `<style>\n${inlineStyles}\n</style>` : "";
+  const styles = collectTags(head, "style") + "\n" + collectTags(body, "style") + "\n" + wrappedInline;
   const scriptsRaw = collectTags(head, "script") + "\n" + collectTags(body, "script");
   const scriptsInlined = inlineScriptSources(scriptsRaw, baseDir);
   const scripts = rewriteDemoImports(scriptsInlined, packageName);
