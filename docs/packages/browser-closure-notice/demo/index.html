@@ -5,33 +5,13 @@
           "lit/": "https://esm.sh/lit@3/"
         }
       }
-    </script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><link rel="stylesheet" href="/utils/_astro/index.DCnPdVTU.css"><script type="module" src="/utils/_astro/hoisted.BScVxmeO.js"></script></head> <body> <header class="topbar"> <a href="/">@manufosela/browser-closure-notice</a> <div class="header-links">  <button class="theme-toggle" type="button" data-theme-toggle>Light mode</button> <script type="module">
-  const root = document.documentElement;
-  const toggle = document.querySelector('[data-theme-toggle]');
-  const stored = localStorage.getItem('theme');
-
-  if (stored === 'light') {
-    root.classList.add('light');
-  }
-
-  const updateLabel = () => {
-    const isLight = root.classList.contains('light');
-    toggle.textContent = isLight ? 'Dark mode' : 'Light mode';
-  };
-
-  updateLabel();
-
-  toggle.addEventListener('click', () => {
-    root.classList.toggle('light');
-    localStorage.setItem('theme', root.classList.contains('light') ? 'light' : 'dark');
-    updateLabel();
-  });
-</script> </div> </header> <main> <div class="container">  <div> <h1 class="page-title">@manufosela/browser-closure-notice</h1> <p class="page-subtitle">Detects mouse movement toward browser close controls and triggers callbacks.</p> <div class="header-links"> <a href="/utils/">← Back to components</a><a href="https://github.com/manufosela/utils">GitHub Repo</a> </div> </div> <div class="demo-surface"> <div><link rel="preconnect" href="https://fonts.googleapis.com" />
+    </script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
     rel="stylesheet"
-  /></div><div><style>
+  />
+<style>
 
 
 * { box-sizing: border-box; }
@@ -252,7 +232,28 @@ footer a {
   color: var(--text) !important;
 }
 
-</style></div><div class="demo-embed"><main>
+</style><link rel="stylesheet" href="/utils/_astro/index.DCnPdVTU.css"><script type="module" src="/utils/_astro/hoisted.BScVxmeO.js"></script></head> <body> <header class="topbar"> <a href="/">@manufosela/browser-closure-notice</a> <div class="header-links">  <button class="theme-toggle" type="button" data-theme-toggle>Light mode</button> <script type="module">
+  const root = document.documentElement;
+  const toggle = document.querySelector('[data-theme-toggle]');
+  const stored = localStorage.getItem('theme');
+
+  if (stored === 'light') {
+    root.classList.add('light');
+  }
+
+  const updateLabel = () => {
+    const isLight = root.classList.contains('light');
+    toggle.textContent = isLight ? 'Dark mode' : 'Light mode';
+  };
+
+  updateLabel();
+
+  toggle.addEventListener('click', () => {
+    root.classList.toggle('light');
+    localStorage.setItem('theme', root.classList.contains('light') ? 'light' : 'dark');
+    updateLabel();
+  });
+</script> </div> </header> <main> <div class="container">  <div> <h1 class="page-title">@manufosela/browser-closure-notice</h1> <p class="page-subtitle">Detects mouse movement toward browser close controls and triggers callbacks.</p> <div class="header-links"> <a href="/utils/">← Back to components</a><a href="https://github.com/manufosela/utils">GitHub Repo</a> </div> </div> <div class="demo-surface">  <div class="demo-embed"><main>
     <div class="container grid">
       <section class="card">
         <h2>Live demo</h2>
