@@ -338,7 +338,7 @@ emitter.emit("user:login", { id: 1 });
 emitter.emit("user:admin:login", { id: 2 });
 emitter.emit("system:ready", { ok: true });
   </template></div> <div><script type="module">
-    import { EventEmitter } from "https://esm.sh/@manufosela/event-emitter";
+    import { EventEmitter } from "../src/index.js";
 
     const emitterBasic = new EventEmitter({ wildcard: true });
     const emitterWild = new EventEmitter({ wildcard: true });

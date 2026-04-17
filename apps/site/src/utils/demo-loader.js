@@ -55,13 +55,11 @@ const loadPackageName = (slug) => {
   }
 };
 
-const rewriteDemoImports = (scripts, packageName) => {
-  if (!scripts || !packageName) return scripts;
-  return scripts
-    .replace(/from\s+["']\.\.\/src\/[^"']+["']/g, `from "https://esm.sh/${packageName}"`)
-    .replace(/from\s+["']\.\/src\/[^"']+["']/g, `from "https://esm.sh/${packageName}"`)
-    .replace(/import\s+["']\.\.\/src\/[^"']+["'];?/g, `import "https://esm.sh/${packageName}";`)
-    .replace(/import\s+["']\.\/src\/[^"']+["'];?/g, `import "https://esm.sh/${packageName}";`);
+const rewriteDemoImports = (scripts, _packageName) => {
+  // Keep relative ../src/ paths as-is — copy-package-sources.mjs copies
+  // the source files into dist so they resolve correctly when served.
+  // Rewriting to esm.sh breaks unpublished packages (404).
+  return scripts ?? "";
 };
 
 const resolveLinkStyles = (links, baseDir) => {
