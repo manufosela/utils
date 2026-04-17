@@ -1,0 +1,821 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>@manufosela/util-lola</title><script type="importmap">
+      {
+        "imports": {
+          "lit": "https://esm.sh/lit@3",
+          "lit/": "https://esm.sh/lit@3/"
+        }
+      }
+    </script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+<style>
+* { box-sizing: border-box; }
+a { color: inherit; text-decoration: none; }
+
+header {
+  padding: 32px 24px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.container { max-width: 1100px; margin: 0 auto; }
+
+.top-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.top-links a {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 12px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.top-links a:hover { color: var(--text); border-color: var(--accent-2); }
+
+.hero h1 { margin: 0; font-size: clamp(28px, 4vw, 44px); letter-spacing: -0.02em; }
+.hero p { margin: 8px 0 0; color: var(--muted); }
+
+main { padding: 24px 24px 64px; }
+
+.demo-shell { display: grid; gap: 20px; }
+
+.demo-section {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: start;
+}
+
+.demo-card {
+  background: color-mix(in srgb, var(--card) 85%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.demo-card h2 { margin: 0 0 10px; }
+.badge {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.note { color: var(--muted); font-size: 0.9rem; margin: 0 0 12px; }
+
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+
+.btn {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(120deg, var(--accent), #ff6a00);
+  color: #111;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn-outline {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.code-details summary { cursor: pointer; color: var(--muted); margin-top: 10px; }
+.code-details[open] summary { color: var(--text); }
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  overflow: auto;
+  font-size: 0.85rem;
+  color: var(--code-text);
+}
+.code-block pre { margin: 0; white-space: pre-wrap; }
+  </style>
+
+<style>
+:root {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+:root.light {
+  --bg: #f5f5f7;
+  --bg-2: #ffffff;
+  --bg-spot-1: #f8e9d0;
+  --bg-spot-2: #e8eef8;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #ffb000;
+  --accent-2: #00a7d6;
+  --surface: #f3f4f6;
+  --code-bg: #111827;
+  --code-text: #f9fafb;
+}
+
+:root.dark {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+h1 {
+  color: var(--accent) !important;
+}
+
+.top-links a,
+.topbar a {
+  color: var(--muted) !important;
+  border-color: var(--line) !important;
+}
+
+.top-links a:hover,
+.topbar a:hover {
+  color: var(--text) !important;
+}
+
+.card,
+.section,
+.demo-section,
+.panel {
+  background: var(--card) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+.code-block,
+pre,
+code,
+.output,
+.current-url,
+.event-log,
+.result-card,
+.log {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  border-color: var(--line) !important;
+}
+
+input,
+select,
+textarea {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+button {
+  background: linear-gradient(120deg, var(--accent), #ff6a00) !important;
+  color: #111 !important;
+}
+
+footer {
+  color: var(--muted) !important;
+}
+
+footer a {
+  color: var(--text) !important;
+}
+
+</style><link rel="stylesheet" href="/utils/_astro/index.DCnPdVTU.css"><script type="module" src="/utils/_astro/hoisted.BScVxmeO.js"></script></head> <body> <header class="topbar"> <a href="/">@manufosela/util-lola</a> <div class="header-links">  <button class="theme-toggle" type="button" data-theme-toggle>Light mode</button> <script type="module">
+  const root = document.documentElement;
+  const toggle = document.querySelector('[data-theme-toggle]');
+  const stored = localStorage.getItem('theme');
+
+  if (stored === 'light') {
+    root.classList.add('light');
+  }
+
+  const updateLabel = () => {
+    const isLight = root.classList.contains('light');
+    toggle.textContent = isLight ? 'Dark mode' : 'Light mode';
+  };
+
+  updateLabel();
+
+  toggle.addEventListener('click', () => {
+    root.classList.toggle('light');
+    localStorage.setItem('theme', root.classList.contains('light') ? 'light' : 'dark');
+    updateLabel();
+  });
+</script> </div> </header> <main> <div class="container">  <div> <h1 class="page-title">@manufosela/util-lola</h1> <p class="page-subtitle">Loading overlay (LoLa) web component with message, timeout, and CSS custom properties for theming.</p> <div class="header-links"> <a href="/utils/">← Back to components</a><a href="https://github.com/manufosela/utils">GitHub Repo</a> </div> </div> <div class="demo-surface">  <div class="demo-embed"><main>
+    <div class="container demo-shell">
+
+      <section class="demo-section">
+        <div class="demo-card">
+          <span class="badge">Basic</span>
+          <h2>Show overlay</h2>
+          <p class="note">Click to show the loading overlay. It stays until you dismiss it.</p>
+          <div class="btn-row">
+            <button class="btn" id="btn-basic-show">Show overlay</button>
+            <button class="btn-outline" id="btn-basic-hide">Hide overlay</button>
+          </div>
+        </div>
+        <div class="demo-card">
+          <h3>Code</h3>
+          <details class="code-details">
+            <summary>+ Show HTML + JS</summary>
+            <div class="code-block"><pre><code>&lt;util-lola id="lola" message="Loading..."&gt;&lt;/util-lola&gt;
+
+&lt;script type="module"&gt;
+  import "@manufosela/util-lola";
+  document.getElementById("lola").active = true;
+&lt;/script&gt;</code></pre></div>
+          </details>
+        </div>
+      </section>
+
+      <section class="demo-section">
+        <div class="demo-card">
+          <span class="badge">Timeout</span>
+          <h2>Auto-close</h2>
+          <p class="note">The overlay closes automatically after the specified seconds.</p>
+          <div class="btn-row">
+            <button class="btn" id="btn-timeout-2">2 second timeout</button>
+            <button class="btn" id="btn-timeout-5">5 second timeout</button>
+          </div>
+        </div>
+        <div class="demo-card">
+          <h3>Code</h3>
+          <details class="code-details">
+            <summary>+ Show HTML</summary>
+            <div class="code-block"><pre><code>&lt;util-lola
+  message="Please wait..."
+  timeout="3"
+  active
+&gt;&lt;/util-lola&gt;</code></pre></div>
+          </details>
+        </div>
+      </section>
+
+      <section class="demo-section">
+        <div class="demo-card">
+          <span class="badge">Custom</span>
+          <h2>Custom message</h2>
+          <p class="note">Pass a message via the <code>message</code> attribute.</p>
+          <div class="btn-row">
+            <button class="btn" id="btn-custom">Show with custom message</button>
+          </div>
+        </div>
+        <div class="demo-card">
+          <span class="badge">Events</span>
+          <h2>Toggle event</h2>
+          <p class="note">Listens for <code>lola-toggle</code> events.</p>
+          <div id="event-log" class="code-block" style="min-height: 60px; font-family: monospace;"></div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <util-lola id="demo-lola"></util-lola></div> <div><script type="module">
+    import "https://esm.sh/@manufosela/util-lola";
+
+    const lola = document.getElementById("demo-lola");
+    const log = document.getElementById("event-log");
+
+    lola.addEventListener("lola-toggle", (e) => {
+      const line = document.createElement("div");
+      line.textContent = `lola-toggle → active: ${e.detail.active}`;
+      log.prepend(line);
+    });
+
+    document.getElementById("btn-basic-show").addEventListener("click", () => {
+      lola.message = "Loading...";
+      lola.timeout = 0;
+      lola.active = true;
+    });
+
+    document.getElementById("btn-basic-hide").addEventListener("click", () => {
+      lola.active = false;
+    });
+
+    document.getElementById("btn-timeout-2").addEventListener("click", () => {
+      lola.message = "Closing in 2 seconds...";
+      lola.timeout = 2;
+      lola.active = true;
+    });
+
+    document.getElementById("btn-timeout-5").addEventListener("click", () => {
+      lola.message = "Closing in 5 seconds...";
+      lola.timeout = 5;
+      lola.active = true;
+    });
+
+    document.getElementById("btn-custom").addEventListener("click", () => {
+      lola.message = "Fetching data from API...";
+      lola.timeout = 3;
+      lola.active = true;
+    });
+  </script>
+<script type="module">
+class DemoThemeToggle extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  connectedCallback() {
+    const saved = localStorage.getItem('utils-demo-theme');
+    document.documentElement.classList.remove('dark');
+    document.documentElement.classList.toggle('light', saved === 'light');
+
+    this.render();
+  }
+
+  render() {
+    const isLight = document.documentElement.classList.contains('light');
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host {
+          display: inline-flex;
+        }
+        .toggle {
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid var(--line);
+          border-radius: 999px;
+          overflow: hidden;
+          background: var(--surface);
+        }
+        button {
+          border: none;
+          background: transparent;
+          color: var(--muted);
+          padding: 6px 12px;
+          font-size: 0.8rem;
+          cursor: pointer;
+          font-family: "Space Grotesk", "Trebuchet MS", Arial, sans-serif;
+        }
+        button.active {
+          background: linear-gradient(120deg, var(--accent), #ff6a00);
+          color: #111;
+          font-weight: 600;
+        }
+      </style>
+      <div class="toggle" role="group" aria-label="Theme toggle">
+        <button class="${isLight ? 'active' : ''}" data-theme="light">Light</button>
+        <button class="${isLight ? '' : 'active'}" data-theme="dark">Dark</button>
+      </div>
+    `;
+
+    this.shadowRoot.querySelectorAll('button').forEach((btn) => {
+      btn.addEventListener('click', this.handleClick);
+    });
+  }
+
+  handleClick(event) {
+    const theme = event.currentTarget.dataset.theme;
+    const isLight = theme === 'light';
+    document.documentElement.classList.toggle('light', isLight);
+    document.documentElement.classList.remove('dark');
+    localStorage.setItem('utils-demo-theme', isLight ? 'light' : 'dark');
+    this.render();
+  }
+}
+
+customElements.define('demo-theme-toggle', DemoThemeToggle);
+
+</script></div><details class="code-details"> <summary>Demo code (CodePen-ready HTML, CSS, JS)</summary> <div> <div class="code-label">HTML (html)</div> <pre class="code-panel"><code>&lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.googleapis.com&quot; /&gt;
+&lt;link rel=&quot;preconnect&quot; href=&quot;https://fonts.gstatic.com&quot; crossorigin /&gt;
+&lt;link
+    href=&quot;https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&amp;display=swap&quot;
+    rel=&quot;stylesheet&quot;
+  /&gt;
+&lt;main&gt;
+    &lt;div class=&quot;container demo-shell&quot;&gt;
+
+      &lt;section class=&quot;demo-section&quot;&gt;
+        &lt;div class=&quot;demo-card&quot;&gt;
+          &lt;span class=&quot;badge&quot;&gt;Basic&lt;/span&gt;
+          &lt;h2&gt;Show overlay&lt;/h2&gt;
+          &lt;p class=&quot;note&quot;&gt;Click to show the loading overlay. It stays until you dismiss it.&lt;/p&gt;
+          &lt;div class=&quot;btn-row&quot;&gt;
+            &lt;button class=&quot;btn&quot; id=&quot;btn-basic-show&quot;&gt;Show overlay&lt;/button&gt;
+            &lt;button class=&quot;btn-outline&quot; id=&quot;btn-basic-hide&quot;&gt;Hide overlay&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;demo-card&quot;&gt;
+          &lt;h3&gt;Code&lt;/h3&gt;
+          &lt;details class=&quot;code-details&quot;&gt;
+            &lt;summary&gt;+ Show HTML + JS&lt;/summary&gt;
+            &lt;div class=&quot;code-block&quot;&gt;&lt;pre&gt;&lt;code&gt;&amp;lt;util-lola id=&quot;lola&quot; message=&quot;Loading...&quot;&amp;gt;&amp;lt;/util-lola&amp;gt;
+
+&amp;lt;script type=&quot;module&quot;&amp;gt;
+  import &quot;@manufosela/util-lola&quot;;
+  document.getElementById(&quot;lola&quot;).active = true;
+&amp;lt;/script&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/section&gt;
+
+      &lt;section class=&quot;demo-section&quot;&gt;
+        &lt;div class=&quot;demo-card&quot;&gt;
+          &lt;span class=&quot;badge&quot;&gt;Timeout&lt;/span&gt;
+          &lt;h2&gt;Auto-close&lt;/h2&gt;
+          &lt;p class=&quot;note&quot;&gt;The overlay closes automatically after the specified seconds.&lt;/p&gt;
+          &lt;div class=&quot;btn-row&quot;&gt;
+            &lt;button class=&quot;btn&quot; id=&quot;btn-timeout-2&quot;&gt;2 second timeout&lt;/button&gt;
+            &lt;button class=&quot;btn&quot; id=&quot;btn-timeout-5&quot;&gt;5 second timeout&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;demo-card&quot;&gt;
+          &lt;h3&gt;Code&lt;/h3&gt;
+          &lt;details class=&quot;code-details&quot;&gt;
+            &lt;summary&gt;+ Show HTML&lt;/summary&gt;
+            &lt;div class=&quot;code-block&quot;&gt;&lt;pre&gt;&lt;code&gt;&amp;lt;util-lola
+  message=&quot;Please wait...&quot;
+  timeout=&quot;3&quot;
+  active
+&amp;gt;&amp;lt;/util-lola&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+          &lt;/details&gt;
+        &lt;/div&gt;
+      &lt;/section&gt;
+
+      &lt;section class=&quot;demo-section&quot;&gt;
+        &lt;div class=&quot;demo-card&quot;&gt;
+          &lt;span class=&quot;badge&quot;&gt;Custom&lt;/span&gt;
+          &lt;h2&gt;Custom message&lt;/h2&gt;
+          &lt;p class=&quot;note&quot;&gt;Pass a message via the &lt;code&gt;message&lt;/code&gt; attribute.&lt;/p&gt;
+          &lt;div class=&quot;btn-row&quot;&gt;
+            &lt;button class=&quot;btn&quot; id=&quot;btn-custom&quot;&gt;Show with custom message&lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;demo-card&quot;&gt;
+          &lt;span class=&quot;badge&quot;&gt;Events&lt;/span&gt;
+          &lt;h2&gt;Toggle event&lt;/h2&gt;
+          &lt;p class=&quot;note&quot;&gt;Listens for &lt;code&gt;lola-toggle&lt;/code&gt; events.&lt;/p&gt;
+          &lt;div id=&quot;event-log&quot; class=&quot;code-block&quot; style=&quot;min-height: 60px; font-family: monospace;&quot;&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/section&gt;
+
+    &lt;/div&gt;
+  &lt;/main&gt;
+
+  &lt;util-lola id=&quot;demo-lola&quot;&gt;&lt;/util-lola&gt;</code></pre> </div> <div> <div class="code-label">CSS (css)</div> <pre class="code-panel"><code>:root {
+  --bg: #0c0f14;
+  --bg-elevated: #141923;
+  --bg-panel: #171d28;
+  --border: #262f3f;
+  --text: #f4f6fb;
+  --text-muted: #a7b0c2;
+  --text-dim: #7d879b;
+  --accent: #ff8a3d;
+  --accent-strong: #ff6a00;
+  --accent-soft: rgba(255, 138, 61, 0.16);
+  --shadow: 0 20px 50px rgba(5, 8, 14, 0.45);
+  --radius-lg: 22px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+  --max-width: 1160px;
+}
+
+* { box-sizing: border-box; }
+a { color: inherit; text-decoration: none; }
+
+header {
+  padding: 32px 24px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.container { max-width: 1100px; margin: 0 auto; }
+
+.top-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.top-links a {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 12px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.top-links a:hover { color: var(--text); border-color: var(--accent-2); }
+
+.hero h1 { margin: 0; font-size: clamp(28px, 4vw, 44px); letter-spacing: -0.02em; }
+.hero p { margin: 8px 0 0; color: var(--muted); }
+
+main { padding: 24px 24px 64px; }
+
+.demo-shell { display: grid; gap: 20px; }
+
+.demo-section {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: start;
+}
+
+.demo-card {
+  background: color-mix(in srgb, var(--card) 85%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.demo-card h2 { margin: 0 0 10px; }
+.badge {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.note { color: var(--muted); font-size: 0.9rem; margin: 0 0 12px; }
+
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+
+.btn {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(120deg, var(--accent), #ff6a00);
+  color: #111;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn-outline {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.code-details summary { cursor: pointer; color: var(--muted); margin-top: 10px; }
+.code-details[open] summary { color: var(--text); }
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  overflow: auto;
+  font-size: 0.85rem;
+  color: var(--code-text);
+}
+.code-block pre { margin: 0; white-space: pre-wrap; }
+  
+
+
+:root {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+:root.light {
+  --bg: #f5f5f7;
+  --bg-2: #ffffff;
+  --bg-spot-1: #f8e9d0;
+  --bg-spot-2: #e8eef8;
+  --card: #ffffff;
+  --text: #1d1d1f;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #ffb000;
+  --accent-2: #00a7d6;
+  --surface: #f3f4f6;
+  --code-bg: #111827;
+  --code-text: #f9fafb;
+}
+
+:root.dark {
+  --bg: #0f1117;
+  --bg-2: #151a26;
+  --bg-spot-1: #1a2136;
+  --bg-spot-2: #1d1b34;
+  --card: #1c2233;
+  --text: #f3f6ff;
+  --muted: #b8c0d9;
+  --line: #2b3247;
+  --accent: #ffb000;
+  --accent-2: #00d0ff;
+  --surface: #0b0f1a;
+  --code-bg: #0b0f1a;
+  --code-text: #d6d9e6;
+}
+
+h1 {
+  color: var(--accent) !important;
+}
+
+.top-links a,
+.topbar a {
+  color: var(--muted) !important;
+  border-color: var(--line) !important;
+}
+
+.top-links a:hover,
+.topbar a:hover {
+  color: var(--text) !important;
+}
+
+.card,
+.section,
+.demo-section,
+.panel {
+  background: var(--card) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+}
+
+.code-block,
+pre,
+code,
+.output,
+.current-url,
+.event-log,
+.result-card,
+.log {
+  background: var(--code-bg) !important;
+  color: var(--code-text) !important;
+  border-color: var(--line) !important;
+}
+
+input,
+select,
+textarea {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--line) !important;
+}
+
+button {
+  background: linear-gradient(120deg, var(--accent), #ff6a00) !important;
+  color: #111 !important;
+}
+
+footer {
+  color: var(--muted) !important;
+}
+
+footer a {
+  color: var(--text) !important;
+}</code></pre> </div> <div> <div class="code-label">JS (js)</div> <pre class="code-panel"><code>import &quot;https://esm.sh/@manufosela/util-lola&quot;;
+
+    const lola = document.getElementById(&quot;demo-lola&quot;);
+    const log = document.getElementById(&quot;event-log&quot;);
+
+    lola.addEventListener(&quot;lola-toggle&quot;, (e) =&gt; {
+      const line = document.createElement(&quot;div&quot;);
+      line.textContent = `lola-toggle → active: ${e.detail.active}`;
+      log.prepend(line);
+    });
+
+    document.getElementById(&quot;btn-basic-show&quot;).addEventListener(&quot;click&quot;, () =&gt; {
+      lola.message = &quot;Loading...&quot;;
+      lola.timeout = 0;
+      lola.active = true;
+    });
+
+    document.getElementById(&quot;btn-basic-hide&quot;).addEventListener(&quot;click&quot;, () =&gt; {
+      lola.active = false;
+    });
+
+    document.getElementById(&quot;btn-timeout-2&quot;).addEventListener(&quot;click&quot;, () =&gt; {
+      lola.message = &quot;Closing in 2 seconds...&quot;;
+      lola.timeout = 2;
+      lola.active = true;
+    });
+
+    document.getElementById(&quot;btn-timeout-5&quot;).addEventListener(&quot;click&quot;, () =&gt; {
+      lola.message = &quot;Closing in 5 seconds...&quot;;
+      lola.timeout = 5;
+      lola.active = true;
+    });
+
+    document.getElementById(&quot;btn-custom&quot;).addEventListener(&quot;click&quot;, () =&gt; {
+      lola.message = &quot;Fetching data from API...&quot;;
+      lola.timeout = 3;
+      lola.active = true;
+    });
+  
+
+class DemoThemeToggle extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: &#39;open&#39; });
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  connectedCallback() {
+    const saved = localStorage.getItem(&#39;utils-demo-theme&#39;);
+    document.documentElement.classList.remove(&#39;dark&#39;);
+    document.documentElement.classList.toggle(&#39;light&#39;, saved === &#39;light&#39;);
+
+    this.render();
+  }
+
+  render() {
+    const isLight = document.documentElement.classList.contains(&#39;light&#39;);
+    this.shadowRoot.innerHTML = `
+      &lt;style&gt;
+        :host {
+          display: inline-flex;
+        }
+        .toggle {
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid var(--line);
+          border-radius: 999px;
+          overflow: hidden;
+          background: var(--surface);
+        }
+        button {
+          border: none;
+          background: transparent;
+          color: var(--muted);
+          padding: 6px 12px;
+          font-size: 0.8rem;
+          cursor: pointer;
+          font-family: &quot;Space Grotesk&quot;, &quot;Trebuchet MS&quot;, Arial, sans-serif;
+        }
+        button.active {
+          background: linear-gradient(120deg, var(--accent), #ff6a00);
+          color: #111;
+          font-weight: 600;
+        }
+      &lt;/style&gt;
+      &lt;div class=&quot;toggle&quot; role=&quot;group&quot; aria-label=&quot;Theme toggle&quot;&gt;
+        &lt;button class=&quot;${isLight ? &#39;active&#39; : &#39;&#39;}&quot; data-theme=&quot;light&quot;&gt;Light&lt;/button&gt;
+        &lt;button class=&quot;${isLight ? &#39;&#39; : &#39;active&#39;}&quot; data-theme=&quot;dark&quot;&gt;Dark&lt;/button&gt;
+      &lt;/div&gt;
+    `;
+
+    this.shadowRoot.querySelectorAll(&#39;button&#39;).forEach((btn) =&gt; {
+      btn.addEventListener(&#39;click&#39;, this.handleClick);
+    });
+  }
+
+  handleClick(event) {
+    const theme = event.currentTarget.dataset.theme;
+    const isLight = theme === &#39;light&#39;;
+    document.documentElement.classList.toggle(&#39;light&#39;, isLight);
+    document.documentElement.classList.remove(&#39;dark&#39;);
+    localStorage.setItem(&#39;utils-demo-theme&#39;, isLight ? &#39;light&#39; : &#39;dark&#39;);
+    this.render();
+  }
+}
+
+customElements.define(&#39;demo-theme-toggle&#39;, DemoThemeToggle);</code></pre> </div> </details> </div>  </div> </main> <footer> <div class="container"> <p>Built by manufosela. Lightweight, accessible, and standards-first web components.</p> </div> </footer> </body></html>
