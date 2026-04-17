@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>util-lola - Demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="../../demo-theme.css" />
+  <style>
+* { box-sizing: border-box; }
+a { color: inherit; text-decoration: none; }
+
+header {
+  padding: 32px 24px 16px;
+  border-bottom: 1px solid var(--line);
+}
+
+.container { max-width: 1100px; margin: 0 auto; }
+
+.top-links {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.top-links a {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 12px;
+  color: var(--muted);
+  font-size: 0.85rem;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.top-links a:hover { color: var(--text); border-color: var(--accent-2); }
+
+.hero h1 { margin: 0; font-size: clamp(28px, 4vw, 44px); letter-spacing: -0.02em; }
+.hero p { margin: 8px 0 0; color: var(--muted); }
+
+main { padding: 24px 24px 64px; }
+
+.demo-shell { display: grid; gap: 20px; }
+
+.demo-section {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: start;
+}
+
+.demo-card {
+  background: color-mix(in srgb, var(--card) 85%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.demo-card h2 { margin: 0 0 10px; }
+.badge {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.note { color: var(--muted); font-size: 0.9rem; margin: 0 0 12px; }
+
+.btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+
+.btn {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(120deg, var(--accent), #ff6a00);
+  color: #111;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn-outline {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.code-details summary { cursor: pointer; color: var(--muted); margin-top: 10px; }
+.code-details[open] summary { color: var(--text); }
+.code-block {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+  overflow: auto;
+  font-size: 0.85rem;
+  color: var(--code-text);
+}
+.code-block pre { margin: 0; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container hero">
+      <div class="top-links">
+        <a href="https://manufosela.dev/utils/">Utils catalog</a>
+        <a href="https://manufosela.dev/">Main catalog</a>
+        <a href="https://github.com/manufosela/utils/tree/main/packages/util-lola">Source</a>
+      </div>
+      <demo-theme-toggle></demo-theme-toggle>
+      <h1>util-lola demos</h1>
+      <p>Loading overlay component with message, timeout, and theming support.</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="container demo-shell">
+
+      <section class="demo-section">
+        <div class="demo-card">
+          <span class="badge">Basic</span>
+          <h2>Show overlay</h2>
+          <p class="note">Click to show the loading overlay. It stays until you dismiss it.</p>
+          <div class="btn-row">
+            <button class="btn" id="btn-basic-show">Show overlay</button>
+            <button class="btn-outline" id="btn-basic-hide">Hide overlay</button>
+          </div>
+        </div>
+        <div class="demo-card">
+          <h3>Code</h3>
+          <details class="code-details">
+            <summary>+ Show HTML + JS</summary>
+            <div class="code-block"><pre><code>&lt;util-lola id="lola" message="Loading..."&gt;&lt;/util-lola&gt;
+
+&lt;script type="module"&gt;
+  import "@manufosela/util-lola";
+  document.getElementById("lola").active = true;
+&lt;/script&gt;</code></pre></div>
+          </details>
+        </div>
+      </section>
+
+      <section class="demo-section">
+        <div class="demo-card">
+          <span class="badge">Timeout</span>
+          <h2>Auto-close</h2>
+          <p class="note">The overlay closes automatically after the specified seconds.</p>
+          <div class="btn-row">
+            <button class="btn" id="btn-timeout-2">2 second timeout</button>
+            <button class="btn" id="btn-timeout-5">5 second timeout</button>
+          </div>
+        </div>
+        <div class="demo-card">
+          <h3>Code</h3>
+          <details class="code-details">
+            <summary>+ Show HTML</summary>
+            <div class="code-block"><pre><code>&lt;util-lola
+  message="Please wait..."
+  timeout="3"
+  active
+&gt;&lt;/util-lola&gt;</code></pre></div>
+          </details>
+        </div>
+      </section>
+
+      <section class="demo-section">
+        <div class="demo-card">
+          <span class="badge">Custom</span>
+          <h2>Custom message</h2>
+          <p class="note">Pass a message via the <code>message</code> attribute.</p>
+          <div class="btn-row">
+            <button class="btn" id="btn-custom">Show with custom message</button>
+          </div>
+        </div>
+        <div class="demo-card">
+          <span class="badge">Events</span>
+          <h2>Toggle event</h2>
+          <p class="note">Listens for <code>lola-toggle</code> events.</p>
+          <div id="event-log" class="code-block" style="min-height: 60px; font-family: monospace;"></div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <util-lola id="demo-lola"></util-lola>
+
+  <script type="module">
+    import "../src/UtilLola.js";
+
+    const lola = document.getElementById("demo-lola");
+    const log = document.getElementById("event-log");
+
+    lola.addEventListener("lola-toggle", (e) => {
+      const line = document.createElement("div");
+      line.textContent = `lola-toggle → active: ${e.detail.active}`;
+      log.prepend(line);
+    });
+
+    document.getElementById("btn-basic-show").addEventListener("click", () => {
+      lola.message = "Loading...";
+      lola.timeout = 0;
+      lola.active = true;
+    });
+
+    document.getElementById("btn-basic-hide").addEventListener("click", () => {
+      lola.active = false;
+    });
+
+    document.getElementById("btn-timeout-2").addEventListener("click", () => {
+      lola.message = "Closing in 2 seconds...";
+      lola.timeout = 2;
+      lola.active = true;
+    });
+
+    document.getElementById("btn-timeout-5").addEventListener("click", () => {
+      lola.message = "Closing in 5 seconds...";
+      lola.timeout = 5;
+      lola.active = true;
+    });
+
+    document.getElementById("btn-custom").addEventListener("click", () => {
+      lola.message = "Fetching data from API...";
+      lola.timeout = 3;
+      lola.active = true;
+    });
+  </script>
+  <script type="module" src="../../demo-theme-toggle.js"></script>
+</body>
+</html>
