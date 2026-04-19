@@ -107,9 +107,28 @@ main { padding: 24px 24px 64px; }
   color: var(--code-text);
 }
 .code-block pre { margin: 0; white-space: pre-wrap; }
+  .deprecation-banner {
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .deprecation-banner strong { color: #f59e0b; }
+  .deprecation-banner a { color: #38bdf8; }
   </style>
 </head>
 <body>
+  <div class="container" style="margin-top: 1rem;">
+    <div class="deprecation-banner">
+      <strong>⚠️ Deprecated</strong> — This component is superseded by
+      <a href="https://manufosela.dev/ui-components/packages/loading-layer/demo/">@manufosela/loading-layer</a>,
+      which adds <code>&lt;dialog&gt;</code>-based accessibility, multi-phase messages, event-driven phases,
+      completion events, and singleton protection.
+    </div>
+  </div>
   <header>
     <div class="container hero">
       <div class="top-links">

@@ -1,7 +1,7 @@
 {
   "name": "@manufosela/util-lola",
   "version": "2.0.0",
-  "description": "Loading overlay (LoLa) web component with message, timeout, and CSS custom properties for theming.",
+  "description": "[DEPRECATED — use @manufosela/loading-layer] Loading overlay web component.",
   "type": "module",
   "main": "src/UtilLola.js",
   "module": "src/UtilLola.js",

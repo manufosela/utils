@@ -107,6 +107,17 @@ main { padding: 24px 24px 64px; }
   color: var(--code-text);
 }
 .code-block pre { margin: 0; white-space: pre-wrap; }
+  .deprecation-banner {
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .deprecation-banner strong { color: #f59e0b; }
+  .deprecation-banner a { color: #38bdf8; }
   </style>
 
 <style>
@@ -237,7 +248,17 @@ footer a {
     localStorage.setItem('theme', root.classList.contains('light') ? 'light' : 'dark');
     updateLabel();
   });
-</script> </div> </header> <main> <div class="container">  <div> <h1 class="page-title">@manufosela/util-lola</h1> <p class="page-subtitle">Loading overlay (LoLa) web component with message, timeout, and CSS custom properties for theming.</p> <div class="header-links"> <a href="/utils/">← Back to components</a><a href="https://github.com/manufosela/utils">GitHub Repo</a> </div> </div> <div class="demo-surface">  <div class="demo-embed"><main>
+</script> </div> </header> <main> <div class="container">  <div> <h1 class="page-title">@manufosela/util-lola</h1> <p class="page-subtitle">[DEPRECATED — use @manufosela/loading-layer] Loading overlay web component.</p> <div class="header-links"> <a href="/utils/">← Back to components</a><a href="https://github.com/manufosela/utils">GitHub Repo</a> </div> </div> <div class="demo-surface">  <div class="demo-embed"><div class="container" style="margin-top: 1rem;">
+    <div class="deprecation-banner">
+      <strong>⚠️ Deprecated</strong> — This component is superseded by
+      <a href="https://manufosela.dev/ui-components/packages/loading-layer/demo/">@manufosela/loading-layer</a>,
+      which adds <code>&lt;dialog&gt;</code>-based accessibility, multi-phase messages, event-driven phases,
+      completion events, and singleton protection.
+    </div>
+  </div>
+  
+
+  <main>
     <div class="container demo-shell">
 
       <section class="demo-section">
@@ -422,7 +443,17 @@ customElements.define('demo-theme-toggle', DemoThemeToggle);
     href=&quot;https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&amp;display=swap&quot;
     rel=&quot;stylesheet&quot;
   /&gt;
-&lt;main&gt;
+&lt;div class=&quot;container&quot; style=&quot;margin-top: 1rem;&quot;&gt;
+    &lt;div class=&quot;deprecation-banner&quot;&gt;
+      &lt;strong&gt;⚠️ Deprecated&lt;/strong&gt; — This component is superseded by
+      &lt;a href=&quot;https://manufosela.dev/ui-components/packages/loading-layer/demo/&quot;&gt;@manufosela/loading-layer&lt;/a&gt;,
+      which adds &lt;code&gt;&amp;lt;dialog&amp;gt;&lt;/code&gt;-based accessibility, multi-phase messages, event-driven phases,
+      completion events, and singleton protection.
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+
+  &lt;main&gt;
     &lt;div class=&quot;container demo-shell&quot;&gt;
 
       &lt;section class=&quot;demo-section&quot;&gt;
@@ -605,6 +636,17 @@ main { padding: 24px 24px 64px; }
   color: var(--code-text);
 }
 .code-block pre { margin: 0; white-space: pre-wrap; }
+  .deprecation-banner {
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .deprecation-banner strong { color: #f59e0b; }
+  .deprecation-banner a { color: #38bdf8; }
   
 
 

@@ -1,5 +1,7 @@
 # @manufosela/util-lola
 
+> **⚠️ Deprecated** — Use [`@manufosela/loading-layer`](https://manufosela.dev/ui-components/packages/loading-layer/demo/) instead. It has everything util-lola does plus `<dialog>`-based accessibility, multi-phase messages, event-driven phases, completion events, and singleton protection.
+
 Loading overlay (LoLa) web component with message, timeout, and CSS custom properties for theming.
 
 Modernized from the original [Polymer-based util-lola](https://github.com/manufosela/util-lola).
