@@ -63,6 +63,16 @@ const STYLES = `
   @keyframes spin {
     to { transform: rotate(360deg); }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    :host {
+      transition: none;
+    }
+    .spinner {
+      animation: none;
+      border-top-color: var(--lola-spinner-color, #ffb000);
+    }
+  }
 `;
 
 class UtilLola extends HTMLElement {
